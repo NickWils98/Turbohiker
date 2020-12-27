@@ -8,9 +8,10 @@
 
 
 class Entity {
-    Entity();
+public:
+    Entity() = default;
 
-    virtual ~Entity();
+    virtual ~Entity() = default;
 
     virtual void render() = 0;
     virtual void update() = 0;
