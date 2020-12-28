@@ -5,10 +5,12 @@
 #ifndef TURBOHIKER_ENTITY_H
 #define TURBOHIKER_ENTITY_H
 #include <memory>
-
+#include <tuple>
+#include "ColorLogic.h"
 
 class Entity {
 public:
+
     Entity() = default;
 
     virtual ~Entity() = default;

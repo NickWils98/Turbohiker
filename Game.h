@@ -7,8 +7,11 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
-#include "Entity.h"
-#include "World.h"
+#include "logic/Entity.h"
+#include "logic/World.h"
+#include "Factory/PlayerFactory.h"
+#include "Factory/Factory.h"
+#include "Transformation.h"
 
 
 class Game {
@@ -23,7 +26,10 @@ public:
 
     void handleEvent();
 
+    std::vector<bool> getInput();
+
 private:
+    Transformation *t;
     sf::RenderWindow m_window;
     sf::View view;
     std::shared_ptr<World> world;

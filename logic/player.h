@@ -6,7 +6,9 @@
 #define TURBOHIKER_PLAYER_H
 
 
-class player {
+#include "Entity.h"
+
+class player : public Entity {
 public:
     player()= default;
 
