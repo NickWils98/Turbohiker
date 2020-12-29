@@ -11,12 +11,13 @@
 #include <vector>
 class SFMLFactory : public Factory {
 public:
-    SFMLFactory(sf::RenderWindow& w) : window(w){};
-    std::shared_ptr<Entity>  createHiker(std::shared_ptr<sf::Texture>) override;
+    SFMLFactory(sf::RenderWindow& w, std::shared_ptr<sf::Texture>& t) : window(w), tex(t){};
+    std::shared_ptr<Hiker>  createHiker(std::tuple<float, float> size, std::tuple<float, float> position) override;
     std::shared_ptr<Entity>  addLane(ColorLogic col, std::tuple<float, float> size, std::tuple<float, float> position) override;
 
 private:
     sf::RenderWindow& window;
+    std::shared_ptr<sf::Texture> tex;
 };
 
 

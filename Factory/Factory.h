@@ -7,14 +7,14 @@
 
 #include <memory>
 #include "../logic/Entity.h"
-#include "../sfml/PlayerSFML.h"
+#include "../sfml/HikerSFML.h"
 #include "../logic/ColorLogic.h"
 #include "../Transformation.h"
 
 
 class Factory {
 public:
-    virtual std::shared_ptr<Entity>  createHiker(std::shared_ptr<sf::Texture>) = 0;
+    virtual std::shared_ptr<Hiker>  createHiker(std::tuple<float, float> size, std::tuple<float, float> position) = 0;
     virtual std::shared_ptr<Entity>  addLane(ColorLogic col, std::tuple<float, float> size, std::tuple<float, float> position) = 0;
 
 };

@@ -26,7 +26,7 @@ public:
 
     void handleEvent();
 
-    std::vector<bool> getInput();
+    int getInput();
 
 private:
     Transformation *t;

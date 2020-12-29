@@ -4,7 +4,7 @@
 
 #include <iostream>
 #include "Game.h"
-#include "sfml/PlayerSFML.h"
+#include "sfml/HikerSFML.h"
 #include "Factory/SFMLFactory.h"
 
 Game::Game()
@@ -30,6 +30,9 @@ void Game::run() {
         //Render
         m_window.clear(sf::Color(244, 69, 0, 255));
         //m_window.setView(view);
+        int speedup = getInput();
+        world->speedupPlayer(speedup);
+        world->update();
 
         world->render();
         m_window.display();
@@ -63,22 +66,24 @@ void Game::init() {
     tex->loadFromFile("./../zombie.png");
     textures.push_back(tex);
     //TODO: fix pointer
-    std::shared_ptr<Factory> factory = std::make_shared<SFMLFactory>(m_window);
-    player = std::make_shared<PlayerSFML>(m_window, tex);
-    //player = factory->createHiker(m_window, tex);
-    world->add(player);
+    std::shared_ptr<Factory> factory = std::make_shared<SFMLFactory>(m_window, tex);
+    //player = std::make_shared<HikerSFML>(m_window, tex);
+    //Hiker = factory->createHiker(m_window, tex);
     world->addLane(factory, 5);
     std::cout<<"test";
 
 
 }
-std::vector<bool> Game::getInput() {
+int Game::getInput() {
     std::vector<bool> input = {};
 
     //input.push_back(sf::Keyboard::isKeyPressed(sf::Keyboard::Left));
     //input.push_back(sf::Keyboard::isKeyPressed(sf::Keyboard::Right));
-    input.push_back(sf::Keyboard::isKeyPressed(sf::Keyboard::Up));
-    input.push_back(sf::Keyboard::isKeyPressed(sf::Keyboard::Down));
+    int speed = 0;
+    bool up = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
+    bool down = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
+    if(up){speed--;}
+    if(down){speed++;}
     //input.push_back(sf::Keyboard::isKeyPressed(sf::Keyboard::Space));
-    return input;
+    return speed;
 }

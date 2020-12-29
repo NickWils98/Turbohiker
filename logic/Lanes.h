@@ -11,9 +11,8 @@
 class Lanes : public Entity{
 public:
     void render() override{};
-    void update() override {
-
-    }
+    void update() override{};
+    void updateVisuals(std::tuple<int, int> s)override{};
 };
 
 
