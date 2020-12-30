@@ -7,7 +7,7 @@ const Entity::coordinats &Entity::getPosition() const {
     return position;
 }
 
-void Entity::setPosition(float x, float y) {
+void Entity::setPosition(double x, double y) {
     position.x = x;
     position.y = y;
 }
@@ -16,20 +16,24 @@ const Entity::coordinats &Entity::getSize() const {
     return size;
 }
 
-void Entity::setSize(float x, float y) {
+void Entity::setSize(double x, double y) {
     size.x = x;
     size.y = y;
 }
 
-float Entity::getSpeed() const {
+int Entity::getSpeed() const {
     return speed;
 }
 
-void Entity::setSpeed(float s) {
-    if(maxspeed/2>=s and -maxspeed<=s ){
+void Entity::setSpeed(int s) {
+    if(maxspeed>=s and -maxspeed/2<=s ){
         speed = s;
     }
 }
 void Entity::setPosition(const Entity::coordinats &position) {
     Entity::position = position;
+}
+
+int Entity::getMaxSpeed() const {
+    return maxspeed;
 }

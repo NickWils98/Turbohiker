@@ -22,9 +22,14 @@ public:
         return instance;
     }
 
-    tuple<int, int> logic_to_pixles(float x, float y) const;
+    tuple<int, int> logic_to_pixles(double x, double y) const;
 
-    tuple<float, float> pixle_to_logic(float x, float y);
+    tuple<double, double> pixle_to_logic(double x, double y);
+
+    int logic_to_pixle_y(double y) const;
+
+    double pixle_to_logic_y(double y) const;
+
     void changeWindow(const int x, const int y){
         window_x = x;
         window_y = y;

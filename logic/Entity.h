@@ -12,30 +12,32 @@
 class Entity {
 public:
     struct coordinats {
-        float x = 0;
-        float y = 0;
+        double x = 0;
+        double y = 0;
     };
     const coordinats &getPosition() const;
     const coordinats &getSize() const;
-    void setPosition(float x, float y);
+    void setPosition(double x, double y);
     void setPosition(const coordinats &position);
-    void setSize(float x, float y);
-    float getSpeed() const;
-    void setSpeed(float speed);
-
+    void setSize(double x, double y);
+    int getSpeed() const;
+    int getMaxSpeed() const;
+    void setSpeed(int speed);
+    virtual double helpcout(){return 0;};
     Entity() = default;
 
     virtual ~Entity() = default;
 
     virtual void render() = 0;
-    virtual void update() = 0;
+    virtual tuple<double, double> update() = 0;
     virtual void updateVisuals(std::tuple<int, int> s) = 0;
+    virtual void movetoview(double) = 0;
 
 private:
     coordinats position;
     coordinats size;
-    float maxspeed = 50;
-    float speed = 0;
+    int maxspeed = 20;
+    int speed = 0;
 
 };
 

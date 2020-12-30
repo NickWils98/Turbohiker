@@ -18,15 +18,19 @@ void World::render() {
     }
 }
 
-void World::update() {
+tuple<double, double> World::update() {
     for(auto obj: entityList) {
-        obj->update();
+        tuple<double, double> changed = obj->update();
         coordinats pos = obj->getPosition();
         Transformation *t = t->getInstance();
-        tuple<int, int> p = t->logic_to_pixles(pos.x, pos.y);
-        obj->updateVisuals(p);
-    }
+        tuple<int, int> oldp = t->logic_to_pixles(0,0);
+        tuple<int, int> newp = t->logic_to_pixles(std::get<0>(changed)*lanelength, std::get<1>(changed));
+        tuple<int, int> updatep = make_tuple(std::get<0>(oldp)- std::get<0>(newp), std::get<1>(oldp)- std::get<1>(newp));
 
+        obj->updateVisuals(updatep);
+
+    }
+    return make_tuple(0,0);
 }
 
 void World::add(std::shared_ptr<Entity> obj) {
@@ -35,15 +39,23 @@ void World::add(std::shared_ptr<Entity> obj) {
 }
 
 void World::addLane(std::shared_ptr<Factory> f, const int amount) {
-    float extra = 8.0/amount;
-    float start = -4 + extra;
+    double extra = 8.0/amount;
+    double start = -4 + extra;
+    double original =start-extra/2;
+    lanelength = extra;
     for(int count = 0; count<amount;count++){
         ColorLogic c = ColorLogic(255, 255, 255);
-        std::shared_ptr<Entity> entity = f->addLane(c, std::tuple<float, float>(-3.9f, 3.0f), std::tuple<float, float>(start, -3.0f));
-        std::shared_ptr<Hiker> hiker = f->createHiker(std::tuple<float, float>(extra-4, -2.5f), std::tuple<float, float>(start-extra/2, 2.6f));
-        hiker->setPosition(start-extra/2, 2.6f);
+        if(count<amount-1) {
+            std::shared_ptr<Entity> entity = f->addLane(c, std::tuple<double, double>(-3.9f, 3.0f),
+                                                        std::tuple<double, double>(start, -3.0f));
+            entityList.push_back(entity);
+        }
+        std::shared_ptr<Hiker> hiker = f->createHiker(std::tuple<double, double>(extra-4, -2.5f), std::tuple<double, double>(start-extra/2, 0.0f));
+        hiker->setPosition(start-extra/2, 0.0f);
+        hiker->setLanes(amount-1);
+        hiker->setMylane(count);
 
-        entityList.push_back(entity);
+
         entityList.push_back(hiker);
         if(!player){
             player = hiker;
@@ -55,7 +67,45 @@ void World::addLane(std::shared_ptr<Factory> f, const int amount) {
     //Hiker = factory->createHiker(m_window, tex);
 }
 
-void World::speedupPlayer(int speedup) {
-    player->updatePlayer(speedup);
+void World::speedupPlayer(int speedv, int speedh) {
+    player->updatePlayerv(speedv);
+    if(not locked) {
+        player->updatePlayerh(speedh);
+    }
+    if(speedh != 0){
+        if(not locked) {
+            lock = timer + 10000;
+            locked = true;
+        } else{
+            std::cout<<"     "<<lock<<"    "<<timer<<std::endl;
+        }
+    }
 }
 
+double World::getplayerposy() {
+    return player->getPosition().y;
+}
+
+double World::getplayerspeed() {
+    return player->getSpeed();
+}
+double World::getplayermaxspeed() {
+    return player->getMaxSpeed();
+}
+
+void World::movetoview(double moved) {
+    for(auto obj: entityList) {
+
+        obj->movetoview(moved);
+    }
+}
+
+void World::setTimer(double timer) {
+    World::timer = timer;
+}
+
+void World::removeLock() {
+    if(lock<timer){
+        locked=false;
+    }
+}

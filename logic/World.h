@@ -19,12 +19,21 @@ public:
     virtual ~World() = default;
     void remove(std::shared_ptr<Entity> toDel);
     void render();
-    void update() override;
+    tuple<double, double> update() override;
     void add(std::shared_ptr<Entity> obj);
     void addLane(std::shared_ptr<Factory> f, int amount);
     void updateVisuals(std::tuple<int, int> s)override{};
-    void addHiker(std::shared_ptr<Factory> f, int amount);
-    void speedupPlayer(int);
+    double getplayerposy();
+    double getplayerspeed();
+    double getplayermaxspeed();
+    void speedupPlayer(int, int);
+    void movetoview(double) override;
+
+    double gethelper(){return player->helpcout();};
+
+    void setTimer(double timer);
+
+    void removeLock();
 
 private:
     //List of all objects of the world
@@ -32,6 +41,10 @@ private:
     int lanes = 0;
     std::vector<std::shared_ptr<Entity>> lanelist;
     std::shared_ptr<Hiker> player = nullptr;
+    double lanelength;
+    double timer;
+    double lock=0;
+    bool locked = false;
 
 
 

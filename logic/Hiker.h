@@ -16,8 +16,25 @@ public:
 
     virtual void render() = 0;
     virtual void updateVisuals(std::tuple<int, int> s) = 0;
-    void updatePlayer(int speedup);
-    void update();
+    void updatePlayerv(int);
+    void updatePlayerh(int);
+    tuple<double, double> update();
+    void movetoview(double) override;
+    virtual double helpcout(){return 0;};
+
+    int getLanes() const;
+
+    void setLanes(int lanes);
+
+    int getMylane() const;
+
+    void setMylane(int mylane);
+
+
+private:
+    int lanes;
+    int mylane;
+    int move = 0;
 };
 
 

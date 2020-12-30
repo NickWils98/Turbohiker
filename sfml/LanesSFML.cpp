@@ -21,3 +21,14 @@ LanesSFML::~LanesSFML() {
 void LanesSFML::render() {
     window.draw(body);
 }
+
+void LanesSFML::movetoview(double moved) {
+
+
+    Transformation *t = t->getInstance();
+    tuple<int, int> oldp = t->logic_to_pixles(0,0);
+    tuple<int, int> newp = t->logic_to_pixles(0, moved);
+    int tester = std::get<1>(newp)- std::get<1>(oldp);
+    body.move(0, tester);
+
+}

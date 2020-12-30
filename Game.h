@@ -26,15 +26,21 @@ public:
 
     void handleEvent();
 
-    int getInput();
+    std::vector<int> getInput();
 
+    double moveView(double, double);
+
+
+    void DrawBackground(double);
 private:
     Transformation *t;
     sf::RenderWindow m_window;
     sf::View view;
     std::shared_ptr<World> world;
-    std::shared_ptr<Entity> player;
     std::vector<std::shared_ptr<sf::Texture>> textures = {};
+    std::vector<sf::Sprite>backgrounds = {};
+
+    double deltaTime = 0;
 
 };
 

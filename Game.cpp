@@ -8,12 +8,13 @@
 #include "Factory/SFMLFactory.h"
 
 Game::Game()
-        :   m_window    (sf::VideoMode(300, 600), "Turbohiker",  sf::Style::Close | sf::Style::Resize){
-
+        :   m_window    (sf::VideoMode(1088, 600), "Turbohiker",  sf::Style::Close | sf::Style::Resize),
+            view(m_window.getDefaultView()){
+    view.move(-300, 0);
     m_window.setFramerateLimit(60);
     world = std::make_shared<World>();
     t = Transformation::getInstance();
-    t->changeWindow(300, 600);
+    t->changeWindow(380, 600);
 
 }
 
@@ -22,18 +23,28 @@ Game::~Game() {
 }
 
 void Game::run() {
+    std::clock_t  startTime = std::clock();
 
     init();
     //Main loop of the game
     while (m_window.isOpen()) {
 
         //Render
-        m_window.clear(sf::Color(244, 69, 0, 255));
-        //m_window.setView(view);
-        int speedup = getInput();
-        world->speedupPlayer(speedup);
+        std::clock_t  beginRound = startTime;
+        world->setTimer(beginRound);
+        world->removeLock();
+        startTime = std::clock();
+        deltaTime = startTime - beginRound;
+        std::vector<int> speed = getInput();
+        double oldspeed = world->getplayerspeed();
+        world->speedupPlayer(speed[0], speed[1]);
+        double oldy = world->getplayerposy();
+        m_window.clear();
         world->update();
-
+        double moved = moveView(oldy, oldspeed);
+        world->movetoview(moved);
+        m_window.setView(view);
+        DrawBackground(world->getplayerposy());
         world->render();
         m_window.display();
 
@@ -63,27 +74,110 @@ void Game::handleEvent() {
 void Game::init() {
 /*ini graphics TODO:move to world*/
     std::shared_ptr<sf::Texture> tex = std::make_shared<sf::Texture>();
-    tex->loadFromFile("./../zombie.png");
+    tex->loadFromFile("./../zombiee.png");
     textures.push_back(tex);
     //TODO: fix pointer
     std::shared_ptr<Factory> factory = std::make_shared<SFMLFactory>(m_window, tex);
-    //player = std::make_shared<HikerSFML>(m_window, tex);
-    //Hiker = factory->createHiker(m_window, tex);
     world->addLane(factory, 5);
-    std::cout<<"test";
+
+
+    std::shared_ptr<sf::Texture> backgroundTex = std::make_shared<sf::Texture>();
+    backgroundTex->loadFromFile("../mapscoree.png");
+    textures.push_back(backgroundTex);
+
+    sf::Sprite background(*backgroundTex);
+    backgrounds.push_back(background);
+    backgrounds[0].setPosition(-300 ,600);
+
+    sf::Sprite background2(*backgroundTex);
+    backgrounds.push_back(background2);
+    backgrounds[1].setPosition(-300 ,0);
+
+    sf::Sprite background3(*backgroundTex);
+    backgrounds.push_back(background3);
+    backgrounds[2].setPosition(-300 ,-600);
 
 
 }
-int Game::getInput() {
-    std::vector<bool> input = {};
 
-    //input.push_back(sf::Keyboard::isKeyPressed(sf::Keyboard::Left));
-    //input.push_back(sf::Keyboard::isKeyPressed(sf::Keyboard::Right));
-    int speed = 0;
+void Game::DrawBackground(double pos) {
+
+    double v = view.getCenter().y;
+    double x = backgrounds[2].getPosition().y;
+    if(v-(view.getSize().y/2.0)<backgrounds[1].getPosition().y){
+        backgrounds[0].move(0,-600);
+        backgrounds[1].move(0,-600);
+        backgrounds[2].move(0,-600);
+    } else if(v-(view.getSize().y/2.0)>backgrounds[0].getPosition().y){
+        backgrounds[0].move(0,600);
+        backgrounds[1].move(0,600);
+        backgrounds[2].move(0,600);
+    }
+    m_window.draw(backgrounds[0]);
+    m_window.draw(backgrounds[1]);
+    m_window.draw(backgrounds[2]);
+    backgrounds[0].getPosition();
+
+}
+
+
+std::vector<int> Game::getInput() {
+
+    int speedv = 0;
     bool up = sf::Keyboard::isKeyPressed(sf::Keyboard::Up);
     bool down = sf::Keyboard::isKeyPressed(sf::Keyboard::Down);
-    if(up){speed--;}
-    if(down){speed++;}
-    //input.push_back(sf::Keyboard::isKeyPressed(sf::Keyboard::Space));
-    return speed;
+    if(up){speedv++;}
+    if(down){speedv--;}
+
+    int speedh = 0;
+    bool left = sf::Keyboard::isKeyPressed(sf::Keyboard::Left);
+    bool right = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
+    if(right){speedh++;}
+    if(left){speedh--;}
+    return {speedv, speedh};
+}
+
+double Game::moveView(double oldposy, double oldspeed) {
+    double posy = world->getplayerposy();
+    double speed = world->getplayerspeed();
+    double maxspeed = world->getplayermaxspeed();
+    double minspeed = -maxspeed;
+
+    double usedspeed = speed-minspeed;
+
+    double scaledspeed = usedspeed/(maxspeed-minspeed)*3;
+    scaledspeed -= 1.5;
+
+    double halfway = view.getCenter().y;
+    int beforhalf = 600-t->logic_to_pixle_y(scaledspeed);
+    int limitpos = beforhalf-halfway;
+
+    int newposy = t->logic_to_pixle_y(posy);
+    if(speed>0){
+        if(newposy<beforhalf){
+            if(newposy-limitpos==-18){
+                int q = 5;
+            }
+            view.move(0, newposy-beforhalf);
+            double speedy = t->pixle_to_logic_y(newposy);
+            double newpospixley = t->pixle_to_logic_y(beforhalf);
+            double counting = speedy-newpospixley;
+            return counting;
+        }
+    }
+
+    if(speed<0){
+        if(beforhalf<newposy){
+            view.move(0, newposy-beforhalf);
+            double speedy = t->pixle_to_logic_y(newposy);
+            double newpospixley = t->pixle_to_logic_y(beforhalf);
+            double counting = speedy-newpospixley;
+            return counting;
+        }
+    }
+
+    return 0;
+
+
+
 }

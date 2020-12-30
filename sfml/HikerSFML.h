@@ -18,6 +18,7 @@ public:
 
     void render() override ;
     void updateVisuals(std::tuple<int, int> s)override;
+    double helpcout(){return body.getPosition().y;};
 
 
 

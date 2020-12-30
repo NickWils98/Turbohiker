@@ -22,7 +22,8 @@ void HikerSFML::render() {
 void HikerSFML::updateVisuals(std::tuple<int, int> pos) {
     sf::Vector2f sfmlpos = sf::Vector2f(std::get<0>(pos),std::get<1>(pos));
 
-    body.setPosition(sfmlpos);
+    body.move(sfmlpos);
+    sf::Vector2f fff = body.getPosition();
 
 
 }
