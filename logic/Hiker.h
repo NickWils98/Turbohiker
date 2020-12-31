@@ -26,14 +26,12 @@ public:
 
     void setLanes(int lanes);
 
-    int getMylane() const;
 
-    void setMylane(int mylane);
 
 
 private:
     int lanes;
-    int mylane;
+
     int move = 0;
 };
 

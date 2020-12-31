@@ -13,6 +13,7 @@ Game::Game()
     view.move(-300, 0);
     m_window.setFramerateLimit(60);
     world = std::make_shared<World>();
+    r = RandomeNumber::getInstance();
     t = Transformation::getInstance();
     t->changeWindow(380, 600);
 
@@ -23,11 +24,12 @@ Game::~Game() {
 }
 
 void Game::run() {
-    std::clock_t  startTime = std::clock();
 
+    std::clock_t  startTime = std::clock();
     init();
     //Main loop of the game
     while (m_window.isOpen()) {
+        std::cout<<r->getintpercent()<<std::endl;
 
         //Render
         std::clock_t  beginRound = startTime;
@@ -41,6 +43,7 @@ void Game::run() {
         double oldy = world->getplayerposy();
         m_window.clear();
         world->update();
+        world->Collision(1);
         double moved = moveView(oldy, oldspeed);
         world->movetoview(moved);
         m_window.setView(view);
@@ -74,10 +77,16 @@ void Game::handleEvent() {
 void Game::init() {
 /*ini graphics TODO:move to world*/
     std::shared_ptr<sf::Texture> tex = std::make_shared<sf::Texture>();
-    tex->loadFromFile("./../zombiee.png");
+    tex->loadFromFile("./../zombieee.png");
     textures.push_back(tex);
     //TODO: fix pointer
-    std::shared_ptr<Factory> factory = std::make_shared<SFMLFactory>(m_window, tex);
+    std::shared_ptr<SFMLFactory> factory = std::make_shared<SFMLFactory>(m_window, view);
+    factory->setPlayertext(tex);
+
+    std::shared_ptr<sf::Texture> enemytex = std::make_shared<sf::Texture>();
+    enemytex->loadFromFile("./../enemycuty.png");
+    textures.push_back(enemytex);
+    factory->setTextures(enemytex);
     world->addLane(factory, 5);
 
 
@@ -153,9 +162,12 @@ double Game::moveView(double oldposy, double oldspeed) {
     int limitpos = beforhalf-halfway;
 
     int newposy = t->logic_to_pixle_y(posy);
+    int newoldposy = t->logic_to_pixle_y(oldposy);
+    double helper = world->gethelper();
+    //std::cout<<newposy-300<<"   "<<newposy-newoldposy<<"   "<<helper<<std::endl;
     if(speed>0){
         if(newposy<beforhalf){
-            if(newposy-limitpos==-18){
+            if(newposy-beforhalf!=newposy-newoldposy){
                 int q = 5;
             }
             view.move(0, newposy-beforhalf);

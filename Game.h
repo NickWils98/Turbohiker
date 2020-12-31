@@ -12,6 +12,7 @@
 #include "Factory/PlayerFactory.h"
 #include "Factory/Factory.h"
 #include "Transformation.h"
+#include "RandomeNumber.h"
 
 
 class Game {
@@ -41,6 +42,7 @@ private:
     std::vector<sf::Sprite>backgrounds = {};
 
     double deltaTime = 0;
+    RandomeNumber *r;
 
 };
 

@@ -11,6 +11,7 @@
 #include "../sfml/LanesSFML.h"
 #include "../Factory/Factory.h"
 #include <iostream>
+#include "Collider.h"
 
 
 class World : public Entity {
@@ -34,6 +35,8 @@ public:
     void setTimer(double timer);
 
     void removeLock();
+    double Collision(int);
+
 
 private:
     //List of all objects of the world

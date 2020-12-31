@@ -8,23 +8,24 @@
 #include <SFML/Graphics.hpp>
 #include "../logic/Hiker.h"
 
-class HikerSFML : public Hiker {
+class HikerSFML {
 
 
 public:
-    HikerSFML(sf::RenderWindow& w, const std::shared_ptr<sf::Texture>& tex, sf::Vector2f size, sf::Vector2f position);
+    HikerSFML(sf::RenderWindow& w, const std::shared_ptr<sf::Texture>& tex, sf::Vector2f size, sf::Vector2f position, sf::View& );
 
-    ~HikerSFML() override;
+    ~HikerSFML();
 
-    void render() override ;
-    void updateVisuals(std::tuple<int, int> s)override;
+    void render() ;
+    void updateVisuals(std::tuple<int, int> s, double);
     double helpcout(){return body.getPosition().y;};
-
 
 
 private:
     sf::RectangleShape body;
     sf::RenderWindow& window;
+    sf::View& view;
+    std::shared_ptr<sf::Texture> tex;
 };
 
 

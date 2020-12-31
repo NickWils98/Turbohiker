@@ -37,3 +37,19 @@ void Entity::setPosition(const Entity::coordinats &position) {
 int Entity::getMaxSpeed() const {
     return maxspeed;
 }
+
+Entity::coordinats Entity::GetHalfSize() {
+    coordinats halfsize;
+    halfsize.x = getSize().x/2.0f;
+    halfsize.y = getSize().y/2.0f;
+
+    return halfsize;
+}
+
+int Entity::getMylane() const {
+    return mylane;
+}
+
+void Entity::setMylane(int mylane) {
+    Entity::mylane = mylane;
+}

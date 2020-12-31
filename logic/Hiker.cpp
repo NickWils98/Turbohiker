@@ -29,13 +29,13 @@ void Hiker::updatePlayerv(int speedup) {
 }
 void Hiker::updatePlayerh(int speedh) {
     if(speedh>0){
-        if(mylane<lanes){
-            mylane++;
+        if(getMylane()<lanes){
+            setMylane(getMylane()+1);
             move+= 1;
         }
     } else if(speedh<0){
-        if(mylane!=0){
-            mylane--;
+        if(getMylane()!=0){
+            setMylane(getMylane()-1);
             move-= 1;
         }
     }
@@ -47,9 +47,9 @@ tuple<double, double> Hiker::update() {
     }
     coordinats pos = getPosition();
     double zer = pos.y-0.01*getSpeed();
-    pos.y -= 0.01*getSpeed();
+    pos.y -= 0.005*getSpeed();
     setPosition(pos);
-    tuple<double, double> toreturn = make_tuple(-move, 0.01*getSpeed());
+    tuple<double, double> toreturn = make_tuple(-move, 0.005*getSpeed());
     move = 0;
     return toreturn;
 }
@@ -72,12 +72,6 @@ void Hiker::setLanes(int lanes) {
     Hiker::lanes = lanes;
 }
 
-int Hiker::getMylane() const {
-    return mylane;
-}
 
-void Hiker::setMylane(int mylane) {
-    Hiker::mylane = mylane;
-}
 
 

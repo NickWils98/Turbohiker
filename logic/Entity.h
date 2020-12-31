@@ -8,6 +8,7 @@
 #include <tuple>
 #include "ColorLogic.h"
 #include "../Transformation.h"
+#include "../RandomeNumber.h"
 
 class Entity {
 public:
@@ -25,6 +26,9 @@ public:
     void setSpeed(int speed);
     virtual double helpcout(){return 0;};
     Entity() = default;
+    coordinats GetHalfSize();
+    void Move(float dx, float dy){setPosition(getPosition().x+dx, getPosition().y+dy);};
+
 
     virtual ~Entity() = default;
 
@@ -32,12 +36,16 @@ public:
     virtual tuple<double, double> update() = 0;
     virtual void updateVisuals(std::tuple<int, int> s) = 0;
     virtual void movetoview(double) = 0;
+    int getMylane() const;
+
+    void setMylane(int mylane);
 
 private:
     coordinats position;
     coordinats size;
     int maxspeed = 20;
     int speed = 0;
+    int mylane;
 
 };
 
