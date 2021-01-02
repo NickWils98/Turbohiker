@@ -15,23 +15,9 @@
 #include <vector>
 class SFMLFactory : public Factory {
 public:
-    SFMLFactory(sf::RenderWindow& w, sf::View& v) : window(w), view(v){};
-    std::shared_ptr<Hiker>  createHikerPlayer(std::tuple<double, double> size, std::tuple<double, double> position) override;
-    std::shared_ptr<Hiker>  createHikerEnemy(std::tuple<double, double> size, std::tuple<double, double> position) override;
-    std::shared_ptr<Entity>  addLane(ColorLogic col, std::tuple<double, double> size, std::tuple<double, double> position) override;
-    std::shared_ptr<Hiker>  createHikerPassing(std::tuple<double, double> size, std::tuple<double, double> position) override;
+    SFMLFactory(){};
+    virtual std::shared_ptr<Hiker>  createHiker(std::tuple<double, double> size, std::tuple<double, double> position) = 0;
 
-
-    void setPlayertext(const shared_ptr<sf::Texture> &playertext);
-
-    void setTextures(const std::shared_ptr<sf::Texture> &textures);
-
-private:
-    sf::RenderWindow& window;
-    std::shared_ptr<sf::Texture> tex;
-    sf::View& view;
-    std::shared_ptr<sf::Texture> playertext;
-    std::vector<std::shared_ptr<sf::Texture>> textures;
 };
 
 

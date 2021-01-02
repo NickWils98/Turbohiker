@@ -14,11 +14,7 @@
 
 class Factory {
 public:
-//    virtual std::shared_ptr<Hiker>  createHiker(std::tuple<double, double> size, std::tuple<double, double> position) = 0;
-    virtual std::shared_ptr<Entity>  addLane(ColorLogic col, std::tuple<double, double> size, std::tuple<double, double> position) = 0;
-    virtual std::shared_ptr<Hiker>  createHikerPlayer(std::tuple<double, double> size, std::tuple<double, double> position) = 0;
-    virtual std::shared_ptr<Hiker>  createHikerEnemy(std::tuple<double, double> size, std::tuple<double, double> position) = 0;
-    virtual std::shared_ptr<Hiker>  createHikerPassing(std::tuple<double, double> size, std::tuple<double, double> position) =0;
+    virtual std::shared_ptr<Hiker>  createHiker(std::tuple<double, double> size, std::tuple<double, double> position) = 0;
 
 };
 

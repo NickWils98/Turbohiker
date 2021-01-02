@@ -1,17 +1,17 @@
 //
-// Created by nick on 31.12.20.
+// Created by nick on 02.01.21.
 //
 
-#ifndef TURBOHIKER_SFMLWANDERERFACTORY_H
-#define TURBOHIKER_SFMLWANDERERFACTORY_H
+#ifndef TURBOHIKER_SFMLPASSINGFACTORY_H
+#define TURBOHIKER_SFMLPASSINGFACTORY_H
 
 #include "SFMLFactory.h"
 #include "../sfml/LanesSFML.h"
 #include <vector>
 
-class SFMLWandererFactory : public SFMLFactory {
+class SFMLPassingFactory : public SFMLFactory {
 public:
-    SFMLWandererFactory(sf::RenderWindow& w, shared_ptr<sf::Texture> &t, sf::View& v);
+    SFMLPassingFactory(sf::RenderWindow& w, shared_ptr<sf::Texture> &t, sf::View& v);
     std::shared_ptr<Hiker>  createHiker(std::tuple<double, double> size, std::tuple<double, double> position) override;
 
 
@@ -24,4 +24,5 @@ private:
 };
 
 
-#endif //TURBOHIKER_SFMLWANDERERFACTORY_H
+
+#endif //TURBOHIKER_SFMLPASSINGFACTORY_H

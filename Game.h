@@ -44,7 +44,6 @@ private:
 
     double deltaTime = 0;
     RandomeNumber *r;
-    std::shared_ptr<SFMLFactory> factory;
 
 };
 

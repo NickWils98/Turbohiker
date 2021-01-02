@@ -6,6 +6,9 @@
 #include "Game.h"
 #include "sfml/HikerSFML.h"
 #include "Factory/SFMLFactory.h"
+#include "Factory/SFMLEnemyFactory.h"
+#include "Factory/SFMLWandererFactory.h"
+#include "Factory/LaneFactory.h"
 
 Game::Game()
         :   m_window    (sf::VideoMode(1088, 600), "Turbohiker",  sf::Style::Close | sf::Style::Resize),
@@ -35,7 +38,7 @@ void Game::run() {
         std::clock_t  beginRound = startTime;
         world->setTimer(beginRound);
         world->removeLock();
-        world->removeObstacle();
+//        world->removeObstacle();
 //        world->generateObstacle(factory, 50);
 
         startTime = std::clock();
@@ -83,27 +86,35 @@ void Game::init() {
     tex->loadFromFile("./../zombieee.png");
     textures.push_back(tex);
     //TODO: fix pointer
-    factory = std::make_shared<SFMLFactory>(m_window, view);
-    factory->setPlayertext(tex);
+    std::shared_ptr<SFMLFactory> playerfact = std::make_shared<PlayerFactory>(m_window, tex, view);
 
     std::shared_ptr<sf::Texture> enemytex = std::make_shared<sf::Texture>();
     enemytex->loadFromFile("./../enemycuty.png");
     textures.push_back(enemytex);
 
+    std::shared_ptr<SFMLFactory> enemyfact = std::make_shared<SFMLEnemyFactory>(m_window, enemytex, view);
+
     std::shared_ptr<sf::Texture> passingtex = std::make_shared<sf::Texture>();
     passingtex->loadFromFile("./../knight.png");
     textures.push_back(passingtex);
 
-    factory->setTextures(enemytex);
-    factory->setTextures(passingtex);
+    std::shared_ptr<sf::Texture> passingtex2 = std::make_shared<sf::Texture>();
+    passingtex2->loadFromFile("./../rat2.png");
+    textures.push_back(passingtex2);
+
+    std::shared_ptr<SFMLFactory> passingfact = std::make_shared<SFMLWandererFactory>(m_window, passingtex, view);
+    std::shared_ptr<SFMLFactory> passingfact2 = std::make_shared<SFMLWandererFactory>(m_window, passingtex2, view);
+
+    std::shared_ptr<LaneFactory> lanefact = std::make_shared<LaneFactory>(LaneFactory(m_window, sf::Color::White, view));
+
     int chance = r->getintpercent();
     chance = (chance*3) /100.0;
 
 
 
 
-    world->addLane(factory, chance +4);
-    world->generateObstacle(factory, 50);
+    world->addLane({playerfact, enemyfact}, lanefact, chance +4);
+    world->generateObstacle({passingfact, passingfact2}, 50);
 
 
 
@@ -184,7 +195,7 @@ double Game::moveView(double oldposy, double oldspeed) {
     int newoldposy = t->logic_to_pixle_y(oldposy);
     double helper = world->gethelper();
     //std::cout<<newposy-300<<"   "<<newposy-newoldposy<<"   "<<helper<<std::endl;
-    if(speed>0){
+    if(speed>=0){
         if(newposy<beforhalf){
             if(newposy-beforhalf!=newposy-newoldposy){
                 int q = 5;

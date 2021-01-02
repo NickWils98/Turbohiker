@@ -5,9 +5,22 @@
 #ifndef TURBOHIKER_LANEFACTORY_H
 #define TURBOHIKER_LANEFACTORY_H
 
+#include "FactoryLines.h"
+#include "../sfml/LanesSFML.h"
+#include <vector>
 
-class LaneFactory {
+class LaneFactory : public FactoryLines {
+public:
+    LaneFactory(sf::RenderWindow& w, const sf::Color col, sf::View& v);
+    std::shared_ptr<Entity>  createLane(std::tuple<double, double> size, std::tuple<double, double> position) override;
 
+
+private:
+
+
+    sf::RenderWindow& window;
+    sf::View& view;
+    const sf::Color color;
 };
 
 

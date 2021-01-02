@@ -12,6 +12,7 @@
 #include "../Factory/Factory.h"
 #include <iostream>
 #include "Collider.h"
+#include "../Factory/FactoryLines.h"
 #include <algorithm>
 
 
@@ -24,7 +25,7 @@ public:
     void render();
     tuple<double, double> update() override;
     void add(std::shared_ptr<Entity> obj);
-    void addLane(std::shared_ptr<Factory> f, int amount);
+    void addLane(std::vector<std::shared_ptr<Factory>> f, std::shared_ptr<FactoryLines>l, int amount);
     bool updateVisuals(std::tuple<int, int> s)override{};
     double getplayerposy();
     double getplayerspeed();
@@ -40,7 +41,7 @@ public:
     void removeLock();
     double Collision(int);
 
-    void generateObstacle(std::shared_ptr<Factory> f, int);
+    void generateObstacle(std::vector<std::shared_ptr<Factory>> f, int);
     void generateObstacle2(std::shared_ptr<Factory> f, int);
     void removeObstacle();
 
