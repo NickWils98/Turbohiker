@@ -19,7 +19,7 @@ void HikerSFML::render() {
     window.draw(body);
 }
 
-void HikerSFML::updateVisuals(std::tuple<int, int> pos, double posi) {
+bool HikerSFML::updateVisuals(std::tuple<int, int> pos, double posi) {
     sf::Vector2f sfmlpos = sf::Vector2f();
     //std::cout<<std::get<1>(pos)<<std::endl;
     sf::Vector2f fff = body.getPosition();
@@ -30,6 +30,11 @@ void HikerSFML::updateVisuals(std::tuple<int, int> pos, double posi) {
     tuple<int, int> updatep = make_tuple(std::get<0>(oldp)- std::get<0>(newp), std::get<1>(oldp)- std::get<1>(newp));
     body.setPosition(body.getPosition().x, std::get<1>(newp)-std::get<1>(oldp) +view.getCenter().y);
     body.move(std::get<0>(pos),0);
+    if(body.getPosition().y>window.getSize().y){
+        body.setPosition(body.getPosition().x, window.getSize().y);
+        return false;
+    }
+    return true;
 
 
 

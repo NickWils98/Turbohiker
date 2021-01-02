@@ -16,8 +16,9 @@ public:
 
     //void Move(float dx, float dy){setPosition(getPosition().x+dx, getPosition().y+dy);};
 
-    double CheckCollision(std::shared_ptr<Entity>, std::shared_ptr<Entity>, float);
+    std::vector<double> CollisionDetection(std::shared_ptr<Entity>, std::shared_ptr<Entity>);
     bool checklaneswitch(std::shared_ptr<Entity> first, std::shared_ptr<Entity> other, bool);
+    bool CheckCollision(std::shared_ptr<Entity> first, std::shared_ptr<Entity> other);
 
 
 

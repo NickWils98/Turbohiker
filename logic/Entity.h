@@ -24,27 +24,48 @@ public:
     int getSpeed() const;
     int getMaxSpeed() const;
     void setSpeed(int speed);
+    int getMylane() const;
+    void setMylane(int mylane);
+
+
     virtual double helpcout(){return 0;};
+
     Entity() = default;
     coordinats GetHalfSize();
-    void Move(float dx, float dy){setPosition(getPosition().x+dx, getPosition().y+dy);};
+    void Move(double dx, double dy){setPosition(getPosition().x+dx, getPosition().y+dy);};
 
 
     virtual ~Entity() = default;
 
     virtual void render() = 0;
     virtual tuple<double, double> update() = 0;
-    virtual void updateVisuals(std::tuple<int, int> s) = 0;
+    virtual bool updateVisuals(std::tuple<int, int> s) = 0;
     virtual void movetoview(double) = 0;
-    int getMylane() const;
+    virtual void speedup(int, int) = 0;
 
-    void setMylane(int mylane);
+    double getHeavynes() const;
+
+    void setHeavynes(double heavynes);
+
+    bool isGottrough() const;
+
+    void setGottrough(bool gottrough);
 
 private:
     coordinats position;
     coordinats size;
     int maxspeed = 20;
-    int speed = 0;
+    int speedv = 0;
+    int speedh = 0;
+
+    double heavynes = 0;
+    bool gottrough = false;
+public:
+    int getSpeedh() const;
+
+    void setSpeedh(int speedh);
+
+private:
     int mylane;
 
 };

@@ -15,7 +15,7 @@ public:
     virtual ~Hiker() = default;
 
     virtual void render() = 0;
-    virtual void updateVisuals(std::tuple<int, int> s) = 0;
+    virtual bool updateVisuals(std::tuple<int, int> s) = 0;
     void updatePlayerv(int);
     void updatePlayerh(int);
     tuple<double, double> update();
@@ -26,7 +26,7 @@ public:
 
     void setLanes(int lanes);
 
-
+    virtual void speedup(int, int) = 0;
 
 
 private:

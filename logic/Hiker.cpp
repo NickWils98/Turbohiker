@@ -42,6 +42,18 @@ void Hiker::updatePlayerh(int speedh) {
 
 }
 tuple<double, double> Hiker::update() {
+    if(getSpeedh()>0){
+        if(getMylane()<lanes){
+            setMylane(getMylane()+1);
+            move+= 1;
+        }
+    } else if(getSpeedh()<0){
+        if(getMylane()!=0){
+            setMylane(getMylane()-1);
+            move-= 1;
+        }
+    }
+
     if(getSpeed()>0){
         int x = 5;
     }

@@ -19,7 +19,7 @@ class RandomeNumber {
         std::mt19937 gen2(rd());
         gen = gen2;
 
-        std::uniform_int_distribution<> distrib2(1,100);
+        std::uniform_int_distribution<int> distrib2(1,100);
         distrib = distrib2;
 
 
@@ -33,5 +33,10 @@ public:
         return instance;
     }
     int getintpercent(){return distrib(gen);};
+    double getint(int i){
+        std::uniform_real_distribution<double> distrib3(1,i);
+
+        return distrib3(gen);
+    };
 };
 #endif //TURBOHIKER_RANDOMENUMBER_H

@@ -15,9 +15,9 @@ public:
 
     void render() override{sfml->render();};
 
-    void updateVisuals(std::tuple<int, int> s) override {
+    bool updateVisuals(std::tuple<int, int> s) override {
         coordinats pos = getPosition();
-        sfml->updateVisuals(s, pos.y);};
+        return sfml->updateVisuals(s, pos.y);};
 private:
     std::shared_ptr<HikerSFML> sfml;
 };

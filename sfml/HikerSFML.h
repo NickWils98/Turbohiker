@@ -17,7 +17,7 @@ public:
     ~HikerSFML();
 
     void render() ;
-    void updateVisuals(std::tuple<int, int> s, double);
+    bool updateVisuals(std::tuple<int, int> s, double);
     double helpcout(){return body.getPosition().y;};
 
 

@@ -9,7 +9,10 @@
 #include "Hiker.h"
 
 class HikerEnemy : public Hiker {
+public:
+    HikerEnemy();
 
+    void speedup(int, int) override;
 };
 
 

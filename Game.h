@@ -13,6 +13,7 @@
 #include "Factory/Factory.h"
 #include "Transformation.h"
 #include "RandomeNumber.h"
+#include "Factory/SFMLFactory.h"
 
 
 class Game {
@@ -43,6 +44,7 @@ private:
 
     double deltaTime = 0;
     RandomeNumber *r;
+    std::shared_ptr<SFMLFactory> factory;
 
 };
 

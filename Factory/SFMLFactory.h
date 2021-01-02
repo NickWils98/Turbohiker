@@ -11,6 +11,7 @@
 #include "../sfml/HikerSFML.h"
 #include "../sfml/HikerPlayerSFML.h"
 #include "../sfml/HikerEnemySFML.h"
+#include "../sfml/HikerPassingSFML.h"
 #include <vector>
 class SFMLFactory : public Factory {
 public:
@@ -18,6 +19,7 @@ public:
     std::shared_ptr<Hiker>  createHikerPlayer(std::tuple<double, double> size, std::tuple<double, double> position) override;
     std::shared_ptr<Hiker>  createHikerEnemy(std::tuple<double, double> size, std::tuple<double, double> position) override;
     std::shared_ptr<Entity>  addLane(ColorLogic col, std::tuple<double, double> size, std::tuple<double, double> position) override;
+    std::shared_ptr<Hiker>  createHikerPassing(std::tuple<double, double> size, std::tuple<double, double> position) override;
 
 
     void setPlayertext(const shared_ptr<sf::Texture> &playertext);

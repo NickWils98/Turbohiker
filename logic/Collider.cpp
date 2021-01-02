@@ -12,7 +12,7 @@ Collider::~Collider() {
 
 }
 
-double Collider::CheckCollision(std::shared_ptr<Entity> first, std::shared_ptr<Entity> other, float push = 1) {
+bool Collider::CheckCollision(std::shared_ptr<Entity> first, std::shared_ptr<Entity> other) {
     Entity::coordinats otherPosition = other->getPosition();
     Entity::coordinats otherHalfSize = other->GetHalfSize();
     Entity::coordinats thisPosition = first->getPosition();
@@ -21,44 +21,7 @@ double Collider::CheckCollision(std::shared_ptr<Entity> first, std::shared_ptr<E
     double deltaY = otherPosition.y - thisPosition.y;
 
     double intersectY = abs(deltaY) - (otherHalfSize.y + thisHalfSize.y);
-
-    if(first->getMylane() == other->getMylane() && intersectY < 0.0f){
-
-        push = std::min(std::max(push, 0.0f), 1.0f);
-
-        /*if(intersectX > intersectY){
-            if(deltaX > 0.0f){
-                first->Move(intersectX * (1.0f - push), 0.0f);
-                other->Move(-intersectX * push, 0.0f);
-
-            } else{
-
-                first->Move(-intersectX * (1.0f - push), 0.0f);
-                other->Move(intersectX * push, 0.0f);
-
-            }
-        } else{*/
-        if(deltaY > 0.0f){
-            //first->Move(0.0f, intersectY * (1.0f - push));
-            other->Move(0.0f, -intersectY * push);
-
-            //object->setHit(0,1);
-            //other.object->setHit(0,-1);
-        } else{
-
-            //first->Move(0.0f, -intersectY * (push));
-            other->Move(0.0f, intersectY * push);
-
-            //object->setHit(0,-1);
-            //other.object->setHit(0,1);
-        }
-    //}
-
-    return intersectY;
-    }
-
-
-    return 0;
+    return first->getMylane() == other->getMylane() && intersectY < 0.0f;
 }
 
 
@@ -86,4 +49,52 @@ bool Collider::checklaneswitch(std::shared_ptr<Entity> first, std::shared_ptr<En
         }
     }
     return true;
+}
+
+std::vector<double> Collider::CollisionDetection(std::shared_ptr<Entity> first, std::shared_ptr<Entity> other) {
+
+    Entity::coordinats otherPosition = other->getPosition();
+    Entity::coordinats otherHalfSize = other->GetHalfSize();
+    Entity::coordinats thisPosition = first->getPosition();
+    Entity::coordinats thisHalfSize = first->GetHalfSize();
+
+    double deltaY = otherPosition.y - thisPosition.y;
+
+    double intersectY = abs(deltaY) - (otherHalfSize.y + thisHalfSize.y);
+    double firstret = 0;
+    double otherret = 0;
+    if(CheckCollision(first, other)){
+
+        firstret = intersectY * (first->getHeavynes()/(other->getHeavynes()+first->getHeavynes()));
+        otherret = intersectY * (other->getHeavynes()/(other->getHeavynes()+first->getHeavynes()));
+        if(first->isGottrough()){
+            other->setSpeed(0);
+            return {0,0};
+        } else if(other->isGottrough()){
+            first->setSpeed(0);
+            return {0,0};
+        }
+        if(deltaY > 0.0f){
+            otherret *= -1;
+            first->Move(0.0f, firstret);
+            other->Move(0.0f, otherret);
+
+            //object->setHit(0,1);
+            //other.object->setHit(0,-1);
+        } else{
+            firstret *= -1;
+            first->Move(0.0f, firstret);
+            other->Move(0.0f, otherret);
+
+            //object->setHit(0,-1);
+            //other.object->setHit(0,1);
+        }
+        //}
+
+        return {firstret, otherret};
+    }
+
+
+    return {firstret, otherret};
+    return std::vector<double>();
 }

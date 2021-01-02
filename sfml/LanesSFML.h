@@ -16,6 +16,7 @@ public:
 
     void render();
     void movetoview(double) override;
+
 private:
     sf::RectangleShape body;
     sf::RenderWindow& window;

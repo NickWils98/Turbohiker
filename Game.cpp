@@ -29,17 +29,20 @@ void Game::run() {
     init();
     //Main loop of the game
     while (m_window.isOpen()) {
-        std::cout<<r->getintpercent()<<std::endl;
+        //std::cout<<r->getintpercent()<<std::endl;
 
         //Render
         std::clock_t  beginRound = startTime;
         world->setTimer(beginRound);
         world->removeLock();
+        world->removeObstacle();
+//        world->generateObstacle(factory, 50);
+
         startTime = std::clock();
         deltaTime = startTime - beginRound;
         std::vector<int> speed = getInput();
         double oldspeed = world->getplayerspeed();
-        world->speedupPlayer(speed[0], speed[1]);
+        world->speedup(speed[0], speed[1]);
         double oldy = world->getplayerposy();
         m_window.clear();
         world->update();
@@ -80,14 +83,28 @@ void Game::init() {
     tex->loadFromFile("./../zombieee.png");
     textures.push_back(tex);
     //TODO: fix pointer
-    std::shared_ptr<SFMLFactory> factory = std::make_shared<SFMLFactory>(m_window, view);
+    factory = std::make_shared<SFMLFactory>(m_window, view);
     factory->setPlayertext(tex);
 
     std::shared_ptr<sf::Texture> enemytex = std::make_shared<sf::Texture>();
     enemytex->loadFromFile("./../enemycuty.png");
     textures.push_back(enemytex);
+
+    std::shared_ptr<sf::Texture> passingtex = std::make_shared<sf::Texture>();
+    passingtex->loadFromFile("./../knight.png");
+    textures.push_back(passingtex);
+
     factory->setTextures(enemytex);
-    world->addLane(factory, 5);
+    factory->setTextures(passingtex);
+    int chance = r->getintpercent();
+    chance = (chance*3) /100.0;
+
+
+
+
+    world->addLane(factory, chance +4);
+    world->generateObstacle(factory, 50);
+
 
 
     std::shared_ptr<sf::Texture> backgroundTex = std::make_shared<sf::Texture>();
@@ -105,8 +122,6 @@ void Game::init() {
     sf::Sprite background3(*backgroundTex);
     backgrounds.push_back(background3);
     backgrounds[2].setPosition(-300 ,-600);
-
-
 }
 
 void Game::DrawBackground(double pos) {
@@ -148,6 +163,10 @@ std::vector<int> Game::getInput() {
 
 double Game::moveView(double oldposy, double oldspeed) {
     double posy = world->getplayerposy();
+
+    if(view.getCenter().y==300 and posy>0){
+        return 0;
+    }
     double speed = world->getplayerspeed();
     double maxspeed = world->getplayermaxspeed();
     double minspeed = -maxspeed;
@@ -158,7 +177,7 @@ double Game::moveView(double oldposy, double oldspeed) {
     scaledspeed -= 1.5;
 
     double halfway = view.getCenter().y;
-    int beforhalf = 600-t->logic_to_pixle_y(scaledspeed);
+    int beforhalf = 800-t->logic_to_pixle_y(scaledspeed);
     int limitpos = beforhalf-halfway;
 
     int newposy = t->logic_to_pixle_y(posy);

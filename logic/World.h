@@ -12,6 +12,8 @@
 #include "../Factory/Factory.h"
 #include <iostream>
 #include "Collider.h"
+#include <algorithm>
+
 
 
 class World : public Entity {
@@ -23,11 +25,12 @@ public:
     tuple<double, double> update() override;
     void add(std::shared_ptr<Entity> obj);
     void addLane(std::shared_ptr<Factory> f, int amount);
-    void updateVisuals(std::tuple<int, int> s)override{};
+    bool updateVisuals(std::tuple<int, int> s)override{};
     double getplayerposy();
     double getplayerspeed();
     double getplayermaxspeed();
-    void speedupPlayer(int, int);
+    void speedup(int, int);
+    int speedupPlayer(int);
     void movetoview(double) override;
 
     double gethelper(){return player->helpcout();};
@@ -37,6 +40,10 @@ public:
     void removeLock();
     double Collision(int);
 
+    void generateObstacle(std::shared_ptr<Factory> f, int);
+    void generateObstacle2(std::shared_ptr<Factory> f, int);
+    void removeObstacle();
+
 
 private:
     //List of all objects of the world
@@ -44,10 +51,13 @@ private:
     int lanes = 0;
     std::vector<std::shared_ptr<Entity>> lanelist;
     std::shared_ptr<Hiker> player = nullptr;
-    double lanelength;
+    double lanelength =0;
+    double firstlane =0;
     double timer;
     double lock=0;
     bool locked = false;
+    std::vector<std::shared_ptr<Entity>> obstacles = {};
+    int tracklength = 2666;
 
 
 

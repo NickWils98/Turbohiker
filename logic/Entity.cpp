@@ -22,12 +22,12 @@ void Entity::setSize(double x, double y) {
 }
 
 int Entity::getSpeed() const {
-    return speed;
+    return speedv;
 }
 
 void Entity::setSpeed(int s) {
     if(maxspeed>=s and -maxspeed/2<=s ){
-        speed = s;
+        speedv = s;
     }
 }
 void Entity::setPosition(const Entity::coordinats &position) {
@@ -52,4 +52,28 @@ int Entity::getMylane() const {
 
 void Entity::setMylane(int mylane) {
     Entity::mylane = mylane;
+}
+
+int Entity::getSpeedh() const {
+    return speedh;
+}
+
+void Entity::setSpeedh(int speedh) {
+    Entity::speedh = speedh;
+}
+
+double Entity::getHeavynes() const {
+    return heavynes;
+}
+
+void Entity::setHeavynes(double heavynes) {
+    Entity::heavynes = heavynes;
+}
+
+bool Entity::isGottrough() const {
+    return gottrough;
+}
+
+void Entity::setGottrough(bool gottrough) {
+    Entity::gottrough = gottrough;
 }

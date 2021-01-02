@@ -7,16 +7,16 @@
 
 
 #include "HikerSFML.h"
-#include "../logic/HikerPlayer.h"
+#include "../logic/HikerEnemy.h"
 
-class HikerEnemySFML : public HikerPlayer {
+class HikerEnemySFML : public HikerEnemy {
 public:
 
     HikerEnemySFML(sf::RenderWindow& w, const std::shared_ptr<sf::Texture>& tex, sf::Vector2f size, sf::Vector2f position, sf::View& );
 
     void render() override{sfml->render();};
 
-    void updateVisuals(std::tuple<int, int> s) override {
+    bool updateVisuals(std::tuple<int, int> s) override {
         coordinats pos = getPosition();
         sfml->updateVisuals(s, pos.y);};
 private:
