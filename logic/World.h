@@ -44,6 +44,10 @@ public:
     void generateObstacle(std::vector<std::shared_ptr<Factory>> f, int);
     void generateObstacle2(std::shared_ptr<Factory> f, int);
     void removeObstacle();
+    std::shared_ptr<Entity> shout(double, double, double) override;
+    void removeBalloon();
+
+    shared_ptr<Entity> remove_shout(double timer) override;
 
 
 private:
@@ -59,7 +63,7 @@ private:
     bool locked = false;
     std::vector<std::shared_ptr<Entity>> obstacles = {};
     int tracklength = 2666;
-
+    bool checkObstacleInLane(std::shared_ptr<Entity> e);
 
 
 };

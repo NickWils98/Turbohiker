@@ -12,7 +12,7 @@
 class LaneFactory : public FactoryLines {
 public:
     LaneFactory(sf::RenderWindow& w, const sf::Color col, sf::View& v);
-    std::shared_ptr<Entity>  createLane(std::tuple<double, double> size, std::tuple<double, double> position) override;
+    std::shared_ptr<Entity>  createProp(std::tuple<double, double> size, std::tuple<double, double> position) override;
 
 
 private:

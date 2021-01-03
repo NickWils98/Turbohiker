@@ -32,3 +32,7 @@ void LanesSFML::movetoview(double moved) {
     body.move(0, tester);
 
 }
+
+shared_ptr<Entity> LanesSFML::remove_shout(double timer) {
+    return std::shared_ptr<Entity>();
+}

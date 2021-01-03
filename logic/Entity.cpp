@@ -77,3 +77,27 @@ bool Entity::isGottrough() const {
 void Entity::setGottrough(bool gottrough) {
     Entity::gottrough = gottrough;
 }
+
+bool Entity::isSlowdown() const {
+    return slowdown;
+}
+
+void Entity::setSlowdown(bool slowdown) {
+    Entity::slowdown = slowdown;
+}
+
+bool Entity::isHasballoon() const {
+    return hasballoon;
+}
+
+void Entity::setHasballoon(bool hasballoon) {
+    Entity::hasballoon = hasballoon;
+}
+
+const shared_ptr<Entity> &Entity::getBalloon() const {
+    return balloon;
+}
+
+void Entity::setBalloon(const shared_ptr<Entity> &balloon) {
+    Entity::balloon = balloon;
+}

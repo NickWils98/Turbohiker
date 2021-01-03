@@ -34,6 +34,10 @@ tuple<double, double> World::update() {
         tuple<int, int> updatep = make_tuple(std::get<0>(oldp)- std::get<0>(newp), std::get<1>(oldp)- std::get<1>(newp));
 
         bool tried = obj->updateVisuals(updatep);
+        if(obj->isHasballoon()){
+            obj->getBalloon()->setPosition(obj->getPosition().x, obj->getPosition().y-obj->getSize().y);
+            obj->getBalloon()->updateVisuals(updatep);
+        }
         if (tried == false){
             obj->setPosition(obj->getPosition().x, 3);
         }
@@ -60,8 +64,8 @@ void World::addLane(std::vector<std::shared_ptr<Factory>> f, std::shared_ptr<Fac
     firstlane = (start-extra/2)-((extra/1.1-4)-(extra-4))/2;
     for(int count = 0; count<amount;count++){
         if(count<amount-1) {
-            std::shared_ptr<Entity> entity = l->createLane(std::tuple<double, double>(-3.9f, 3.0f),
-                                                        std::tuple<double, double>(start, -3.0f));
+            std::shared_ptr<Entity> entity = l->createProp(std::tuple<double, double>(-3.9f, 3.0f),
+                                                           std::tuple<double, double>(start, -3.0f));
             entityList.push_back(entity);
         }
         std::shared_ptr<Hiker> hiker;
@@ -80,7 +84,7 @@ void World::addLane(std::vector<std::shared_ptr<Factory>> f, std::shared_ptr<Fac
         }
         //std::shared_ptr<Hiker> hiker = f->createHikerPlayer(std::tuple<double, double>(extra-4, -2.5f), std::tuple<double, double>(start-extra/2, 0.0f));
 //        hiker->setPosition(firstlane+lanelength*count, 2.5f);
-        hiker->setSize(extra, 0.5f);
+//        hiker->setSize(extra, 0.5f);
 //        hiker->setHeavynes(0.5);
 
         hiker->setLanes(amount-1);
@@ -202,6 +206,15 @@ double World::Collision(int i) {
 }
 
 void World::generateObstacle(std::vector<std::shared_ptr<Factory>> f, int times) {
+    std::shared_ptr<Hiker> hiker3;
+    hiker3 = f[0]->createHiker(std::tuple<double, double>(lanelength / 1.1 - 4, -2.5f),
+                               std::tuple<double, double>(firstlane + lanelength * 3, -3.0f+1));
+
+    hiker3->setLanes(player->getLanes());
+    hiker3->setMylane(3);
+    entityList.push_back(hiker3);
+    obstacles.push_back(hiker3);
+
 
     times *= player->getLanes();
     RandomeNumber* r = r->getInstance();
@@ -215,11 +228,11 @@ void World::generateObstacle(std::vector<std::shared_ptr<Factory>> f, int times)
                                        std::tuple<double, double>(firstlane + lanelength * lane, -3.0f-percent));
 
         //std::shared_ptr<Hiker> hiker = f->createHikerPlayer(std::tuple<double, double>(extra-4, -2.5f), std::tuple<double, double>(start-extra/2, 0.0f));
-        hiker3->setPosition(firstlane + lanelength * lane, -3.0f-percent);
+//        hiker3->setPosition(firstlane + lanelength * lane, -3.0f-percent);
         hiker3->setLanes(player->getLanes());
         hiker3->setMylane(lane);
-        hiker3->setSize(lanelength, 0.5f);
-        hiker3->setHeavynes(0);
+//        hiker3->setSize(lanelength, 0.5f);
+//        hiker3->setHeavynes(0);
 //        hiker3->setGottrough(true);
         bool push = true;
         if(!obstacles.empty()) {
@@ -241,6 +254,7 @@ void World::generateObstacle(std::vector<std::shared_ptr<Factory>> f, int times)
 
 
     }
+
 //    std::shared_ptr<Hiker> hiker3;
 //
 //    hiker3 = f->createHiker(std::tuple<double, double>(lanelength / 1.1 - 4, -2.5f),
@@ -280,12 +294,10 @@ void World::generateObstacle2(std::shared_ptr<Factory> f, int times) {
                                        std::tuple<double, double>(firstlane + lanelength * lane, -3.0f-percent));
 
         //std::shared_ptr<Hiker> hiker = f->createHikerPlayer(std::tuple<double, double>(extra-4, -2.5f), std::tuple<double, double>(start-extra/2, 0.0f));
-        hiker3->setPosition(firstlane + lanelength * lane, -3.0f-percent);
+//        hiker3->setPosition(firstlane + lanelength * lane, -3.0f-percent);
         hiker3->setLanes(player->getLanes());
         hiker3->setMylane(lane);
-        hiker3->setSize(lanelength, 0.5f);
-        hiker3->setHeavynes(0);
-        hiker3->setGottrough(true);
+//        hiker3->setSize(lanelength, 0.5f);
 
         entityList.push_back(hiker3);
         obstacles.push_back(hiker3);
@@ -305,4 +317,49 @@ void World::removeObstacle() {
     for(auto entity : toremove){
         remove(entity);
     }
+}
+
+std::shared_ptr<Entity> World::shout(double i, double j, double z) {
+    std::shared_ptr<Entity> e = player->shout(timer, firstlane, lanelength);
+    if (e != nullptr){
+        entityList.push_back(e);
+        checkObstacleInLane(player);
+
+    }
+
+}
+
+void World::removeBalloon() {
+
+    std::vector<std::shared_ptr<Entity>> toremove = {};
+    for(auto obj: entityList) {
+
+        if(obj->isHasballoon()){
+            std::shared_ptr<Entity> e = obj->remove_shout(timer);
+            if(e){
+                toremove.push_back(e);
+
+            }
+        }
+    }
+    for(auto entity : toremove){
+        remove(entity);
+    }
+}
+
+shared_ptr<Entity> World::remove_shout(double timer) {
+    return std::shared_ptr<Entity>();
+}
+
+bool World::checkObstacleInLane(std::shared_ptr<Entity> e) {
+    RandomeNumber* r = r->getInstance();
+    for(auto o : obstacles){
+        if(e->getMylane() == o->getMylane()){
+            if(e->getPosition().y>o->getPosition().y and e->getPosition().y-2.5<o->getPosition().y){
+                o->shout(0, 0, 0);
+            }
+        }
+
+    }
+    return false;
 }

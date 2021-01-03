@@ -68,10 +68,17 @@ std::vector<double> Collider::CollisionDetection(std::shared_ptr<Entity> first, 
         firstret = intersectY * (first->getHeavynes()/(other->getHeavynes()+first->getHeavynes()));
         otherret = intersectY * (other->getHeavynes()/(other->getHeavynes()+first->getHeavynes()));
         if(first->isGottrough()){
-            other->setSpeed(0);
+            other->setSpeed(10);
+        }
+        if(other->isGottrough()){
+            first->setSpeed(10);
+        }
+        if(first->isGottrough()){
+
             return {0,0};
         } else if(other->isGottrough()){
-            first->setSpeed(0);
+
+
             return {0,0};
         }
         if(deltaY > 0.0f){

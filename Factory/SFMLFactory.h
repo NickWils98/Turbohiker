@@ -18,6 +18,7 @@ public:
     SFMLFactory(){};
     virtual std::shared_ptr<Hiker>  createHiker(std::tuple<double, double> size, std::tuple<double, double> position) = 0;
 
+
 };
 
 

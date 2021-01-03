@@ -13,6 +13,11 @@ public:
     HikerPlayer();
 
     void speedup(int, int) override;
+    std::shared_ptr<Entity> shout(double, double, double) override;
+    tuple<double, double> update() override;
+
+private:
+    int move = 0;
 };
 
 

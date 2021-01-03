@@ -9,10 +9,9 @@
 #include "../logic/Entity.h"
 #include "../logic/ColorLogic.h"
 #include "../Transformation.h"
-#include "../logic/Hiker.h"
 class FactoryLines {
 public:
-    virtual std::shared_ptr<Entity>  createLane(std::tuple<double, double> size, std::tuple<double, double> position) = 0;
+    virtual std::shared_ptr<Entity>  createProp(std::tuple<double, double> size, std::tuple<double, double> position) = 0;
 
 };
 

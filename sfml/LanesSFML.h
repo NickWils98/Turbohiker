@@ -17,6 +17,8 @@ public:
     void render();
     void movetoview(double) override;
 
+    shared_ptr<Entity> remove_shout(double timer) override;
+
 private:
     sf::RectangleShape body;
     sf::RenderWindow& window;

@@ -7,6 +7,8 @@
 
 
 #include "Entity.h"
+#include "Balloon.h"
+#include "../Factory/FactoryLines.h"
 
 class Hiker : public Entity {
 public:
@@ -18,7 +20,7 @@ public:
     virtual bool updateVisuals(std::tuple<int, int> s) = 0;
     void updatePlayerv(int);
     void updatePlayerh(int);
-    tuple<double, double> update();
+    virtual tuple<double, double> update() = 0;
     void movetoview(double) override;
     virtual double helpcout(){return 0;};
 
@@ -28,11 +30,32 @@ public:
 
     virtual void speedup(int, int) = 0;
 
+    virtual std::shared_ptr<Entity> shout(double, double, double) =0;
+    std::shared_ptr<Entity> remove_shout(double timer) override;
+
+
+    void setFact(const shared_ptr<FactoryLines> &fact);
+
+    const shared_ptr<FactoryLines> &getFact() const;
+
+    bool isShoutlock() const;
+
+    void setShoutlock(bool shoutlock);
+
+    double getLockedtimer() const;
+
+    void setLockedtimer(double lockedtimer);
+
+    bool isHorizontal() const;
+
+    void setHorizontal(bool horizontal);
 
 private:
     int lanes;
-
-    int move = 0;
+    bool shoutlock = false;
+    double lockedtimer;
+    std::shared_ptr<FactoryLines> fact = nullptr;
+    bool horizontal = false;
 };
 
 

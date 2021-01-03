@@ -15,6 +15,10 @@ public:
     bool updateVisuals(std::tuple<int, int> s)override{};
     virtual void movetoview(double) = 0;
     void speedup(int, int) override{};
+
+    shared_ptr<Entity> shout(double d, double e, double g) override {
+        return nullptr;
+    }
 };
 
 

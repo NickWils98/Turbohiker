@@ -13,6 +13,11 @@ public:
     HikerPassing();
 
     void speedup(int, int) override;
+    std::shared_ptr<Entity> shout(double, double, double) override;
+    tuple<double, double> update();
+private:
+    int moveing = 0;
+    int move = 0;
 };
 
 

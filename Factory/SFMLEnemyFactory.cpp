@@ -20,7 +20,12 @@ std::shared_ptr<Hiker> SFMLEnemyFactory::createHiker(std::tuple<double, double> 
 
     std::shared_ptr<Hiker> player = std::make_shared<HikerEnemySFML>(HikerEnemySFML(window, texture, sfmlsize, sfmlposition, view));
     player->setPosition(std::get<0>(position), std::get<1>(position));
-    player->setSize(std::get<0>(size), std::get<1>(size));
+    player->setSize(std::get<0>(size)+4, std::get<1>(size)+3);
     player->setHeavynes(0.5);
+    player->setFact(fact);
     return player;
+}
+
+void SFMLEnemyFactory::setFact(const shared_ptr<FactoryLines> &fact) {
+    SFMLEnemyFactory::fact = fact;
 }

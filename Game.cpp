@@ -9,6 +9,8 @@
 #include "Factory/SFMLEnemyFactory.h"
 #include "Factory/SFMLWandererFactory.h"
 #include "Factory/LaneFactory.h"
+#include "Factory/SFMLPassingFactory.h"
+#include "Factory/TextBalloon.h"
 
 Game::Game()
         :   m_window    (sf::VideoMode(1088, 600), "Turbohiker",  sf::Style::Close | sf::Style::Resize),
@@ -40,12 +42,16 @@ void Game::run() {
         world->removeLock();
 //        world->removeObstacle();
 //        world->generateObstacle(factory, 50);
+        world->removeBalloon();
 
         startTime = std::clock();
         deltaTime = startTime - beginRound;
         std::vector<int> speed = getInput();
         double oldspeed = world->getplayerspeed();
         world->speedup(speed[0], speed[1]);
+        if(speed[2] == 1){
+            world->shout(0, 0, 0);
+        }
         double oldy = world->getplayerposy();
         m_window.clear();
         world->update();
@@ -82,18 +88,24 @@ void Game::handleEvent() {
 
 void Game::init() {
 /*ini graphics TODO:move to world*/
+    std::shared_ptr<sf::Texture> texb = std::make_shared<sf::Texture>();
+    texb->loadFromFile("./../whaaagh.png");
+    textures.push_back(texb);
+    std::shared_ptr<FactoryLines> fact = std::make_shared<TextBalloon>(m_window, texb, view);
+
     std::shared_ptr<sf::Texture> tex = std::make_shared<sf::Texture>();
     tex->loadFromFile("./../zombieee.png");
     textures.push_back(tex);
     //TODO: fix pointer
-    std::shared_ptr<SFMLFactory> playerfact = std::make_shared<PlayerFactory>(m_window, tex, view);
+    std::shared_ptr<PlayerFactory> playerfact = std::make_shared<PlayerFactory>(m_window, tex, view);
+    playerfact->setFact(fact);
 
     std::shared_ptr<sf::Texture> enemytex = std::make_shared<sf::Texture>();
     enemytex->loadFromFile("./../enemycuty.png");
     textures.push_back(enemytex);
 
-    std::shared_ptr<SFMLFactory> enemyfact = std::make_shared<SFMLEnemyFactory>(m_window, enemytex, view);
-
+    std::shared_ptr<SFMLEnemyFactory> enemyfact = std::make_shared<SFMLEnemyFactory>(m_window, enemytex, view);
+    enemyfact->setFact(fact);
     std::shared_ptr<sf::Texture> passingtex = std::make_shared<sf::Texture>();
     passingtex->loadFromFile("./../knight.png");
     textures.push_back(passingtex);
@@ -103,7 +115,7 @@ void Game::init() {
     textures.push_back(passingtex2);
 
     std::shared_ptr<SFMLFactory> passingfact = std::make_shared<SFMLWandererFactory>(m_window, passingtex, view);
-    std::shared_ptr<SFMLFactory> passingfact2 = std::make_shared<SFMLWandererFactory>(m_window, passingtex2, view);
+    std::shared_ptr<SFMLFactory> passingfact2 = std::make_shared<SFMLPassingFactory>(m_window, passingtex2, view);
 
     std::shared_ptr<LaneFactory> lanefact = std::make_shared<LaneFactory>(LaneFactory(m_window, sf::Color::White, view));
 
@@ -169,13 +181,16 @@ std::vector<int> Game::getInput() {
     bool right = sf::Keyboard::isKeyPressed(sf::Keyboard::Right);
     if(right){speedh++;}
     if(left){speedh--;}
-    return {speedv, speedh};
+    int spaceinput = 0;
+    bool space = sf::Keyboard::isKeyPressed(sf::Keyboard::Space);
+    if(space){spaceinput++;}
+    return {speedv, speedh, spaceinput};
 }
 
 double Game::moveView(double oldposy, double oldspeed) {
     double posy = world->getplayerposy();
 
-    if(view.getCenter().y==300 and posy>0){
+    if(view.getCenter().y==100 and posy>0){
         return 0;
     }
     double speed = world->getplayerspeed();

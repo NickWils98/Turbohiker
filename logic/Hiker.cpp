@@ -4,67 +4,44 @@
 
 #include "Hiker.h"
 
-void Hiker::updatePlayerv(int speedup) {
-    //speedup*=2;
-    int currentSpeed = getSpeed();
+//void Hiker::updatePlayerv(int speedup) {
+//    //speedup*=2;
+//    int currentSpeed = getSpeed();
+//
+//    if(speedup==0){
+//        if(currentSpeed>0){
+//
+//            currentSpeed -= 0.00001;
+//        } else if(currentSpeed<0){
+//
+//            currentSpeed += 0.000001;
+//        }
+//    }
+//    if(speedup>0 and 0 >currentSpeed){
+//        currentSpeed +=2;
+//    }
+//    if(speedup<0 and 0<currentSpeed){
+//        currentSpeed -=2;
+//    }
+//    currentSpeed+= speedup*0.02;
+//    setSpeed(currentSpeed);
+//
+//}
+//void Hiker::updatePlayerh(int speedh) {
+//    if(speedh>0){
+//        if(getMylane()<lanes){
+//            setMylane(getMylane()+1);
+//            move+= 1;
+//        }
+//    } else if(speedh<0){
+//        if(getMylane()!=0){
+//            setMylane(getMylane()-1);
+//            move-= 1;
+//        }
+//    }
+//
+//}
 
-    if(speedup==0){
-        if(currentSpeed>0){
-
-            currentSpeed -= 1;
-        } else if(currentSpeed<0){
-
-            currentSpeed += 1;
-        }
-    }
-    if(speedup>0 and 0 >currentSpeed){
-        currentSpeed +=2;
-    }
-    if(speedup<0 and 0<currentSpeed){
-        currentSpeed -=2;
-    }
-    currentSpeed+= speedup*2;
-    setSpeed(currentSpeed);
-
-}
-void Hiker::updatePlayerh(int speedh) {
-    if(speedh>0){
-        if(getMylane()<lanes){
-            setMylane(getMylane()+1);
-            move+= 1;
-        }
-    } else if(speedh<0){
-        if(getMylane()!=0){
-            setMylane(getMylane()-1);
-            move-= 1;
-        }
-    }
-
-}
-tuple<double, double> Hiker::update() {
-    if(getSpeedh()>0){
-        if(getMylane()<lanes){
-            setMylane(getMylane()+1);
-            move+= 1;
-        }
-    } else if(getSpeedh()<0){
-        if(getMylane()!=0){
-            setMylane(getMylane()-1);
-            move-= 1;
-        }
-    }
-
-    if(getSpeed()>0){
-        int x = 5;
-    }
-    coordinats pos = getPosition();
-    double zer = pos.y-0.01*getSpeed();
-    pos.y -= 0.005*getSpeed();
-    setPosition(pos);
-    tuple<double, double> toreturn = make_tuple(-move, 0.005*getSpeed());
-    move = 0;
-    return toreturn;
-}
 
 void Hiker::movetoview(double moved) {
     if(moved!=0){
@@ -82,6 +59,55 @@ int Hiker::getLanes() const {
 
 void Hiker::setLanes(int lanes) {
     Hiker::lanes = lanes;
+}
+
+
+
+std::shared_ptr<Entity> Hiker::remove_shout(double timer) {
+    if(shoutlock) {
+        if (timer > lockedtimer) {
+            shoutlock = false;
+            std::shared_ptr<Entity> b = getBalloon();
+            setBalloon(nullptr);
+            setHasballoon(false);
+            return b;
+
+        }
+    }
+
+    return nullptr;
+}
+
+void Hiker::setFact(const shared_ptr<FactoryLines> &fact) {
+    Hiker::fact = fact;
+}
+
+const shared_ptr<FactoryLines> &Hiker::getFact() const {
+    return fact;
+}
+
+bool Hiker::isShoutlock() const {
+    return shoutlock;
+}
+
+void Hiker::setShoutlock(bool shoutlock) {
+    Hiker::shoutlock = shoutlock;
+}
+
+double Hiker::getLockedtimer() const {
+    return lockedtimer;
+}
+
+void Hiker::setLockedtimer(double lockedtimer) {
+    Hiker::lockedtimer = lockedtimer;
+}
+
+bool Hiker::isHorizontal() const {
+    return horizontal;
+}
+
+void Hiker::setHorizontal(bool horizontal) {
+    Hiker::horizontal = horizontal;
 }
 
 
