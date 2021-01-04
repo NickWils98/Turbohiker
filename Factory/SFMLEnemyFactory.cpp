@@ -4,14 +4,14 @@
 
 #include "SFMLEnemyFactory.h"
 
-SFMLEnemyFactory::SFMLEnemyFactory(sf::RenderWindow& w, shared_ptr<sf::Texture> &t, sf::View& v)
+SFMLEnemyFactory::SFMLEnemyFactory(sf::RenderWindow& w, std::shared_ptr<sf::Texture> &t, sf::View& v)
         : view(v), window(w){
 
     texture=t;
 }
 
 std::shared_ptr<Hiker> SFMLEnemyFactory::createHiker(std::tuple<double, double> size, std::tuple<double, double> position) {
-    Transformation *t = t->getInstance();
+    std::shared_ptr<Transformation> t = t->getInstance();
     std::tuple<int, int> s = t->logic_to_pixles(std::get<0>(size), std::get<1>(size));
     sf::Vector2f sfmlsize = sf::Vector2f(std::get<0>(s),std::get<1>(s));
 
@@ -23,9 +23,10 @@ std::shared_ptr<Hiker> SFMLEnemyFactory::createHiker(std::tuple<double, double> 
     player->setSize(std::get<0>(size)+4, std::get<1>(size)+3);
     player->setHeavynes(0.5);
     player->setFact(fact);
+    player->setMaxspeed(100);
     return player;
 }
 
-void SFMLEnemyFactory::setFact(const shared_ptr<FactoryLines> &fact) {
+void SFMLEnemyFactory::setFact(const std::shared_ptr<FactoryLines> &fact) {
     SFMLEnemyFactory::fact = fact;
 }

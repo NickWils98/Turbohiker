@@ -24,10 +24,10 @@ bool BalloonSFML::updateVisuals(std::tuple<int, int> pos) {
     //std::cout<<std::get<1>(pos)<<std::endl;
     sf::Vector2f fff = body.getPosition();
 
-    Transformation *t = t->getInstance();
-    tuple<int, int> oldp = t->logic_to_pixles(0,0);
-    tuple<int, int> newp = t->logic_to_pixles(0, getPosition().y);
-    tuple<int, int> updatep = make_tuple(std::get<0>(oldp)- std::get<0>(newp), std::get<1>(oldp)- std::get<1>(newp));
+    std::shared_ptr<Transformation> t = t->getInstance();
+    std::tuple<int, int> oldp = t->logic_to_pixles(0,0);
+    std::tuple<int, int> newp = t->logic_to_pixles(0, getPosition().y);
+    std::tuple<int, int> updatep = std::make_tuple(std::get<0>(oldp)- std::get<0>(newp), std::get<1>(oldp)- std::get<1>(newp));
     body.setPosition(body.getPosition().x, std::get<1>(newp)-std::get<1>(oldp) +view.getCenter().y);
     body.move(std::get<0>(pos),0);
     if(body.getPosition().y>window.getSize().y){

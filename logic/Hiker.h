@@ -20,7 +20,7 @@ public:
     virtual bool updateVisuals(std::tuple<int, int> s) = 0;
     void updatePlayerv(int);
     void updatePlayerh(int);
-    virtual tuple<double, double> update() = 0;
+    virtual std::tuple<double, double> update() = 0;
     void movetoview(double) override;
     virtual double helpcout(){return 0;};
 
@@ -34,9 +34,9 @@ public:
     std::shared_ptr<Entity> remove_shout(double timer) override;
 
 
-    void setFact(const shared_ptr<FactoryLines> &fact);
+    void setFact(const std::shared_ptr<FactoryLines> &fact);
 
-    const shared_ptr<FactoryLines> &getFact() const;
+    const std::shared_ptr<FactoryLines> &getFact() const;
 
     bool isShoutlock() const;
 
@@ -49,6 +49,8 @@ public:
     bool isHorizontal() const;
 
     void setHorizontal(bool horizontal);
+    virtual void fixdebuff(double) = 0;
+
 
 private:
     int lanes;
@@ -56,6 +58,7 @@ private:
     double lockedtimer;
     std::shared_ptr<FactoryLines> fact = nullptr;
     bool horizontal = false;
+
 };
 
 

@@ -25,12 +25,17 @@ std::shared_ptr<Entity> HikerPassing::shout(double timer, double start, double l
         }
     } else{
         if(percent<=50){
-            setSpeed(getSpeed()*2);
+            if(!isDebuff()) {
+                setDebufftimer(timer + 5000000);
+                setDebuff(true);
+                setMaxspeed(getMaxSpeed()*2);
+                setSpeed(getMaxSpeed());
+            }
         }
     }
     return nullptr;
 }
-tuple<double, double> HikerPassing::update() {
+std::tuple<double, double> HikerPassing::update() {
     if(isHorizontal()){
         if(getSpeedh()!=0){
             if(getSpeedh()>0){
@@ -50,11 +55,19 @@ tuple<double, double> HikerPassing::update() {
 
         coordinats pos = getPosition();
         double zer = pos.y - 0.01 * getSpeed();
-        pos.y -= 0.0005 * getSpeed();
+        pos.y -= 0.0005 * getSpeed()*(getOldtimer()*20);
         setPosition(pos);
     }
 
-    tuple<double, double> toreturn = make_tuple(-move, 0.005*getSpeed());
+    std::tuple<double, double> toreturn = std::make_tuple(-move, 0.005*getSpeed()*(getOldtimer()*20));
     move = 0;
     return toreturn;
+}
+
+void HikerPassing::fixdebuff(double timer) {
+    if(getDebufftimer()<timer){
+        setDebuff(false);
+        setMaxspeed(getMaxSpeed()/2);
+        setSpeed(getMaxSpeed());
+    }
 }

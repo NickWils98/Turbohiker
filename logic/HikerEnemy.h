@@ -14,7 +14,9 @@ public:
 
     void speedup(int, int) override;
     std::shared_ptr<Entity> shout(double, double, double) override;
-    tuple<double, double> update() override;
+    std::tuple<double, double> update() override;
+
+    void fixdebuff(double d) override;
 
 private:
     int move = 0;

@@ -51,7 +51,7 @@ bool Collider::checklaneswitch(std::shared_ptr<Entity> first, std::shared_ptr<En
     return true;
 }
 
-std::vector<double> Collider::CollisionDetection(std::shared_ptr<Entity> first, std::shared_ptr<Entity> other) {
+std::vector<double> Collider::CollisionDetection(std::shared_ptr<Entity> first, std::shared_ptr<Entity> other, double timer) {
 
     Entity::coordinats otherPosition = other->getPosition();
     Entity::coordinats otherHalfSize = other->GetHalfSize();
@@ -67,11 +67,16 @@ std::vector<double> Collider::CollisionDetection(std::shared_ptr<Entity> first, 
 
         firstret = intersectY * (first->getHeavynes()/(other->getHeavynes()+first->getHeavynes()));
         otherret = intersectY * (other->getHeavynes()/(other->getHeavynes()+first->getHeavynes()));
-        if(first->isGottrough()){
-            other->setSpeed(10);
+        if(first->isSlowdown() and !other->isGottrough()){
+            other->setDebuff(true);
         }
-        if(other->isGottrough()){
-            first->setSpeed(10);
+        if(other->isSlowdown() and !first->isGottrough()){
+            if(!first->isDebuff()) {
+                first->setMaxspeed(first->getMaxSpeed()/2);
+                first->setDebuff(true);
+                first->setDebufftimer(timer+5000000);
+
+            }
         }
         if(first->isGottrough()){
 

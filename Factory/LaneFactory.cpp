@@ -9,7 +9,7 @@ LaneFactory::LaneFactory(sf::RenderWindow& w, const sf::Color col,sf::View& v)
 }
 
 std::shared_ptr<Entity>  LaneFactory::createProp(std::tuple<double, double> size, std::tuple<double, double> position) {
-    Transformation *t = t->getInstance();
+    std::shared_ptr<Transformation> t = t->getInstance();
     std::tuple<int, int> s = t->logic_to_pixles(std::get<0>(size), std::get<1>(size));
     sf::Vector2f sfmlsize = sf::Vector2f(std::get<0>(s), std::get<1>(s));
 

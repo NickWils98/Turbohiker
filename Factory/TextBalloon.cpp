@@ -4,14 +4,14 @@
 
 #include "TextBalloon.h"
 
-TextBalloon::TextBalloon(sf::RenderWindow& w, shared_ptr<sf::Texture> &t, sf::View& v)
+TextBalloon::TextBalloon(sf::RenderWindow& w, std::shared_ptr<sf::Texture> &t, sf::View& v)
         : view(v), window(w){
 
     texture=t;
 }
 
 std::shared_ptr<Entity> TextBalloon::createProp(std::tuple<double, double> size, std::tuple<double, double> position) {
-    Transformation *t = t->getInstance();
+    std::shared_ptr<Transformation> t = t->getInstance();
     std::tuple<int, int> s = t->logic_to_pixles(std::get<0>(size), std::get<1>(size));
     sf::Vector2f sfmlsize = sf::Vector2f(std::get<0>(s),std::get<1>(s));
 

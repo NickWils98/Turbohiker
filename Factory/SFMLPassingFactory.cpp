@@ -3,14 +3,14 @@
 //
 
 #include "SFMLPassingFactory.h"
-SFMLPassingFactory::SFMLPassingFactory(sf::RenderWindow& w, shared_ptr<sf::Texture> &t, sf::View& v)
+SFMLPassingFactory::SFMLPassingFactory(sf::RenderWindow& w, std::shared_ptr<sf::Texture> &t, sf::View& v)
         : view(v), window(w){
 
     texture=t;
 }
 
 std::shared_ptr<Hiker> SFMLPassingFactory::createHiker(std::tuple<double, double> size, std::tuple<double, double> position) {
-    Transformation *t = t->getInstance();
+    std::shared_ptr<Transformation> t = t->getInstance();
     std::tuple<int, int> s = t->logic_to_pixles(std::get<0>(size), std::get<1>(size));
     sf::Vector2f sfmlsize = sf::Vector2f(std::get<0>(s),std::get<1>(s));
 
@@ -24,7 +24,9 @@ std::shared_ptr<Hiker> SFMLPassingFactory::createHiker(std::tuple<double, double
     player->setHeavynes(0);
     player->setGottrough(true);
     player->setSlowdown(true);
-    player->setSpeed(30);
+    player->setSpeed(70);
+    player->setMaxspeed(70);
+    player->setIsobstacle(true);
     return player;
 
 //    Transformation *t = t->getInstance();

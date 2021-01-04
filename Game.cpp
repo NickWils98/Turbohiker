@@ -30,28 +30,32 @@ Game::~Game() {
 
 void Game::run() {
 
+    std::clock_t  deltatime = std::clock();
     std::clock_t  startTime = std::clock();
     init();
     //Main loop of the game
     while (m_window.isOpen()) {
         //std::cout<<r->getintpercent()<<std::endl;
-
-        //Render
         std::clock_t  beginRound = startTime;
-        world->setTimer(beginRound);
+        startTime = std::clock();
+        deltaTime = startTime - beginRound;
+        if(deltaTime>1.0f/20.0f){
+            deltaTime= 1.0f/20.0f;
+        }
+        //Render
+
+        world->setTimer(beginRound, deltaTime);
         world->removeLock();
 //        world->removeObstacle();
 //        world->generateObstacle(factory, 50);
         world->removeBalloon();
 
-        startTime = std::clock();
         deltaTime = startTime - beginRound;
         std::vector<int> speed = getInput();
         double oldspeed = world->getplayerspeed();
         world->speedup(speed[0], speed[1]);
-        if(speed[2] == 1){
-            world->shout(0, 0, 0);
-        }
+        world->shout(speed[2], 0, 0);
+        world->fixdebuff(1);
         double oldy = world->getplayerposy();
         m_window.clear();
         world->update();
@@ -126,7 +130,7 @@ void Game::init() {
 
 
     world->addLane({playerfact, enemyfact}, lanefact, chance +4);
-    world->generateObstacle({passingfact, passingfact2}, 50);
+    world->generateObstacle({passingfact, passingfact2}, 60);
 
 
 
@@ -190,7 +194,7 @@ std::vector<int> Game::getInput() {
 double Game::moveView(double oldposy, double oldspeed) {
     double posy = world->getplayerposy();
 
-    if(view.getCenter().y==100 and posy>0){
+    if(view.getCenter().y==100 and posy>2){
         return 0;
     }
     double speed = world->getplayerspeed();
@@ -223,15 +227,15 @@ double Game::moveView(double oldposy, double oldspeed) {
         }
     }
 
-    if(speed<0){
-        if(beforhalf<newposy){
-            view.move(0, newposy-beforhalf);
-            double speedy = t->pixle_to_logic_y(newposy);
-            double newpospixley = t->pixle_to_logic_y(beforhalf);
-            double counting = speedy-newpospixley;
-            return counting;
-        }
-    }
+//    if(speed<0){
+//        if(beforhalf<newposy){
+//            view.move(0, newposy-beforhalf);
+//            double speedy = t->pixle_to_logic_y(newposy);
+//            double newpospixley = t->pixle_to_logic_y(beforhalf);
+//            double counting = speedy-newpospixley;
+//            return counting;
+//        }
+//    }
 
     return 0;
 

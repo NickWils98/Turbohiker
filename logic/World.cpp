@@ -22,16 +22,16 @@ void World::render() {
     }
 }
 
-tuple<double, double> World::update() {
+std::tuple<double, double> World::update() {
     for (int i = 0; i < entityList.size(); i++){
         auto obj = entityList[i];
-        tuple<double, double> changed = obj->update();
+        std::tuple<double, double> changed = obj->update();
         //double moved = Collision(i);
         coordinats pos = obj->getPosition();
-        Transformation *t = t->getInstance();
-        tuple<int, int> oldp = t->logic_to_pixles(0,0);
-        tuple<int, int> newp = t->logic_to_pixles(std::get<0>(changed)*lanelength, std::get<1>(changed));
-        tuple<int, int> updatep = make_tuple(std::get<0>(oldp)- std::get<0>(newp), std::get<1>(oldp)- std::get<1>(newp));
+        std::shared_ptr<Transformation> t = t->getInstance();
+        std::tuple<int, int> oldp = t->logic_to_pixles(0,0);
+        std::tuple<int, int> newp = t->logic_to_pixles(std::get<0>(changed)*lanelength, std::get<1>(changed));
+        std::tuple<int, int> updatep = std::make_tuple(std::get<0>(oldp)- std::get<0>(newp), std::get<1>(oldp)- std::get<1>(newp));
 
         bool tried = obj->updateVisuals(updatep);
         if(obj->isHasballoon()){
@@ -43,7 +43,7 @@ tuple<double, double> World::update() {
         }
 
     }
-    return make_tuple(0,0);
+    return std::make_tuple(0,0);
 }
 
 void World::add(std::shared_ptr<Entity> obj) {
@@ -58,6 +58,8 @@ void World::addLane(std::vector<std::shared_ptr<Factory>> f, std::shared_ptr<Fac
     RandomeNumber* r = RandomeNumber::getInstance();
     int chance = r->getintpercent();
     int ance = (chance*amount)/100.0;
+
+    lanes = amount-1;
 
 
     lanelength = extra;
@@ -103,21 +105,27 @@ void World::speedup(int speedv, int speedh) {
     speedh = speedupPlayer(speedh);
     //player->updatePlayerv(speedv);
     for(auto obj: entityList) {
-        obj->speedup(speedv, speedh);
+        if(obj!= player){
+            std::vector<int> speed = ai(obj);
+
+            obj->speedup(speed[0], speed[1]);
+        } else {
+            obj->speedup(speedv, speedh);
+        }
     }
 }
 
 
+
 int World::speedupPlayer(int speedh) {
     int usedspeedh = 0;
+    Collider c = Collider();
     if(speedh != 0){
         bool left = (speedh<0) ? true : false;
         bool isgoed = true;
         for(auto entity : entityList) {
             if (entity != player) {
-                Collider c = Collider();
                 if (not c.checklaneswitch(player, entity, left)) {
-
                     isgoed = false;
                 }
                 if (c.CheckCollision(player, entity)) {
@@ -126,11 +134,11 @@ int World::speedupPlayer(int speedh) {
 
             }
         }
-        if(not locked and isgoed) {
+        if(not player->isLocked() and isgoed) {
             usedspeedh = speedh;
             //player->updatePlayerh(speedh);
-            lock = timer + 25000;
-            locked = true;
+            player->setLock(timer + 200000);
+            player->setLocked(true);
         } else{
             //std::cout<<"     "<<lock<<"    "<<timer<<std::endl;
         }
@@ -157,14 +165,21 @@ void World::movetoview(double moved) {
     }
 }
 
-void World::setTimer(double timer) {
+void World::setTimer(double timer, double delta) {
     World::timer = timer;
+    for(auto e : entityList){
+        e->setOldtimer(delta);
+        e->setTimer(timer);
+    }
 }
 
 void World::removeLock() {
-    if(lock<timer){
-        locked=false;
+    for(auto e : entityList){
+        if(e->isLocked() and e->getLock() <timer){
+             e->setLocked(false);
+        }
     }
+
 }
 
 double World::Collision(int i) {
@@ -183,20 +198,24 @@ double World::Collision(int i) {
         for (int i = 0; i < entityList.size() - 1; i++) {
             for (int j = i; j < entityList.size(); j++) {
                 if (i != j) {
-                    Collider col = Collider();
-                    moved = col.CollisionDetection(entityList[i],entityList[j]);
-                    if(moved[0]!=0 or moved[1] != 0){
-                        Transformation *t = t->getInstance();
-                        tuple<int, int> oldp = t->logic_to_pixles(0,0);
-                        tuple<int, int> newp = t->logic_to_pixles(0, -moved[0]);
-                        tuple<int, int> updatep = make_tuple(std::get<0>(oldp)- std::get<0>(newp), std::get<1>(oldp)- std::get<1>(newp));
-                        tuple<int, int> newp2 = t->logic_to_pixles(0, -moved[1]);
-                        tuple<int, int> updatep2 = make_tuple(std::get<0>(oldp)- std::get<0>(newp2), std::get<1>(oldp)- std::get<1>(newp2));
-                        //tuple<int, int> updatepNeg = make_tuple(- std::get<0>(updatep), - std::get<1>(updatep));
+                    if(!entityList[i]->isIsobstacle() or !entityList[j]->isIsobstacle()) {
+                        Collider col = Collider();
+                        moved = col.CollisionDetection(entityList[i], entityList[j], timer);
+                        if (moved[0] != 0 or moved[1] != 0) {
+                            std::shared_ptr<Transformation> t = t->getInstance();
+                            std::tuple<int, int> oldp = t->logic_to_pixles(0, 0);
+                            std::tuple<int, int> newp = t->logic_to_pixles(0, -moved[0]);
+                            std::tuple<int, int> updatep = std::make_tuple(std::get<0>(oldp) - std::get<0>(newp),
+                                                                 std::get<1>(oldp) - std::get<1>(newp));
+                            std::tuple<int, int> newp2 = t->logic_to_pixles(0, -moved[1]);
+                            std::tuple<int, int> updatep2 = std::make_tuple(std::get<0>(oldp) - std::get<0>(newp2),
+                                                                  std::get<1>(oldp) - std::get<1>(newp2));
+                            //tuple<int, int> updatepNeg = make_tuple(- std::get<0>(updatep), - std::get<1>(updatep));
 
 
-                        entityList[i]->updateVisuals(updatep);
-                        entityList[j]->updateVisuals(updatep2);
+                            entityList[i]->updateVisuals(updatep);
+                            entityList[j]->updateVisuals(updatep2);
+                        }
                     }
                 }
             }
@@ -320,12 +339,27 @@ void World::removeObstacle() {
 }
 
 std::shared_ptr<Entity> World::shout(double i, double j, double z) {
-    std::shared_ptr<Entity> e = player->shout(timer, firstlane, lanelength);
-    if (e != nullptr){
-        entityList.push_back(e);
-        checkObstacleInLane(player);
+    if(i == 1) {
+        std::shared_ptr<Entity> o = player->shout(timer, firstlane, lanelength);
+        if (o != nullptr) {
+            entityList.push_back(o);
+            ObstacleInLane(player, 5);
 
+        }
     }
+    for(auto e: entityList){
+        if(e->isWannashout()) {
+            e->setWannashout(false);
+
+            std::shared_ptr<Entity> obj = e->shout(timer, firstlane, lanelength);
+            if (obj != nullptr) {
+                entityList.push_back(obj);
+                ObstacleInLane(e, 5);
+
+            }
+        }
+    }
+
 
 }
 
@@ -347,19 +381,74 @@ void World::removeBalloon() {
     }
 }
 
-shared_ptr<Entity> World::remove_shout(double timer) {
+std::shared_ptr<Entity> World::remove_shout(double timer) {
     return std::shared_ptr<Entity>();
 }
 
-bool World::checkObstacleInLane(std::shared_ptr<Entity> e) {
-    RandomeNumber* r = r->getInstance();
+void World::ObstacleInLane(std::shared_ptr<Entity> e, int distance) {
     for(auto o : obstacles){
         if(e->getMylane() == o->getMylane()){
-            if(e->getPosition().y>o->getPosition().y and e->getPosition().y-2.5<o->getPosition().y){
-                o->shout(0, 0, 0);
+            if(e->getPosition().y>o->getPosition().y and e->getPosition().y-distance<o->getPosition().y){
+                o->shout(timer, 0, 0);
             }
         }
 
     }
+}
+
+void World::fixdebuff(double b) {
+    for(auto e : entityList){
+        if(e->isDebuff()){
+            e->fixdebuff(timer);
+        }
+    }
+}
+
+std::vector<int> World::ai(std::shared_ptr<Entity> e) {
+    int v = 0;
+    int h = 0;
+
+    if(CheckClosesdObstacleInLane(e, 3)){
+        v =1;
+    }
+    std::vector<bool> horizontal = checklaneswitch(e);
+    if (!horizontal[0] and !horizontal[1]){
+        h = 3;
+    } else if (horizontal[0]){
+        h=2;
+    } else if (horizontal[1]){
+        h=1;
+    }
+    return {v, h};
+
+}
+
+bool World::CheckClosesdObstacleInLane(std::shared_ptr<Entity> e, int distance) {
+    for(auto o : obstacles){
+        if(e->getMylane() == o->getMylane()){
+            if(e->getPosition().y>o->getPosition().y and e->getPosition().y-distance<o->getPosition().y){
+                return true;
+            }
+        }
+
+    }
+
     return false;
+}
+std::vector<bool> World::checklaneswitch(std::shared_ptr<Entity> e){
+    bool isgoedleft = true;
+    bool isgoedright = true;
+    Collider c = Collider();
+
+    for(auto entity : entityList) {
+        if (entity != e) {
+            if (not c.checklaneswitch(e, entity, true) or e->getMylane()==0) {
+                isgoedleft = false;
+            }
+            if (not c.checklaneswitch(e, entity, false)or e->getMylane()==lanes) {
+                isgoedright = false;
+            }
+        }
+    }
+    return {isgoedleft, isgoedright};
 }

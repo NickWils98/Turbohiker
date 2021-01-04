@@ -11,7 +11,7 @@
 
 class TextBalloon : public FactoryLines {
 public:
-    TextBalloon(sf::RenderWindow& w, shared_ptr<sf::Texture> &t, sf::View& v);
+    TextBalloon(sf::RenderWindow& w, std::shared_ptr<sf::Texture> &t, sf::View& v);
     std::shared_ptr<Entity>  createProp(std::tuple<double, double> size, std::tuple<double, double> position) override;
 
 

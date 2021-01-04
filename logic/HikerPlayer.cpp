@@ -6,23 +6,24 @@
 
 void HikerPlayer::speedup(int speedup, int speedh) {
     int currentSpeed = getSpeed();
-
+    double x = (getOldtimer())*20;
+    std::cout<<x<<std::endl;
     if(speedup==0){
         if(currentSpeed>0){
 
-            currentSpeed -= 1;
+            currentSpeed -= 1*(getOldtimer()*20);
         } else if(currentSpeed<0){
 
-            currentSpeed += 1;
+            currentSpeed += 1*(getOldtimer()*20);
         }
     }
     if(speedup>0 and 0 >currentSpeed){
-        currentSpeed +=2;
+        currentSpeed +=2*(getOldtimer()*20);
     }
     if(speedup<0 and 0<currentSpeed){
-        currentSpeed -=2;
+        currentSpeed -=2*(getOldtimer()*20);
     }
-    currentSpeed+= speedup;
+    currentSpeed+= speedup*(getOldtimer()*20);
     setSpeed(currentSpeed);
     setSpeedh(speedh);
 }
@@ -38,15 +39,15 @@ std::shared_ptr<Entity> HikerPlayer::shout(double timer, double start, double le
 //    }
     if(!isShoutlock()){
         setShoutlock(true);
-        std::shared_ptr<Entity> b = getFact()->createProp(tuple<double, double>(getSize().x-4, getSize().y-3), tuple<double, double>(start+length*getMylane(), getPosition().y-0.5));
+        std::shared_ptr<Entity> b = getFact()->createProp(std::tuple<double, double>(getSize().x-4, getSize().y-3), std::tuple<double, double>(start+length*getMylane(), getPosition().y-0.5));
         setBalloon(b);
-        setLockedtimer(timer+1000000);
+        setLockedtimer(timer+2000000);
         setHasballoon(true);
         return b;
     }
     return nullptr;
 }
-tuple<double, double> HikerPlayer::update() {
+std::tuple<double, double> HikerPlayer::update() {
     if(getSpeedh()>0){
         if(getMylane()<getLanes()){
             setMylane(getMylane()+1);
@@ -64,9 +65,20 @@ tuple<double, double> HikerPlayer::update() {
     }
     coordinats pos = getPosition();
     double zer = pos.y-0.01*getSpeed();
-    pos.y -= 0.0005*getSpeed();
+    pos.y -= 0.0005*getSpeed()*(getOldtimer()*20);
+    if(pos.y>3){
+        pos.y = 3;
+    }
     setPosition(pos);
-    tuple<double, double> toreturn = make_tuple(-move, 0.005*getSpeed());
+
+    std::tuple<double, double> toreturn = std::make_tuple(-move, 0.005*getSpeed()*(getOldtimer()*20));
     move = 0;
     return toreturn;
+}
+
+void HikerPlayer::fixdebuff(double timer) {
+    if(getDebufftimer()<timer){
+        setDebuff(false);
+        setMaxspeed(getMaxSpeed()*2);
+    }
 }

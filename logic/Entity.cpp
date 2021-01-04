@@ -21,20 +21,26 @@ void Entity::setSize(double x, double y) {
     size.y = y;
 }
 
-int Entity::getSpeed() const {
+double Entity::getSpeed() const {
     return speedv;
 }
 
-void Entity::setSpeed(int s) {
+void Entity::setSpeed(double s) {
     if(maxspeed>=s and -maxspeed/2<=s ){
         speedv = s;
+    } else{
+        if( maxspeed<s){
+            speedv = maxspeed;
+        } else{
+            speedv = -maxspeed/2;
+        }
     }
 }
 void Entity::setPosition(const Entity::coordinats &position) {
     Entity::position = position;
 }
 
-int Entity::getMaxSpeed() const {
+double Entity::getMaxSpeed() const {
     return maxspeed;
 }
 
@@ -94,10 +100,79 @@ void Entity::setHasballoon(bool hasballoon) {
     Entity::hasballoon = hasballoon;
 }
 
-const shared_ptr<Entity> &Entity::getBalloon() const {
+const std::shared_ptr<Entity> &Entity::getBalloon() const {
     return balloon;
 }
 
-void Entity::setBalloon(const shared_ptr<Entity> &balloon) {
+void Entity::setBalloon(const std::shared_ptr<Entity> &balloon) {
     Entity::balloon = balloon;
 }
+
+bool Entity::isDebuff() const {
+    return debuff;
+}
+
+void Entity::setDebuff(bool debuff) {
+    Entity::debuff = debuff;
+}
+
+double Entity::getDebufftimer() const {
+    return debufftimer;
+}
+
+void Entity::setDebufftimer(double debufftimer) {
+    Entity::debufftimer = debufftimer;
+}
+
+void Entity::setMaxspeed(double maxspeed) {
+    Entity::maxspeed = maxspeed;
+}
+
+double Entity::getLock() const {
+    return lock;
+}
+
+void Entity::setLock(double lock) {
+    Entity::lock = lock;
+}
+
+bool Entity::isLocked() const {
+    return locked;
+}
+
+void Entity::setLocked(bool locked) {
+    Entity::locked = locked;
+}
+
+bool Entity::isWannashout() const {
+    return wannashout;
+}
+
+void Entity::setWannashout(bool wannashout) {
+    Entity::wannashout = wannashout;
+}
+
+double Entity::getTimer() const {
+    return timer;
+}
+
+void Entity::setTimer(double timer) {
+    Entity::timer = timer;
+}
+
+bool Entity::isIsobstacle() const {
+    return isobstacle;
+}
+
+void Entity::setIsobstacle(bool isobstacle) {
+    Entity::isobstacle = isobstacle;
+}
+
+double Entity::getOldtimer() const {
+    return oldtimer;
+}
+
+void Entity::setOldtimer(double oldtimer) {
+    Entity::oldtimer = oldtimer;
+}
+

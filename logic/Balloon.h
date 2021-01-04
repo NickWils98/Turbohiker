@@ -15,7 +15,7 @@ public:
 
     virtual void render() = 0;
 
-    tuple<double, double> update() override;
+    std::tuple<double, double> update() override;
 
     virtual bool updateVisuals(std::tuple<int, int> s) = 0;
 
@@ -23,9 +23,11 @@ public:
 
     void speedup(int i, int i1) override;
 
-    shared_ptr<Entity> shout(double d, double x, double e) override{return nullptr;};
+    std::shared_ptr<Entity> shout(double d, double x, double e) override{return nullptr;};
 
-    shared_ptr<Entity> remove_shout(double timer) override;
+    std::shared_ptr<Entity> remove_shout(double timer) override;
+
+    void fixdebuff(double d) override;
 };
 
 

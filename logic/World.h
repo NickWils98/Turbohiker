@@ -23,7 +23,7 @@ public:
     virtual ~World() = default;
     void remove(std::shared_ptr<Entity> toDel);
     void render();
-    tuple<double, double> update() override;
+    std::tuple<double, double> update() override;
     void add(std::shared_ptr<Entity> obj);
     void addLane(std::vector<std::shared_ptr<Factory>> f, std::shared_ptr<FactoryLines>l, int amount);
     bool updateVisuals(std::tuple<int, int> s)override{};
@@ -36,7 +36,7 @@ public:
 
     double gethelper(){return player->helpcout();};
 
-    void setTimer(double timer);
+    void setTimer(double timer, double t);
 
     void removeLock();
     double Collision(int);
@@ -47,10 +47,12 @@ public:
     std::shared_ptr<Entity> shout(double, double, double) override;
     void removeBalloon();
 
-    shared_ptr<Entity> remove_shout(double timer) override;
+    std::shared_ptr<Entity> remove_shout(double timer) override;
 
+    void fixdebuff(double) override;
 
 private:
+    std::vector<int> ai(std::shared_ptr<Entity> e);
     //List of all objects of the world
     std::vector<std::shared_ptr<Entity>> entityList;
     int lanes = 0;
@@ -59,11 +61,12 @@ private:
     double lanelength =0;
     double firstlane =0;
     double timer;
-    double lock=0;
-    bool locked = false;
     std::vector<std::shared_ptr<Entity>> obstacles = {};
-    int tracklength = 2666;
-    bool checkObstacleInLane(std::shared_ptr<Entity> e);
+    int tracklength = 300;
+    void ObstacleInLane(std::shared_ptr<Entity> e, int);
+    bool CheckClosesdObstacleInLane(std::shared_ptr<Entity> e, int);
+
+    std::vector<bool> checklaneswitch(std::shared_ptr<Entity> e);
 
 
 };

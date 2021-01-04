@@ -35,7 +35,7 @@ public:
 
     void DrawBackground(double);
 private:
-    Transformation *t;
+    std::shared_ptr<Transformation> t;
     sf::RenderWindow m_window;
     sf::View view;
     std::shared_ptr<World> world;

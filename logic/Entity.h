@@ -21,9 +21,12 @@ public:
     void setPosition(double x, double y);
     void setPosition(const coordinats &position);
     void setSize(double x, double y);
-    int getSpeed() const;
-    int getMaxSpeed() const;
-    void setSpeed(int speed);
+    double getSpeed() const;
+    double getMaxSpeed() const;
+
+    void setMaxspeed(double maxspeed);
+
+    void setSpeed(double speed);
     int getMylane() const;
     void setMylane(int mylane);
 
@@ -38,7 +41,7 @@ public:
     virtual ~Entity() = default;
 
     virtual void render() = 0;
-    virtual tuple<double, double> update() = 0;
+    virtual std::tuple<double, double> update() = 0;
     virtual bool updateVisuals(std::tuple<int, int> s) = 0;
     virtual void movetoview(double) = 0;
     virtual void speedup(int, int) = 0;
@@ -60,24 +63,66 @@ public:
 
     void setHasballoon(bool hasballoon);
 
-    const shared_ptr<Entity> &getBalloon() const;
+    const std::shared_ptr<Entity> &getBalloon() const;
     virtual std::shared_ptr<Entity> remove_shout(double timer) =0;
 
 
-    void setBalloon(const shared_ptr<Entity> &balloon);
+    void setBalloon(const std::shared_ptr<Entity> &balloon);
+
+    bool isDebuff() const;
+
+    void setDebuff(bool debuff);
+
+    virtual void fixdebuff(double) = 0;
+
+    double getDebufftimer() const;
+
+    void setDebufftimer(double debufftimer);
+
+    double getLock() const;
+
+    void setLock(double lock);
+
+    bool isLocked() const;
+
+    void setLocked(bool locked);
+
+    bool isWannashout() const;
+
+    void setWannashout(bool wannashout);
+
+    double getTimer() const;
+
+    void setTimer(double timer);
+
+    bool isIsobstacle() const;
+
+    void setIsobstacle(bool isobstacle);
+
+    double getOldtimer() const;
+
+    void setOldtimer(double oldtimer);
 
 private:
     coordinats position;
     coordinats size;
-    int maxspeed = 120;
-    int speedv = 0;
+    double maxspeed = 120;
+    double speedv = 0;
     int speedh = 0;
+    double timer = 0;
+    double oldtimer = 0;
 
     double heavynes = 0;
     bool gottrough = false;
     bool slowdown = false;
     bool hasballoon = false;
+    bool debuff = false;
+    double debufftimer = 0;
+    double lock=0;
+    bool locked = false;
     std::shared_ptr<Entity> balloon= nullptr;
+    bool wannashout = false;
+    bool isobstacle = false;
 public:
     int getSpeedh() const;
 

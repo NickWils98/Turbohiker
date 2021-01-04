@@ -9,10 +9,10 @@
 
 class PlayerFactory : public SFMLFactory {
 public:
-    PlayerFactory(sf::RenderWindow& w, shared_ptr<sf::Texture> &t, sf::View& v);
+    PlayerFactory(sf::RenderWindow& w, std::shared_ptr<sf::Texture> &t, sf::View& v);
     std::shared_ptr<Hiker>  createHiker(std::tuple<double, double> size, std::tuple<double, double> position) override;
 
-    void setFact(const shared_ptr<FactoryLines> &fact);
+    void setFact(const std::shared_ptr<FactoryLines> &fact);
 
 private:
 

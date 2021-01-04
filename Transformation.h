@@ -7,24 +7,25 @@
 
 #include <iostream>
 #include <tuple>
-using namespace std;
+#include <memory>
 class Transformation {
-    static Transformation *instance;
+    static std::shared_ptr<Transformation> instance;
     int window_x = 100;
     int window_y=100;
     // Private constructor so that no objects can be created.
     Transformation()=default;
 
 public:
-    static Transformation *getInstance() {
+    static std::shared_ptr<Transformation> getInstance() {
         if (!instance)
-            instance = new Transformation();
+            instance.reset(new Transformation());
+//            instance = std::make_shared<Transformation>();
         return instance;
     }
 
-    tuple<int, int> logic_to_pixles(double x, double y) const;
+    std::tuple<int, int> logic_to_pixles(double x, double y) const;
 
-    tuple<double, double> pixle_to_logic(double x, double y);
+    std::tuple<double, double> pixle_to_logic(double x, double y);
 
     int logic_to_pixle_y(double y) const;
 

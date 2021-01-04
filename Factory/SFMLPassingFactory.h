@@ -11,7 +11,7 @@
 
 class SFMLPassingFactory : public SFMLFactory {
 public:
-    SFMLPassingFactory(sf::RenderWindow& w, shared_ptr<sf::Texture> &t, sf::View& v);
+    SFMLPassingFactory(sf::RenderWindow& w, std::shared_ptr<sf::Texture> &t, sf::View& v);
     std::shared_ptr<Hiker>  createHiker(std::tuple<double, double> size, std::tuple<double, double> position) override;
 
 

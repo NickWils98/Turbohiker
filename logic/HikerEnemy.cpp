@@ -6,18 +6,72 @@
 
 HikerEnemy::HikerEnemy() {}
 
-void HikerEnemy::speedup(int speedup, int h) {
-    speedup = 1;
+void HikerEnemy::speedup(int speedv, int speedh) {
+//  speedv 1 if obstacle in front else 0
+//  speedh 3 if obstacle left and right, 2 if obstacle left, 1 if obstacle right else 0
+    RandomeNumber* r = r->getInstance();
+    int precent = r->getintpercent();
+    int setspeedh = 0;
+    if(speedv==1){
+        if(speedh == 3){
+            setWannashout(true);
+        } else if(speedh == 2){
+            if(precent>99){
+                setWannashout(true);
+
+            } else {
+                if(isLocked()) {
+                    setWannashout(true);
+                } else{
+                    //player->updatePlayerh(speedh);
+                    setLock(getTimer() + 600000);
+                    setLocked(true);
+                    setspeedh = -1;
+                }
+            }
+
+        } else if(speedh == 1){
+            if(precent>99){
+                setWannashout(true);
+            } else {
+                if(isLocked()) {
+                    setWannashout(true);
+                } else{
+                    //player->updatePlayerh(speedh);
+                    setLock(getTimer() + 600000);
+                    setLocked(true);
+                    setspeedh = 1;
+                }
+            }
+        } else{
+            int x = (precent<=40) ? 1 : -1;
+            if(precent>99){
+                setWannashout(true);
+
+            } else {
+                if(isLocked()) {
+                    setWannashout(true);
+                } else{
+                    //player->updatePlayerh(speedh);
+                    setLock(getTimer() + 600000);
+                    setLocked(true);
+                    setspeedh = x;
+                }
+            }
+        }
+    }
+    int speedup = 1;
     int currentSpeed = getSpeed();
 
     if(speedup>0 and 0 >currentSpeed){
-        currentSpeed +=2;
+        currentSpeed +=2*(getOldtimer()*20);
     }
     if(speedup<0 and 0<currentSpeed){
-        currentSpeed -=2;
+        currentSpeed -=2*(getOldtimer()*20);
     }
-    currentSpeed+= speedup;
+    currentSpeed+= speedup*(getOldtimer()*20);
     setSpeed(currentSpeed);
+    setSpeedh(setspeedh);
 }
 
 std::shared_ptr<Entity> HikerEnemy::shout(double timer, double start, double length) {
@@ -27,15 +81,15 @@ std::shared_ptr<Entity> HikerEnemy::shout(double timer, double start, double len
 //    }
     if(!isShoutlock()){
         setShoutlock(true);
-        std::shared_ptr<Entity> b = getFact()->createProp(tuple<double, double>(getSize().x-4, getSize().y-3), tuple<double, double>(start+length*getMylane(), getPosition().y-0.5));
+        std::shared_ptr<Entity> b = getFact()->createProp(std::tuple<double, double>(getSize().x-4, getSize().y-3), std::tuple<double, double>(start+length*getMylane(), getPosition().y-0.5));
         setBalloon(b);
-        setLockedtimer(timer+1000000);
+        setLockedtimer(timer+2000000);
         setHasballoon(true);
         return b;
     }
     return nullptr;
 }
-tuple<double, double> HikerEnemy::update() {
+std::tuple<double, double> HikerEnemy::update() {
     if(getSpeedh()>0){
         if(getMylane()<getLanes()){
             setMylane(getMylane()+1);
@@ -53,9 +107,17 @@ tuple<double, double> HikerEnemy::update() {
     }
     coordinats pos = getPosition();
     double zer = pos.y-0.01*getSpeed();
-    pos.y -= 0.0005*getSpeed();
+    pos.y -= 0.0005*getSpeed()*(getOldtimer()*20);
     setPosition(pos);
-    tuple<double, double> toreturn = make_tuple(-move, 0.005*getSpeed());
+    std::tuple<double, double> toreturn = std::make_tuple(-move, 0.005*getSpeed()*(getOldtimer()*20));
     move = 0;
     return toreturn;
+}
+
+void HikerEnemy::fixdebuff(double timer) {
+    if(getDebufftimer()<timer){
+        setDebuff(false);
+        setMaxspeed(getMaxSpeed()*2);
+    }
+
 }
