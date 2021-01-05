@@ -15,7 +15,7 @@ std::shared_ptr<Entity> HikerPassing::shout(double timer, double start, double l
 //        shoutlock = false;
 //
 //    }
-    RandomeNumber* r = r->getInstance();
+    std::shared_ptr<RandomeNumber> r = r->getInstance();
     int percent = r->getintpercent();
     if(isHorizontal()){
         if(percent<=25){

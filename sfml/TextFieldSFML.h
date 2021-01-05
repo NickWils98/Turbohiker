@@ -10,13 +10,17 @@
 
 class TextFieldSFML : public Textfield {
 public:
-    TextFieldSFML(sf::RenderWindow& window, sf::Color col, sf::Vector2f size, sf::Vector2f position, std::string s, const std::shared_ptr<sf::Font>& f);
+    TextFieldSFML(sf::RenderWindow& window, sf::Color col, sf::Vector2f size, sf::Vector2f position, std::string s, const std::shared_ptr<sf::Font>& f, bool);
     ~TextFieldSFML();
 
     void render();
     void movetoview(double) override;
 
     std::shared_ptr<Entity> remove_shout(double timer) override;
+
+    bool isToupdate() const;
+
+    void setToupdate(bool toupdate);
 
 private:
     sf::Text body;

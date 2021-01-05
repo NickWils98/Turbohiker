@@ -16,6 +16,8 @@ HikerSFML::HikerSFML(sf::RenderWindow& w, const std::shared_ptr<sf::Texture>& te
 
 
 void HikerSFML::render() {
+
+    auto y = view.getCenter();
     window.draw(body);
 }
 

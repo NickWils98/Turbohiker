@@ -9,7 +9,7 @@ HikerEnemy::HikerEnemy() {}
 void HikerEnemy::speedup(int speedv, int speedh) {
 //  speedv 1 if obstacle in front else 0
 //  speedh 3 if obstacle left and right, 2 if obstacle left, 1 if obstacle right else 0
-    RandomeNumber* r = r->getInstance();
+    std::shared_ptr<RandomeNumber>r = r->getInstance();
     int precent = r->getintpercent();
     int setspeedh = 0;
     if(speedv==1){

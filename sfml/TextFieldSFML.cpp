@@ -4,7 +4,7 @@
 
 #include "TextFieldSFML.h"
 
-TextFieldSFML::TextFieldSFML(sf::RenderWindow& w, sf::Color col, sf::Vector2f size, sf::Vector2f position, std::string s, const std::shared_ptr<sf::Font>& f)
+TextFieldSFML::TextFieldSFML(sf::RenderWindow& w, sf::Color col, sf::Vector2f size, sf::Vector2f position, std::string s, const std::shared_ptr<sf::Font>& f, bool u)
         : window(w){
 //    sf::String se = "Text";
     font = f;
@@ -15,6 +15,7 @@ TextFieldSFML::TextFieldSFML(sf::RenderWindow& w, sf::Color col, sf::Vector2f si
 ////    body.setSize(size);
     body.setFillColor(col);
     body.setPosition(position);
+    toupdate = u;
 //    text =
 //    body.setOrigin(size/2.0f);
 }
@@ -25,7 +26,11 @@ TextFieldSFML::~TextFieldSFML() {
 
 
 void TextFieldSFML::render() {
-    body.setString(text+getScoring());
+    if(toupdate) {
+        body.setString(text + getScoring());
+    }
+    auto x = window.getPosition();
+    auto z = body.getPosition();
     window.draw(body);
 }
 
@@ -42,4 +47,12 @@ void TextFieldSFML::movetoview(double moved) {
 
 std::shared_ptr<Entity> TextFieldSFML::remove_shout(double timer) {
     return std::shared_ptr<Entity>();
+}
+
+bool TextFieldSFML::isToupdate() const {
+    return toupdate;
+}
+
+void TextFieldSFML::setToupdate(bool toupdate) {
+    TextFieldSFML::toupdate = toupdate;
 }

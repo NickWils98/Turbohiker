@@ -58,7 +58,12 @@ public:
 
     const std::shared_ptr<Hiker> &getPlayer() const;
 
+    int getFinishing() const;
+
+    int getScore1() const;
+
 private:
+    int score = 0;
     int finishing = 0;
     std::vector<int> ai(std::shared_ptr<Entity> e);
     //List of all objects of the world

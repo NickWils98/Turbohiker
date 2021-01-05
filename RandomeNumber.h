@@ -7,12 +7,13 @@
 #include <random>
 #include<iostream>
 #include<stdlib.h>
+#include <memory>
 
 class RandomeNumber {
     std::random_device rd;
     std::mt19937 gen;
     std::uniform_int_distribution<> distrib;
-    static RandomeNumber *instance;
+    static std::shared_ptr<RandomeNumber> instance;
 
     // Private constructor so that no objects can be created.
     RandomeNumber(){
@@ -27,9 +28,11 @@ class RandomeNumber {
     };
 
 public:
-    static RandomeNumber *getInstance() {
-        if (!instance)
-            instance = new RandomeNumber();
+    static std::shared_ptr<RandomeNumber> getInstance() {
+        if (!instance) {
+            instance.reset(new RandomeNumber());
+        }
+//            instance = std::make_shared<Transformation>();
         return instance;
     }
     int getintpercent(){return distrib(gen);};

@@ -12,6 +12,7 @@
 #include "Factory/SFMLPassingFactory.h"
 #include "Factory/TextBalloon.h"
 #include "Factory/ScorFactory.h"
+#include "Factory/EndlineFactory.h"
 
 Game::Game()
         :   m_window    (sf::VideoMode(1088, 600), "Turbohiker",  sf::Style::Close | sf::Style::Resize),
@@ -23,7 +24,7 @@ Game::Game()
     t = Transformation::getInstance();
     t->changeWindow(380, 600);
 
-    double d = t->pixle_to_logic_y(-8350);
+    double d = t->pixle_to_logic_y(-8000);
     world->setTracklength(-d);
 
 }
@@ -32,14 +33,15 @@ Game::~Game() {
 
 }
 
-void Game::run() {
+bool Game::run() {
 
     std::clock_t  deltatime = std::clock();
     std::clock_t  startTime = std::clock();
     init();
     //Main loop of the game
+    int finished = 0;
+    int score = 0;
     while (m_window.isOpen()) {
-
         double d = t->pixle_to_logic_y(view.getCenter().y);
         world->setVieuw(-d);
         //std::cout<<r->getintpercent()<<std::endl;
@@ -77,6 +79,10 @@ void Game::run() {
         world->removeEnd();
         std::shared_ptr<Entity> test = world->getPlayer();
         if(test == nullptr){
+            finished = world->getFinishing();
+            score = world->getScore1();
+            scores.push_back(score);
+            writeHighscore();
             break;
         }
         world->Collision(1);
@@ -90,11 +96,63 @@ void Game::run() {
         //Handle window events
         handleEvent();
     }
+    if(m_window.isOpen()) {
+        desperate(finished + 1, score);
+    }
+    return goagain;
+
+}
+void Game::desperate(int finished, int player) {
+
+    view.setCenter(300,300);
+    sf::Text victorytext;
+    sf::Font f;
+    std::string printing = "You finnished:\n"+std::to_string(finished) + " / " +std::to_string(playercount)+"\n";
+    printing += "With a score of:\n"+std::to_string(player) + "\n";
+    printing += "To restart the game:\n Press 'R'";
+    victorytext.setString(printing);
+    victorytext.setCharacterSize( 35);
+//    body.setSize(size);
+    victorytext.setFillColor(sf::Color::Black);
+    victorytext.setPosition(0,100);
+    if(!f.loadFromFile("../Hardigan.otf")){
+        std::cout<<"error loading file"<<std::endl;
+        system("pause");
+    }
+    m_window.setView(view);
+    victorytext.setFont(f);
+
+    sort(scores.begin(), scores.end());
+    std::reverse(scores.begin(), scores.end());
+
+    std::string higscoretext = "Highscores:\n";
+
+    int y=0;
+    for(auto score : scores){
+        y++;
+        if(y==10){
+            break;
+        }
+        higscoretext+= std::to_string(score)+"\n";
+    }
+    sf::Text highscoretext;
+    highscoretext.setString(higscoretext);
+    highscoretext.setFillColor(sf::Color::White);
+    highscoretext.setPosition(600,100);
+    highscoretext.setFont(f);
+    highscoretext.setCharacterSize( 35);
     while(m_window.isOpen()){
-        std::cout<<"done";
+        DrawBackground(0);
+        m_window.draw(victorytext);
+        m_window.draw(highscoretext);
+        m_window.display();
+        handleEvent();
+        if(restart()){
+            goagain = true;
+            break;
+        }
     }
 }
-
 
 void Game::handleEvent() {
     sf::Event evnt;
@@ -115,6 +173,7 @@ void Game::handleEvent() {
 
 void Game::init() {
 /*ini graphics TODO:move to world*/
+    getHighscores();
     std::shared_ptr<sf::Texture> texb = std::make_shared<sf::Texture>();
     texb->loadFromFile("./../whaaagh.png");
     textures.push_back(texb);
@@ -140,27 +199,44 @@ void Game::init() {
     std::shared_ptr<sf::Texture> passingtex2 = std::make_shared<sf::Texture>();
     passingtex2->loadFromFile("./../rat2.png");
     textures.push_back(passingtex2);
+
+
     std::shared_ptr<sf::Font> f = std::make_shared<sf::Font>();
     if(!f->loadFromFile("../Hardigan.otf")){
         std::cout<<"error loading file"<<std::endl;
         system("pause");
     }
     fonts.push_back(f);
-    std::shared_ptr<FactoryLines> textfact = std::make_shared<ScorFactory>(m_window, sf::Color::White, view, "Score:\n", f);
+    std::shared_ptr<FactoryLines> textfact = std::make_shared<ScorFactory>(m_window, sf::Color::White, view, "Score:\n", f, true);
+
+
+    std::string higscoretext = "Highscores:\n";
+    int y=0;
+    for(auto score : scores){
+        y++;
+        if(y==10){
+            break;
+        }
+        higscoretext+= std::to_string(score)+"\n";
+    }
+    std::shared_ptr<FactoryLines> textfact2 = std::make_shared<ScorFactory>(m_window, sf::Color::White, view, higscoretext, f, false);
+
 
     std::shared_ptr<SFMLFactory> passingfact = std::make_shared<SFMLWandererFactory>(m_window, passingtex, view);
     std::shared_ptr<SFMLFactory> passingfact2 = std::make_shared<SFMLPassingFactory>(m_window, passingtex2, view);
 
     std::shared_ptr<LaneFactory> lanefact = std::make_shared<LaneFactory>(LaneFactory(m_window, sf::Color::White, view));
+    std::shared_ptr<EndlineFactory> lanefact2 = std::make_shared<EndlineFactory>(EndlineFactory(m_window, sf::Color::White, view));
 
     int chance = r->getintpercent();
     chance = (chance*3) /100.0;
+    playercount = chance +4;
 
 
 
 
-    world->addLane({playerfact, enemyfact}, {lanefact, textfact}, chance +4);
-    world->generateObstacle({passingfact, passingfact2}, 10);
+    world->addLane({playerfact, enemyfact}, {lanefact, lanefact2, textfact, textfact2}, chance +4);
+    world->generateObstacle({passingfact, passingfact2}, 20);
 
 
 
@@ -273,3 +349,58 @@ double Game::moveView(double oldposy, double oldspeed) {
 
 
 }
+
+bool Game::restart() {
+    return sf::Keyboard::isKeyPressed(sf::Keyboard::R);
+}
+
+void Game::writeHighscore( ) {
+//    std::string filename("../score.txt");
+//    std::fstream file;
+//
+//    file.open(filename, std::ios_base::app | std::ios_base::in);
+//    if (file.is_open()) {
+//        file << std::to_string(score) << std::endl;
+//    } else{
+//        std::ofstream myfile;
+//        myfile.open ("../score.txt");
+//        myfile << std::to_string(score)<<std::endl;
+//        myfile.close();
+//    }
+    std::ofstream myfile;
+    myfile.open ("../score.txt");
+    int y=0;
+    for(auto score : scores){
+        y++;
+        if(y==10){
+            break;
+        }
+        myfile << std::to_string(score)<<std::endl;
+    }
+
+    myfile.close();
+}
+
+void Game::getHighscores() {
+    std::string myText;
+
+    std::ifstream MyReadFile("../score.txt");
+    while (getline (MyReadFile, myText)) {
+
+        try{
+            int x = std::stoi(myText);
+            scores.push_back(x);
+
+        }
+        catch(std::exception &err)
+        {
+            std::cout<<"Corrupted highscore"<<std::endl;
+        }
+    }
+    sort(scores.begin(), scores.end());
+    std::reverse(scores.begin(), scores.end());
+
+
+}
+
+

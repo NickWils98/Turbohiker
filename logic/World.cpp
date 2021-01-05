@@ -56,7 +56,7 @@ void World::addLane(std::vector<std::shared_ptr<Factory>> f, std::vector<std::sh
     double extra = 8.0/amount;
     double start = -4 + extra;
 //    double original =start-extra/2;
-    RandomeNumber* r = RandomeNumber::getInstance();
+    std::shared_ptr<RandomeNumber> r = RandomeNumber::getInstance();
     int chance = r->getintpercent();
     int ance = (chance*amount)/100.0;
 
@@ -70,6 +70,7 @@ void World::addLane(std::vector<std::shared_ptr<Factory>> f, std::vector<std::sh
             std::shared_ptr<Entity> entity = l[0]->createProp(std::tuple<double, double>(-3.9f, 3.0f),
                                                            std::tuple<double, double>(start, -3.0f));
             entityList.push_back(entity);
+            entity->setMylane(-1);
         }
         std::shared_ptr<Hiker> hiker;
         bool playerbool = false;
@@ -102,10 +103,17 @@ void World::addLane(std::vector<std::shared_ptr<Factory>> f, std::vector<std::sh
         start += extra;
     }
 
-    std::shared_ptr<Entity> text = l[1]->createProp(std::tuple<double, double>(-2.0f, -2.0f),
+    std::shared_ptr<Entity> text = l[2]->createProp(std::tuple<double, double>(-2.0f, -2.0f),
                                                    std::tuple<double, double>(7.5, -3.0f));
+    std::shared_ptr<Entity> text2 = l[3]->createProp(std::tuple<double, double>(-2.0f, -2.0f),
+                                                    std::tuple<double, double>(7.5, -2.0f));
+    std::shared_ptr<Entity> endline = l[1]->createProp(std::tuple<double, double>(4.0f, -2.9f),
+                                                       std::tuple<double, double>(-4, -tracklength));
+
+    entityList.push_back(endline);
     player->setScoretext(text);
     entityList.push_back(text);
+    entityList.push_back(text2);
 }
 void World::speedup(int speedv, int speedh) {
     speedh = speedupPlayer(speedh);
@@ -245,10 +253,10 @@ void World::generateObstacle(std::vector<std::shared_ptr<Factory>> f, int times)
 
 
     times *= player->getLanes();
-    RandomeNumber* r = r->getInstance();
+    std::shared_ptr<RandomeNumber> r = r->getInstance();
     for(int i=1; i<times;i++){
         int fact = r->getintpercent()%2;
-        double percent = r->getint(tracklength-2);
+        double percent = r->getint(tracklength);
         int percent2 = r->getintpercent();
         int lane = percent2 % (player->getLanes()+1);
         std::shared_ptr<Hiker> hiker3;
@@ -303,7 +311,7 @@ void World::generateObstacle(std::vector<std::shared_ptr<Factory>> f, int times)
 void World::generateObstacle2(std::shared_ptr<Factory> f, int times) {
     bool generate = false;
     times *= player->getLanes();
-    RandomeNumber* r = r->getInstance();
+    std::shared_ptr<RandomeNumber> r = r->getInstance();
     if(obstacles.size()<2) {
         if(r->getintpercent()<2){
             generate = true;
@@ -488,6 +496,7 @@ void World::removeEnd() {
                 toremove.push_back(obj);
             } else if(obj == player){
                 player->setScore(100*lanes-100*finishing);
+                score = player->getScore();
                 toremove.push_back(player);
                 player = nullptr;
             }
@@ -501,4 +510,12 @@ void World::removeEnd() {
 
 const std::shared_ptr<Hiker> &World::getPlayer() const {
     return player;
+}
+
+int World::getFinishing() const {
+    return finishing;
+}
+
+int World::getScore1() const {
+    return score;
 }

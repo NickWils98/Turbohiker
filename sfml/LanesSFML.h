@@ -19,9 +19,12 @@ public:
 
     std::shared_ptr<Entity> remove_shout(double timer) override;
 
+    void setToupdate(bool toupdate);
+
 private:
     sf::RectangleShape body;
     sf::RenderWindow& window;
+    bool toupdate = false;
 };
 
 

@@ -11,7 +11,7 @@
 
 class ScorFactory : public FactoryLines {
 public:
-    ScorFactory(sf::RenderWindow& w, const sf::Color col, sf::View& v, std::string s, std::shared_ptr<sf::Font>& f);
+    ScorFactory(sf::RenderWindow& w, const sf::Color col, sf::View& v, std::string s, std::shared_ptr<sf::Font>& f, bool);
     std::shared_ptr<Entity>  createProp(std::tuple<double, double> size, std::tuple<double, double> position) override;
 
 
@@ -23,6 +23,7 @@ private:
     const sf::Color color;
     std::string text;
     std::shared_ptr<sf::Font> font;
+    bool toupdate = false;
 
 };
 

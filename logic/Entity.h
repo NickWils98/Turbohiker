@@ -154,7 +154,7 @@ public:
     void setSpeedh(int speedh);
 
 private:
-    int mylane;
+    int mylane = -1;
 
 };
 

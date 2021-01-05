@@ -14,7 +14,8 @@
 #include "Transformation.h"
 #include "RandomeNumber.h"
 #include "Factory/SFMLFactory.h"
-
+#include <iostream>
+#include <fstream>
 
 class Game {
 public:
@@ -22,7 +23,7 @@ public:
 
     virtual ~Game();
 
-    void run();
+    bool run();
 
     void init();
 
@@ -34,6 +35,10 @@ public:
 
 
     void DrawBackground(double);
+    void desperate (int finished, int player);
+    bool restart();
+    void writeHighscore();
+    void getHighscores();
 private:
     std::shared_ptr<Transformation> t;
     sf::RenderWindow m_window;
@@ -45,7 +50,10 @@ private:
 
 
     double deltaTime = 0;
-    RandomeNumber *r;
+    std::shared_ptr<RandomeNumber> r;
+    int playercount = 0;
+    bool goagain = false;
+    std::vector<int> scores;
 
 };
 

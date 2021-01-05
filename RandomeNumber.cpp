@@ -3,4 +3,4 @@
 //
 
 #include "RandomeNumber.h"
-RandomeNumber* RandomeNumber::instance = 0;
+std::shared_ptr<RandomeNumber> RandomeNumber::instance = 0;

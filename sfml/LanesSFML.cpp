@@ -23,16 +23,20 @@ void LanesSFML::render() {
 }
 
 void LanesSFML::movetoview(double moved) {
+    if(toupdate){
 
-
-    std::shared_ptr<Transformation> t = t->getInstance();
-    std::tuple<int, int> oldp = t->logic_to_pixles(0,0);
-    std::tuple<int, int> newp = t->logic_to_pixles(0, moved);
-    int tester = std::get<1>(newp)- std::get<1>(oldp);
-    body.move(0, tester);
-
+        std::shared_ptr<Transformation> t = t->getInstance();
+        std::tuple<int, int> oldp = t->logic_to_pixles(0, 0);
+        std::tuple<int, int> newp = t->logic_to_pixles(0, moved);
+        int tester = std::get<1>(newp) - std::get<1>(oldp);
+        body.move(0, tester);
+    }
 }
 
 std::shared_ptr<Entity> LanesSFML::remove_shout(double timer) {
     return std::shared_ptr<Entity>();
+}
+
+void LanesSFML::setToupdate(bool toupdate) {
+    LanesSFML::toupdate = toupdate;
 }
