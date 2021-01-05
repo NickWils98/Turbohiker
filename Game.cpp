@@ -11,6 +11,7 @@
 #include "Factory/LaneFactory.h"
 #include "Factory/SFMLPassingFactory.h"
 #include "Factory/TextBalloon.h"
+#include "Factory/ScorFactory.h"
 
 Game::Game()
         :   m_window    (sf::VideoMode(1088, 600), "Turbohiker",  sf::Style::Close | sf::Style::Resize),
@@ -21,6 +22,9 @@ Game::Game()
     r = RandomeNumber::getInstance();
     t = Transformation::getInstance();
     t->changeWindow(380, 600);
+
+    double d = t->pixle_to_logic_y(-8350);
+    world->setTracklength(-d);
 
 }
 
@@ -35,16 +39,27 @@ void Game::run() {
     init();
     //Main loop of the game
     while (m_window.isOpen()) {
+
+        double d = t->pixle_to_logic_y(view.getCenter().y);
+        world->setVieuw(-d);
         //std::cout<<r->getintpercent()<<std::endl;
         std::clock_t  beginRound = startTime;
         startTime = std::clock();
         deltaTime = startTime - beginRound;
-        if(deltaTime>1.0f/20.0f){
-            deltaTime= 1.0f/20.0f;
+        int q = 0;
+        while(deltaTime/CLOCKS_PER_SEC<0.016667){
+//            std::cout<<deltaTime/CLOCKS_PER_SEC<<std::endl;
+//            std::cout<<q<<std::endl;
+            q++;
+            startTime = std::clock();
+            deltaTime = startTime - beginRound;
         }
+//        if(deltaTime>1.0f/20.0f){
+//            deltaTime= 1.0f/20.0f;
+//        }
         //Render
 
-        world->setTimer(beginRound, deltaTime);
+        world->setTimer(beginRound, 1.0f/20.0f);
         world->removeLock();
 //        world->removeObstacle();
 //        world->generateObstacle(factory, 50);
@@ -59,6 +74,11 @@ void Game::run() {
         double oldy = world->getplayerposy();
         m_window.clear();
         world->update();
+        world->removeEnd();
+        std::shared_ptr<Entity> test = world->getPlayer();
+        if(test == nullptr){
+            break;
+        }
         world->Collision(1);
         double moved = moveView(oldy, oldspeed);
         world->movetoview(moved);
@@ -69,6 +89,9 @@ void Game::run() {
 
         //Handle window events
         handleEvent();
+    }
+    while(m_window.isOpen()){
+        std::cout<<"done";
     }
 }
 
@@ -117,6 +140,13 @@ void Game::init() {
     std::shared_ptr<sf::Texture> passingtex2 = std::make_shared<sf::Texture>();
     passingtex2->loadFromFile("./../rat2.png");
     textures.push_back(passingtex2);
+    std::shared_ptr<sf::Font> f = std::make_shared<sf::Font>();
+    if(!f->loadFromFile("../Hardigan.otf")){
+        std::cout<<"error loading file"<<std::endl;
+        system("pause");
+    }
+    fonts.push_back(f);
+    std::shared_ptr<FactoryLines> textfact = std::make_shared<ScorFactory>(m_window, sf::Color::White, view, "Score:\n", f);
 
     std::shared_ptr<SFMLFactory> passingfact = std::make_shared<SFMLWandererFactory>(m_window, passingtex, view);
     std::shared_ptr<SFMLFactory> passingfact2 = std::make_shared<SFMLPassingFactory>(m_window, passingtex2, view);
@@ -129,8 +159,8 @@ void Game::init() {
 
 
 
-    world->addLane({playerfact, enemyfact}, lanefact, chance +4);
-    world->generateObstacle({passingfact, passingfact2}, 60);
+    world->addLane({playerfact, enemyfact}, {lanefact, textfact}, chance +4);
+    world->generateObstacle({passingfact, passingfact2}, 10);
 
 
 
@@ -141,6 +171,7 @@ void Game::init() {
     sf::Sprite background(*backgroundTex);
     backgrounds.push_back(background);
     backgrounds[0].setPosition(-300 ,600);
+
 
     sf::Sprite background2(*backgroundTex);
     backgrounds.push_back(background2);

@@ -41,6 +41,8 @@ private:
     std::shared_ptr<World> world;
     std::vector<std::shared_ptr<sf::Texture>> textures = {};
     std::vector<sf::Sprite>backgrounds = {};
+    std::vector<std::shared_ptr<sf::Font>> fonts = {};
+
 
     double deltaTime = 0;
     RandomeNumber *r;

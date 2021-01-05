@@ -17,6 +17,7 @@ void World::remove(std::shared_ptr<Entity> toDel) {
 }
 
 void World::render() {
+    player->getScoretext()->setScoring(player->getScore());
     for(auto obj: entityList) {
         obj->render();
     }
@@ -51,7 +52,7 @@ void World::add(std::shared_ptr<Entity> obj) {
     std::cout<<entityList.size();
 }
 
-void World::addLane(std::vector<std::shared_ptr<Factory>> f, std::shared_ptr<FactoryLines> l, const int amount) {
+void World::addLane(std::vector<std::shared_ptr<Factory>> f, std::vector<std::shared_ptr<FactoryLines>> l, const int amount) {
     double extra = 8.0/amount;
     double start = -4 + extra;
 //    double original =start-extra/2;
@@ -66,7 +67,7 @@ void World::addLane(std::vector<std::shared_ptr<Factory>> f, std::shared_ptr<Fac
     firstlane = (start-extra/2)-((extra/1.1-4)-(extra-4))/2;
     for(int count = 0; count<amount;count++){
         if(count<amount-1) {
-            std::shared_ptr<Entity> entity = l->createProp(std::tuple<double, double>(-3.9f, 3.0f),
+            std::shared_ptr<Entity> entity = l[0]->createProp(std::tuple<double, double>(-3.9f, 3.0f),
                                                            std::tuple<double, double>(start, -3.0f));
             entityList.push_back(entity);
         }
@@ -100,6 +101,11 @@ void World::addLane(std::vector<std::shared_ptr<Factory>> f, std::shared_ptr<Fac
         }
         start += extra;
     }
+
+    std::shared_ptr<Entity> text = l[1]->createProp(std::tuple<double, double>(-2.0f, -2.0f),
+                                                   std::tuple<double, double>(7.5, -3.0f));
+    player->setScoretext(text);
+    entityList.push_back(text);
 }
 void World::speedup(int speedv, int speedh) {
     speedh = speedupPlayer(speedh);
@@ -202,6 +208,9 @@ double World::Collision(int i) {
                         Collider col = Collider();
                         moved = col.CollisionDetection(entityList[i], entityList[j], timer);
                         if (moved[0] != 0 or moved[1] != 0) {
+                            if(entityList[i] == player or entityList[j] == player){
+                                player->setScore(-1);
+                            }
                             std::shared_ptr<Transformation> t = t->getInstance();
                             std::tuple<int, int> oldp = t->logic_to_pixles(0, 0);
                             std::tuple<int, int> newp = t->logic_to_pixles(0, -moved[0]);
@@ -239,7 +248,7 @@ void World::generateObstacle(std::vector<std::shared_ptr<Factory>> f, int times)
     RandomeNumber* r = r->getInstance();
     for(int i=1; i<times;i++){
         int fact = r->getintpercent()%2;
-        double percent = r->getint(tracklength);
+        double percent = r->getint(tracklength-2);
         int percent2 = r->getintpercent();
         int lane = percent2 % (player->getLanes()+1);
         std::shared_ptr<Hiker> hiker3;
@@ -333,8 +342,10 @@ void World::removeObstacle() {
             toremove.push_back(e);
         }
     }
-    for(auto entity : toremove){
-        remove(entity);
+    while(toremove.size()!=0){
+
+        remove(toremove.back());
+        toremove.pop_back();
     }
 }
 
@@ -342,12 +353,16 @@ std::shared_ptr<Entity> World::shout(double i, double j, double z) {
     if(i == 1) {
         std::shared_ptr<Entity> o = player->shout(timer, firstlane, lanelength);
         if (o != nullptr) {
+            player->setScore(-10);
             entityList.push_back(o);
             ObstacleInLane(player, 5);
 
         }
     }
-    for(auto e: entityList){
+    for(int ii = 0; ii<entityList.size();ii++){
+        auto e = entityList[ii];
+
+//    for(auto e: entityList){
         if(e->isWannashout()) {
             e->setWannashout(false);
 
@@ -376,9 +391,12 @@ void World::removeBalloon() {
             }
         }
     }
-    for(auto entity : toremove){
-        remove(entity);
+    while(toremove.size()!=0){
+
+        remove(toremove.back());
+        toremove.pop_back();
     }
+
 }
 
 std::shared_ptr<Entity> World::remove_shout(double timer) {
@@ -451,4 +469,36 @@ std::vector<bool> World::checklaneswitch(std::shared_ptr<Entity> e){
         }
     }
     return {isgoedleft, isgoedright};
+}
+
+void World::setTracklength(int tracklength) {
+    World::tracklength = tracklength;
+}
+
+void World::setVieuw(double vieuw) {
+    World::vieuw = vieuw;
+}
+
+void World::removeEnd() {
+    std::vector<std::shared_ptr<Entity>> toremove = {};
+    for(auto obj: entityList) {
+        if(vieuw-obj->getPosition().y>tracklength) {
+            if(obj->isEnemy()){
+                finishing++;
+                toremove.push_back(obj);
+            } else if(obj == player){
+                player->setScore(100*lanes-100*finishing);
+                toremove.push_back(player);
+                player = nullptr;
+            }
+        }
+    }
+    while(toremove.size()!=0){
+        remove(toremove.back());
+        toremove.pop_back();
+    }
+}
+
+const std::shared_ptr<Hiker> &World::getPlayer() const {
+    return player;
 }

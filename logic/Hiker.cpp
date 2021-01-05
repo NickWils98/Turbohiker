@@ -110,6 +110,14 @@ void Hiker::setHorizontal(bool horizontal) {
     Hiker::horizontal = horizontal;
 }
 
+void Hiker::setScoretext(const std::shared_ptr<Entity> &scoretext) {
+    Hiker::scoretext = scoretext;
+}
+
+const std::shared_ptr<Entity> &Hiker::getScoretext() const {
+    return scoretext;
+}
+
 
 
 

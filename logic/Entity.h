@@ -9,6 +9,9 @@
 #include "ColorLogic.h"
 #include "../Transformation.h"
 #include "../RandomeNumber.h"
+#include "../Subject.h"
+#include "../Scoring.h"
+#include "../Client.h"
 
 class Entity {
 public:
@@ -33,7 +36,12 @@ public:
 
     virtual double helpcout(){return 0;};
 
-    Entity() = default;
+    Entity(){
+        subject = std::make_shared<Scoring>();
+        std::shared_ptr<Observer> o = std::make_shared<Client>();
+        subject->registerObserver(o);
+        observer.push_back( o);
+    };
     coordinats GetHalfSize();
     void Move(double dx, double dy){setPosition(getPosition().x+dx, getPosition().y+dy);};
 
@@ -103,7 +111,19 @@ public:
 
     void setOldtimer(double oldtimer);
 
+    int getScore() const;
+
+    void setScore(int score);
+
+    const std::string &getScoring() const;
+
+    void setScoring(const int &scoring);
+
 private:
+    std::string scoring ="";
+    std::shared_ptr<Subject> subject;
+    std::vector<std::shared_ptr<Observer>> observer;
+    int score = 0;
     coordinats position;
     coordinats size;
     double maxspeed = 120;
@@ -123,7 +143,12 @@ private:
     std::shared_ptr<Entity> balloon= nullptr;
     bool wannashout = false;
     bool isobstacle = false;
+    bool enemy = false;
 public:
+    bool isEnemy() const;
+
+    void setEnemy(bool enemy);
+
     int getSpeedh() const;
 
     void setSpeedh(int speedh);

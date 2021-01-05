@@ -176,3 +176,30 @@ void Entity::setOldtimer(double oldtimer) {
     Entity::oldtimer = oldtimer;
 }
 
+int Entity::getScore() const {
+    int x=observer[0]->getScore();
+    return x;
+}
+
+void Entity::setScore(int score) {
+    Entity::score += score;
+    subject->setScore(score);
+}
+
+const std::string &Entity::getScoring() const {
+    return scoring;
+}
+
+void Entity::setScoring(const int &s) {
+    std::string s_text = std::to_string(s);
+    Entity::scoring = s_text;
+}
+
+bool Entity::isEnemy() const {
+    return enemy;
+}
+
+void Entity::setEnemy(bool enemy) {
+    Entity::enemy = enemy;
+}
+

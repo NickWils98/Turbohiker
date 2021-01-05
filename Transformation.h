@@ -17,8 +17,9 @@ class Transformation {
 
 public:
     static std::shared_ptr<Transformation> getInstance() {
-        if (!instance)
+        if (!instance) {
             instance.reset(new Transformation());
+        }
 //            instance = std::make_shared<Transformation>();
         return instance;
     }

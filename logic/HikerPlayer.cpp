@@ -7,7 +7,7 @@
 void HikerPlayer::speedup(int speedup, int speedh) {
     int currentSpeed = getSpeed();
     double x = (getOldtimer())*20;
-    std::cout<<x<<std::endl;
+//    std::cout<<x<<std::endl;
     if(speedup==0){
         if(currentSpeed>0){
 

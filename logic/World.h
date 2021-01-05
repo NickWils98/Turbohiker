@@ -25,7 +25,7 @@ public:
     void render();
     std::tuple<double, double> update() override;
     void add(std::shared_ptr<Entity> obj);
-    void addLane(std::vector<std::shared_ptr<Factory>> f, std::shared_ptr<FactoryLines>l, int amount);
+    void addLane(std::vector<std::shared_ptr<Factory>> f, std::vector<std::shared_ptr<FactoryLines>>l, int amount);
     bool updateVisuals(std::tuple<int, int> s)override{};
     double getplayerposy();
     double getplayerspeed();
@@ -51,7 +51,15 @@ public:
 
     void fixdebuff(double) override;
 
+    void setTracklength(int tracklength);
+
+    void setVieuw(double vieuw);
+    void removeEnd();
+
+    const std::shared_ptr<Hiker> &getPlayer() const;
+
 private:
+    int finishing = 0;
     std::vector<int> ai(std::shared_ptr<Entity> e);
     //List of all objects of the world
     std::vector<std::shared_ptr<Entity>> entityList;
@@ -62,11 +70,12 @@ private:
     double firstlane =0;
     double timer;
     std::vector<std::shared_ptr<Entity>> obstacles = {};
-    int tracklength = 300;
+    int tracklength = 86;
     void ObstacleInLane(std::shared_ptr<Entity> e, int);
     bool CheckClosesdObstacleInLane(std::shared_ptr<Entity> e, int);
 
     std::vector<bool> checklaneswitch(std::shared_ptr<Entity> e);
+    double vieuw = 0;
 
 
 };

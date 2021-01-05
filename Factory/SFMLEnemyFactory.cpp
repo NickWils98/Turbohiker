@@ -24,6 +24,7 @@ std::shared_ptr<Hiker> SFMLEnemyFactory::createHiker(std::tuple<double, double> 
     player->setHeavynes(0.5);
     player->setFact(fact);
     player->setMaxspeed(100);
+    player->setEnemy(true);
     return player;
 }
 

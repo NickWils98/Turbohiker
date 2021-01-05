@@ -9,6 +9,7 @@
 #include "Entity.h"
 #include "Balloon.h"
 #include "../Factory/FactoryLines.h"
+#include "Lanes.h"
 
 class Hiker : public Entity {
 public:
@@ -51,6 +52,9 @@ public:
     void setHorizontal(bool horizontal);
     virtual void fixdebuff(double) = 0;
 
+    void setScoretext(const std::shared_ptr<Entity> &scoretext);
+
+    const std::shared_ptr<Entity> &getScoretext() const;
 
 private:
     int lanes;
@@ -58,6 +62,8 @@ private:
     double lockedtimer;
     std::shared_ptr<FactoryLines> fact = nullptr;
     bool horizontal = false;
+    std::shared_ptr<Entity> scoretext = nullptr;
+
 
 };
 
