@@ -9,11 +9,10 @@
 #include <memory>
 #include "logic/Entity.h"
 #include "logic/World.h"
-#include "Factory/PlayerFactory.h"
-#include "Factory/Factory.h"
+#include "Factory/HikerFactory/PlayerFactory.h"
+#include "Factory/HikerFactory/HikerFactory.h"
 #include "Transformation.h"
 #include "RandomeNumber.h"
-#include "Factory/SFMLFactory.h"
 #include <iostream>
 #include <fstream>
 

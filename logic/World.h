@@ -9,10 +9,10 @@
 #include <vector>
 #include "Entity.h"
 #include "../sfml/LanesSFML.h"
-#include "../Factory/Factory.h"
+#include "../Factory/HikerFactory/HikerFactory.h"
 #include <iostream>
 #include "Collider.h"
-#include "../Factory/FactoryLines.h"
+#include "../Factory/LayoutFactory/LayoutFactory.h"
 #include <algorithm>
 
 
@@ -25,7 +25,7 @@ public:
     void render();
     std::tuple<double, double> update() override;
     void add(std::shared_ptr<Entity> obj);
-    void addLane(std::vector<std::shared_ptr<Factory>> f, std::vector<std::shared_ptr<FactoryLines>>l, int amount);
+    void addLane(std::vector<std::shared_ptr<HikerFactory>> f, std::vector<std::shared_ptr<LayoutFactory>>l, int amount);
     bool updateVisuals(std::tuple<int, int> s)override{};
     double getplayerposy();
     double getplayerspeed();
@@ -41,8 +41,8 @@ public:
     void removeLock();
     double Collision(int);
 
-    void generateObstacle(std::vector<std::shared_ptr<Factory>> f, int);
-    void generateObstacle2(std::shared_ptr<Factory> f, int);
+    void generateObstacle(std::vector<std::shared_ptr<HikerFactory>> f, int);
+    void generateObstacle2(std::shared_ptr<HikerFactory> f, int);
     void removeObstacle();
     std::shared_ptr<Entity> shout(double, double, double) override;
     void removeBalloon();

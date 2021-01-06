@@ -78,11 +78,11 @@ std::shared_ptr<Entity> Hiker::remove_shout(double timer) {
     return nullptr;
 }
 
-void Hiker::setFact(const std::shared_ptr<FactoryLines> &fact) {
+void Hiker::setFact(const std::shared_ptr<LayoutFactory> &fact) {
     Hiker::fact = fact;
 }
 
-const std::shared_ptr<FactoryLines> &Hiker::getFact() const {
+const std::shared_ptr<LayoutFactory> &Hiker::getFact() const {
     return fact;
 }
 

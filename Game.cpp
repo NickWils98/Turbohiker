@@ -5,14 +5,12 @@
 #include <iostream>
 #include "Game.h"
 #include "sfml/HikerSFML.h"
-#include "Factory/SFMLFactory.h"
-#include "Factory/SFMLEnemyFactory.h"
-#include "Factory/SFMLWandererFactory.h"
-#include "Factory/LaneFactory.h"
-#include "Factory/SFMLPassingFactory.h"
-#include "Factory/TextBalloon.h"
-#include "Factory/ScorFactory.h"
-#include "Factory/EndlineFactory.h"
+#include "Factory/HikerFactory/EnemyFactory.h"
+#include "Factory/HikerFactory/KnightFactory.h"
+#include "Factory/LayoutFactory/LineFactory.h"
+#include "Factory/HikerFactory/VerminFactory.h"
+#include "Factory/LayoutFactory/SpeechBubbleFactory.h"
+#include "Factory/LayoutFactory/ScoreFactory.h"
 
 Game::Game()
         :   m_window    (sf::VideoMode(1088, 600), "Turbohiker",  sf::Style::Close | sf::Style::Resize),
@@ -177,21 +175,19 @@ void Game::init() {
     std::shared_ptr<sf::Texture> texb = std::make_shared<sf::Texture>();
     texb->loadFromFile("./../whaaagh.png");
     textures.push_back(texb);
-    std::shared_ptr<FactoryLines> fact = std::make_shared<TextBalloon>(m_window, texb, view);
+    std::shared_ptr<LayoutFactory> fact = std::make_shared<SpeechBubbleFactory>(m_window, texb, view);
 
     std::shared_ptr<sf::Texture> tex = std::make_shared<sf::Texture>();
     tex->loadFromFile("./../zombieee.png");
     textures.push_back(tex);
     //TODO: fix pointer
-    std::shared_ptr<PlayerFactory> playerfact = std::make_shared<PlayerFactory>(m_window, tex, view);
-    playerfact->setFact(fact);
+    std::shared_ptr<PlayerFactory> playerfact = std::make_shared<PlayerFactory>(m_window, tex, view, fact);
 
     std::shared_ptr<sf::Texture> enemytex = std::make_shared<sf::Texture>();
     enemytex->loadFromFile("./../enemycuty.png");
     textures.push_back(enemytex);
 
-    std::shared_ptr<SFMLEnemyFactory> enemyfact = std::make_shared<SFMLEnemyFactory>(m_window, enemytex, view);
-    enemyfact->setFact(fact);
+    std::shared_ptr<EnemyFactory> enemyfact = std::make_shared<EnemyFactory>(m_window, enemytex, view, fact);
     std::shared_ptr<sf::Texture> passingtex = std::make_shared<sf::Texture>();
     passingtex->loadFromFile("./../knight.png");
     textures.push_back(passingtex);
@@ -207,7 +203,7 @@ void Game::init() {
         system("pause");
     }
     fonts.push_back(f);
-    std::shared_ptr<FactoryLines> textfact = std::make_shared<ScorFactory>(m_window, sf::Color::White, view, "Score:\n", f, true);
+    std::shared_ptr<LayoutFactory> textfact = std::make_shared<ScoreFactory>(m_window, sf::Color::White, view, "Score:\n", f, true);
 
 
     std::string higscoretext = "Highscores:\n";
@@ -219,14 +215,14 @@ void Game::init() {
         }
         higscoretext+= std::to_string(score)+"\n";
     }
-    std::shared_ptr<FactoryLines> textfact2 = std::make_shared<ScorFactory>(m_window, sf::Color::White, view, higscoretext, f, false);
+    std::shared_ptr<LayoutFactory> textfact2 = std::make_shared<ScoreFactory>(m_window, sf::Color::White, view, higscoretext, f, false);
 
 
-    std::shared_ptr<SFMLFactory> passingfact = std::make_shared<SFMLWandererFactory>(m_window, passingtex, view);
-    std::shared_ptr<SFMLFactory> passingfact2 = std::make_shared<SFMLPassingFactory>(m_window, passingtex2, view);
+    std::shared_ptr<HikerFactory> passingfact = std::make_shared<KnightFactory>(m_window, passingtex, view);
+    std::shared_ptr<HikerFactory> passingfact2 = std::make_shared<VerminFactory>(m_window, passingtex2, view);
 
-    std::shared_ptr<LaneFactory> lanefact = std::make_shared<LaneFactory>(LaneFactory(m_window, sf::Color::White, view));
-    std::shared_ptr<EndlineFactory> lanefact2 = std::make_shared<EndlineFactory>(EndlineFactory(m_window, sf::Color::White, view));
+    std::shared_ptr<LineFactory> lanefact = std::make_shared<LineFactory>(LineFactory(m_window, sf::Color::White, view, true));
+    std::shared_ptr<LineFactory> lanefact2 = std::make_shared<LineFactory>(LineFactory(m_window, sf::Color::White, view, false));
 
     int chance = r->getintpercent();
     chance = (chance*3) /100.0;

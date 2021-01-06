@@ -8,7 +8,7 @@
 
 #include "Entity.h"
 #include "Balloon.h"
-#include "../Factory/FactoryLines.h"
+#include "../Factory/LayoutFactory/LayoutFactory.h"
 #include "Lanes.h"
 
 class Hiker : public Entity {
@@ -35,9 +35,9 @@ public:
     std::shared_ptr<Entity> remove_shout(double timer) override;
 
 
-    void setFact(const std::shared_ptr<FactoryLines> &fact);
+    void setFact(const std::shared_ptr<LayoutFactory> &fact);
 
-    const std::shared_ptr<FactoryLines> &getFact() const;
+    const std::shared_ptr<LayoutFactory> &getFact() const;
 
     bool isShoutlock() const;
 
@@ -60,7 +60,7 @@ private:
     int lanes;
     bool shoutlock = false;
     double lockedtimer;
-    std::shared_ptr<FactoryLines> fact = nullptr;
+    std::shared_ptr<LayoutFactory> fact = nullptr;
     bool horizontal = false;
     std::shared_ptr<Entity> scoretext = nullptr;
 
