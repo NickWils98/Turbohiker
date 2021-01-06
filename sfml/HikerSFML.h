@@ -6,7 +6,8 @@
 #define TURBOHIKER_HIKERSFML_H
 
 #include <SFML/Graphics.hpp>
-#include "../logic/Hiker.h"
+#include <memory>
+#include "../Transformation.h"
 
 class HikerSFML {
 
@@ -17,8 +18,7 @@ public:
     ~HikerSFML();
 
     void render() ;
-    bool updateVisuals(std::tuple<int, int> s, double);
-    double helpcout(){return body.getPosition().y;};
+    bool updateVisuals(std::tuple<int, int> s, double);;
 
 
 private:

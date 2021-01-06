@@ -12,14 +12,14 @@
 class LanesSFML : public Lanes {
 public:
     LanesSFML(sf::RenderWindow& window, sf::Color col, sf::Vector2f size, sf::Vector2f position);
-    ~LanesSFML();
+    ~LanesSFML() override;
 
-    void render();
+    void render() override;
     void movetoview(double) override;
 
     std::shared_ptr<Entity> remove_shout(double timer) override;
 
-    void setToupdate(bool toupdate);
+    void setToupdate(bool t);
 
 private:
     sf::RectangleShape body;

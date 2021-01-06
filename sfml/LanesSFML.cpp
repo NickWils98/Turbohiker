@@ -10,12 +10,9 @@ LanesSFML::LanesSFML(sf::RenderWindow& w, sf::Color col, sf::Vector2f size, sf::
     body.setSize(size);
     body.setFillColor(col);
     body.setPosition(position);
-    //body.setOrigin(size/2.0f);
 }
 
-LanesSFML::~LanesSFML() {
-
-}
+LanesSFML::~LanesSFML() = default;
 
 
 void LanesSFML::render() {
@@ -26,17 +23,17 @@ void LanesSFML::movetoview(double moved) {
     if(toupdate){
 
         std::shared_ptr<Transformation> t = t->getInstance();
-        std::tuple<int, int> oldp = t->logic_to_pixles(0, 0);
-        std::tuple<int, int> newp = t->logic_to_pixles(0, moved);
-        int tester = std::get<1>(newp) - std::get<1>(oldp);
-        body.move(0, tester);
+        int oldp = t->logic_to_pixle_y(0);
+        int newp = t->logic_to_pixle_y(moved);
+        float updatep = (float)newp-(float)oldp;
+        body.move(0, updatep);
     }
 }
 
 std::shared_ptr<Entity> LanesSFML::remove_shout(double timer) {
-    return std::shared_ptr<Entity>();
+    return nullptr;
 }
 
-void LanesSFML::setToupdate(bool toupdate) {
-    LanesSFML::toupdate = toupdate;
+void LanesSFML::setToupdate(bool t) {
+    toupdate = t;
 }

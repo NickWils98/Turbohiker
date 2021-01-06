@@ -7,7 +7,7 @@
 
 #include "HikerFactory.h"
 #include <SFML/Graphics.hpp>
-#include "../../sfml/HikerPassingSFML.h"
+#include "../../sfml/PassingSFML.h"
 
 class KnightFactory : public HikerFactory {
 public:

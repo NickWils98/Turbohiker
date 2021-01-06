@@ -6,7 +6,7 @@
 #define TURBOHIKER_SPEECHBUBBLEFACTORY_H
 
 #include "LayoutFactory.h"
-#include "../../sfml/BalloonSFML.h"
+#include "../../sfml/SpeechBubbleSFML.h"
 #include <SFML/Graphics.hpp>
 
 class SpeechBubbleFactory : public LayoutFactory {

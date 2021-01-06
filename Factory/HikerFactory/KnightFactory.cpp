@@ -17,7 +17,7 @@ std::shared_ptr<Hiker> KnightFactory::createHiker(std::tuple<double, double> siz
     std::tuple<int, int> p = t->logic_to_pixles(std::get<0>(position), std::get<1>(position));
     sf::Vector2f sfmlposition = sf::Vector2f(std::get<0>(p),std::get<1>(p));
 
-    std::shared_ptr<Hiker> player = std::make_shared<HikerPassingSFML>(HikerPassingSFML(window, texture, sfmlsize, sfmlposition, view));
+    std::shared_ptr<Hiker> player = std::make_shared<PassingSFML>(PassingSFML(window, texture, sfmlsize, sfmlposition, view));
     player->setPosition(std::get<0>(position), std::get<1>(position));
     player->setPosition(std::get<0>(position), std::get<1>(position));
     player->setSize(std::get<0>(size)+4, std::get<1>(size)+3);

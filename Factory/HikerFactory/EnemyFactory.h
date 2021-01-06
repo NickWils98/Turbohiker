@@ -8,7 +8,7 @@
 
 #include "HikerFactory.h"
 #include <SFML/Graphics.hpp>
-#include "../../sfml/HikerEnemySFML.h"
+#include "../../sfml/EnemySFML.h"
 
 class EnemyFactory : public HikerFactory {
 public:
