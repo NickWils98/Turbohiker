@@ -11,6 +11,6 @@ PassingSFML::PassingSFML(sf::RenderWindow& w, const std::shared_ptr<sf::Texture>
 
 }
 
-bool PassingSFML::updateVisuals(Coordinates s) {
-    return sfml->updateVisuals(s, getPosition().y);
+void PassingSFML::updateVisuals(Coordinates s) {
+    sfml->updateVisuals(s, getPosition().y);
 }

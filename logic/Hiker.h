@@ -9,28 +9,36 @@
 #include "Entity.h"
 #include "Balloon.h"
 #include "../Factory/LayoutFactory/LayoutFactory.h"
-#include "Lanes.h"
+
 
 class Hiker : public Entity {
 public:
-    Hiker()= default;
+    Hiker() = default;
 
-    virtual ~Hiker() = default;
+    ~Hiker() override {
+            scoretext = nullptr;
+            fact = nullptr;
+    };
 
     virtual void render() = 0;
-    virtual bool updateVisuals(Coordinates s) = 0;
+
+    virtual void updateVisuals(Coordinates s) = 0;
+
     virtual Coordinates update() = 0;
-    void movetoview(double) override;
+
+    virtual void speedup(int, int) = 0;
+
+    virtual std::shared_ptr<Entity> shout(double, double) = 0;
+
+    virtual void removeBuff() = 0;
+
+    void moveToView(double) override;
+
+    std::shared_ptr<Entity> removeShout(bool force) override;
 
     int getLanes() const;
 
     void setLanes(int lanes);
-
-    virtual void speedup(int, int) = 0;
-
-    virtual std::shared_ptr<Entity> shout(double, double, double) =0;
-    std::shared_ptr<Entity> remove_shout(double timer) override;
-
 
     void setFact(const std::shared_ptr<LayoutFactory> &fact);
 
@@ -40,25 +48,17 @@ public:
 
     void setShoutlock(bool shoutlock);
 
-    double getLockedtimer() const;
-
     void setLockedtimer(double lockedtimer);
-
-    bool isHorizontal() const;
-
-    void setHorizontal(bool horizontal);
-    virtual void fixdebuff(double) = 0;
 
     void setScoretext(const std::shared_ptr<Entity> &scoretext);
 
     const std::shared_ptr<Entity> &getScoretext() const;
 
 private:
-    int lanes;
+    int lanes = 0;
+    double lockedtimer = 0;
     bool shoutlock = false;
-    double lockedtimer;
     std::shared_ptr<LayoutFactory> fact = nullptr;
-    bool horizontal = false;
     std::shared_ptr<Entity> scoretext = nullptr;
 
 

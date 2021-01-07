@@ -24,12 +24,12 @@ bool Game::run() {
     std::clock_t startTime = std::clock();
     init();
     //Main loop of the game
-    int finished = 0;
+    int placement = 0;
     int score = 0;
     while (window.isOpen()) {
 //        set the view in world
         double viewPos = t->pixle_to_logic_y(view.getCenter().y);
-        world->setVieuw(-viewPos);
+        world->setViewPos(-viewPos);
 //        if you are faster then 60 frames per sec wait
         std::clock_t beginRound = startTime;
         startTime = std::clock();
@@ -37,38 +37,35 @@ bool Game::run() {
         startTime = std::clock();
 
 //        set input to 60 Frames per sec
-        world->setTimer(beginRound, 1.0f / 20.0f);
-//        lock is for moving lanes
-        world->removeLock();
-//        world->removeObstacle(); todo: this
-//        remove speech bubble if time is up
-        world->removeBalloon();
+        world->setTimers(beginRound, 1.0f / 20.0f);
+//        timeLock is for moving playercount
+        world->removeTimeLock();
 //        input player verical speed, horizontal speed, yell
         std::vector<int> input = getInput();
 //        handle input and generate/handle input for ai
         world->speedup(input[0], input[1]);
-        world->shout(input[2], 0, 0);
-//        clear speedbuff/debuff if needed
-        world->fixdebuff(1);
+        world->shout(input[2], 0);
+//        clear speedbuff/buffed if needed
+        world->removeBuff();
 
         window.clear();
         world->update();
 //        remove enemies and player if they finish
-        world->removeEnd();
-        std::shared_ptr<Entity> test = world->getPlayer();
-//        you have finished
-        if (test == nullptr) {
-            finished = world->getFinishing();
-            score = world->getScore1();
+        world->removeEntity();
+        bool finished = world->isFinished();
+//        you have isFinished
+        if (finished) {
+            placement = world->getPlacement();
+            score = world->getWorldScore();
             scores.push_back(score);
             writeHighscore();
             break;
         }
 //        check on collision
-        world->Collision(1);
+        world->Collision();
 //        move view with player
         double moved = moveView();
-        world->movetoview(moved);
+        world->moveToView(moved);
         window.setView(view);
 //        draw
         drawBackground();
@@ -79,7 +76,7 @@ bool Game::run() {
         handleEvent();
     }
     if (window.isOpen()) {
-        endLoop(finished + 1, score);
+        endLoop(placement + 1, score);
     }
     return restartGame;
 
@@ -191,13 +188,13 @@ void Game::initStartPosition() {
     layout.push_back(liveScore);
     layout.push_back(highScore);
 
-//    amount of lanes
+//    amount of playercount
     int chance = r->getintpercent();
     chance = (int) ((chance * 3.0) / 100.0);
     playercount = chance + 4;
 
 
-    world->addLane(hikers, layout, chance + 4);
+    world->initGame(hikers, layout, chance + 4);
 }
 
 void Game::initObstacles() {
@@ -249,13 +246,13 @@ bool Game::restartInput() {
 }
 
 double Game::moveView() {
-    double posy = world->getplayerposy();
+    double posy = world->getPlayerPosy();
     int viewPosy = t->logic_to_pixle_y(posy);
 //    for the beginning if the view did not move yet and the position of player low enough don't move the view
     if (view.getCenter().y == 100 and posy > 2) {
         return 0;
     }
-    double speed = world->getplayerspeed();
+    double speed = world->getPlayerSpeed();
     double adjustment = calculateViewAdjustment();
 //    only move the view if the speed is greater then 0 and the player above the place where it may be
     if (speed >= 0) {
@@ -272,8 +269,8 @@ double Game::moveView() {
 }
 
 int Game::calculateViewAdjustment() {
-    double speed = world->getplayerspeed();
-    double maxspeed = world->getplayermaxspeed();
+    double speed = world->getPlayerSpeed();
+    double maxspeed = world->getPlayerMaxSpeed();
 //    scaling formula
     double scaledspeed = (speed + maxspeed) / (maxspeed * 2);
 //    scale to the logic coordinates
@@ -322,7 +319,7 @@ void Game::endLoop(int placement, int score) {
 std::vector<sf::Text> Game::getScoreScreen(int placement, int score) {
 //    middel screen text
     std::string printing = "You finnished:\n" + std::to_string(placement) + " / " + std::to_string(playercount) + "\n";
-    printing += "With a score of:\n" + std::to_string(score) + "\n";
+    printing += "With a worldScore of:\n" + std::to_string(score) + "\n";
     printing += "To restart game:\n Press 'R'";
     sf::Text victorytext;
     victorytext.setFont(*fonts[0]);
@@ -343,36 +340,37 @@ std::vector<sf::Text> Game::getScoreScreen(int placement, int score) {
         }
         higscoretext += std::to_string(highscore) + "\n";
     }
-//    updateted highscore
+//    updated highscore
     sf::Text highscoretext;
     highscoretext.setString(higscoretext);
     highscoretext.setFillColor(sf::Color::White);
     highscoretext.setPosition(600, 100);
     highscoretext.setFont(*fonts[0]);
     highscoretext.setCharacterSize(35);
+    std::vector<sf::Text> texts;
+    texts.push_back(victorytext);
+    texts.push_back(highscoretext);
+    return texts;
 }
 
 void Game::writeHighscore() {
     std::ofstream myfile;
-    if (myfile.is_open()) {
-        myfile.open("../score.txt");
-        int y = 0;
-        for (auto score : scores) {
-            y++;
-            if (y == 10) {
-                break;
-            }
-            myfile << std::to_string(score) << std::endl;
+    myfile.open("../worldScore.txt");
+    int y = 0;
+    for (auto score : scores) {
+        y++;
+        if (y == 10) {
+            break;
         }
-        myfile.close();
-    } else {
-        std::cout << "problem with opening file" << std::endl;
+        myfile << std::to_string(score) << std::endl;
     }
+    myfile.close();
+
 }
 
 void Game::getHighscores() {
     std::string myText;
-    std::ifstream myfile("../score.txt");
+    std::ifstream myfile("../worldScore.txt");
     if (myfile.is_open()) {
         while (getline(myfile, myText)) {
 
@@ -389,13 +387,3 @@ void Game::getHighscores() {
         std::reverse(scores.begin(), scores.end());
     }
 }
-
-
-
-
-
-
-
-
-
-

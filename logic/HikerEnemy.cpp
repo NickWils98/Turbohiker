@@ -14,110 +14,98 @@ void HikerEnemy::speedup(int speedv, int speedh) {
     int setspeedh = 0;
     if(speedv==1){
         if(speedh == 3){
-            setWannashout(true);
+            setWantToShout(true);
         } else if(speedh == 2){
             if(precent>99){
-                setWannashout(true);
+                setWantToShout(true);
 
             } else {
-                if(isLocked()) {
-                    setWannashout(true);
+                if(isTimeLocked()) {
+                    setWantToShout(true);
                 } else{
-                    //player->updatePlayerh(speedh);
-                    setLock(getTimer() + 600000);
-                    setLocked(true);
+                    setTimeLock(getTimer() + 600000);
+                    setTimeLocked(true);
                     setspeedh = -1;
                 }
             }
 
         } else if(speedh == 1){
             if(precent>99){
-                setWannashout(true);
+                setWantToShout(true);
             } else {
-                if(isLocked()) {
-                    setWannashout(true);
+                if(isTimeLocked()) {
+                    setWantToShout(true);
                 } else{
-                    //player->updatePlayerh(speedh);
-                    setLock(getTimer() + 600000);
-                    setLocked(true);
+                    setTimeLock(getTimer() + 600000);
+                    setTimeLocked(true);
                     setspeedh = 1;
                 }
             }
         } else{
             int x = (precent<=40) ? 1 : -1;
             if(precent>99){
-                setWannashout(true);
+                setWantToShout(true);
 
             } else {
-                if(isLocked()) {
-                    setWannashout(true);
+                if(isTimeLocked()) {
+                    setWantToShout(true);
                 } else{
-                    //player->updatePlayerh(speedh);
-                    setLock(getTimer() + 600000);
-                    setLocked(true);
+                    setTimeLock(getTimer() + 600000);
+                    setTimeLocked(true);
                     setspeedh = x;
                 }
             }
         }
     }
     int speedup = 1;
-    int currentSpeed = getSpeed();
+    int currentSpeed = getSpeedv();
 
     if(speedup>0 and 0 >currentSpeed){
-        currentSpeed +=2*(getOldtimer()*20);
+        currentSpeed +=2*(getDeltaTimer() * 20);
     }
     if(speedup<0 and 0<currentSpeed){
-        currentSpeed -=2*(getOldtimer()*20);
+        currentSpeed -=2*(getDeltaTimer() * 20);
     }
-    currentSpeed+= speedup*(getOldtimer()*20);
-    setSpeed(currentSpeed);
+    currentSpeed+= speedup*(getDeltaTimer() * 20);
+    setSpeedv(currentSpeed);
     setSpeedh(setspeedh);
 }
 
-std::shared_ptr<Entity> HikerEnemy::shout(double timer, double start, double length) {
-//    if(timer>lockedtimer){
-//        shoutlock = false;
-//
-//    }
+std::shared_ptr<Entity> HikerEnemy::shout(double start, double length) {
     if(!isShoutlock()){
         setShoutlock(true);
-        std::shared_ptr<Entity> b = getFact()->createProp(Coordinates(getSize().x - 4, getSize().y - 3), Coordinates(start + length * getMylane(), getPosition().y - 0.5));
-        setBalloon(b);
-        setLockedtimer(timer+2000000);
-        setHasballoon(true);
+        std::shared_ptr<Entity> b = getFact()->createProp(Coordinates(getSize().x - 4, getSize().y - 3), Coordinates(start + length *
+                                                                                                                                     getMyLane(), getPosition().y - 0.5));
+        setTextBubble(b);
+        setLockedtimer(getTimer()+2000000);
+        setHasTextBubble(true);
         return b;
     }
     return nullptr;
 }
 Coordinates HikerEnemy::update() {
     if(getSpeedh()>0){
-        if(getMylane()<getLanes()){
-            setMylane(getMylane()+1);
+        if(getMyLane() < getLanes()){
+            setMyLane(getMyLane() + 1);
             move+= 1;
         }
     } else if(getSpeedh()<0){
-        if(getMylane()!=0){
-            setMylane(getMylane()-1);
+        if(getMyLane() != 0){
+            setMyLane(getMyLane() - 1);
             move-= 1;
         }
     }
-
-    if(getSpeed()>0){
-        int x = 5;
-    }
     Coordinates pos = getPosition();
-    double zer = pos.y-0.01*getSpeed();
-    pos.y -= 0.0005*getSpeed()*(getOldtimer()*20);
+    pos.y -= 0.0005 * getSpeedv() * (getDeltaTimer() * 20);
     setPosition(pos);
-    Coordinates toreturn = Coordinates(-move, 0.005 * getSpeed() * (getOldtimer() * 20));
+    Coordinates toreturn = Coordinates(-move, 0.005 * getSpeedv() * (getDeltaTimer() * 20));
     move = 0;
     return toreturn;
 }
 
-void HikerEnemy::fixdebuff(double timer) {
-    if(getDebufftimer()<timer){
-        setDebuff(false);
+void HikerEnemy::removeBuff() {
+    if(getBuffedTimer() < getTimer()){
+        setBuffed(false);
         setMaxspeed(getMaxSpeed()*2);
     }
-
 }

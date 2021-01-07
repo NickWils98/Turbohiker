@@ -19,7 +19,7 @@ void LanesSFML::render() {
     window.draw(body);
 }
 
-void LanesSFML::movetoview(double moved) {
+void LanesSFML::moveToView(double moved) {
     if(toupdate){
 
         std::shared_ptr<Transformation> t = t->getInstance();
@@ -28,10 +28,6 @@ void LanesSFML::movetoview(double moved) {
         float updatep = (float)newp-(float)oldp;
         body.move(0, updatep);
     }
-}
-
-std::shared_ptr<Entity> LanesSFML::remove_shout(double timer) {
-    return nullptr;
 }
 
 void LanesSFML::setToupdate(bool t) {

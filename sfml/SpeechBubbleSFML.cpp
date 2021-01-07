@@ -19,22 +19,13 @@ void SpeechBubbleSFML::render() {
     window.draw(body);
 }
 
-bool SpeechBubbleSFML::updateVisuals(Coordinates pos) {
+void SpeechBubbleSFML::updateVisuals(Coordinates pos) {
     std::shared_ptr<Transformation> t = t->getInstance();
     int oldp = t->logic_to_pixle_y(0);
     int newp = t->logic_to_pixle_y(getPosition().y);
     float updatep = (float)newp-(float)oldp;
     body.setPosition(body.getPosition().x, updatep +view.getCenter().y);
     body.move(pos.x,0);
-    if(body.getPosition().y>window.getSize().y){
-        body.setPosition(body.getPosition().x, window.getSize().y);
-        return false;
-//        todo: remove this?
-    }
-    return true;
-
-
-
 }
 
 

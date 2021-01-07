@@ -20,13 +20,13 @@ TextFieldSFML::~TextFieldSFML() = default;
 
 void TextFieldSFML::render() {
     if(toupdate) {
-        body.setString(text + getScoring());
+        body.setString(text + getScoreText());
     }
 
     window.draw(body);
 }
 
-void TextFieldSFML::movetoview(double moved) {
+void TextFieldSFML::moveToView(double moved) {
 
 
     std::shared_ptr<Transformation> t = t->getInstance();
@@ -36,8 +36,4 @@ void TextFieldSFML::movetoview(double moved) {
 
     body.move(0, updatep);
 
-}
-
-std::shared_ptr<Entity> TextFieldSFML::remove_shout(double timer) {
-    return nullptr;
 }

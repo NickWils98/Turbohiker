@@ -15,9 +15,8 @@ public:
     ~LanesSFML() override;
 
     void render() override;
-    void movetoview(double) override;
+    void moveToView(double) override;
 
-    std::shared_ptr<Entity> remove_shout(double timer) override;
 
     void setToupdate(bool t);
 

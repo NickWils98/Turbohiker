@@ -4,13 +4,9 @@
 
 #include "Hiker.h"
 
-void Hiker::movetoview(double moved) {
-    if(moved!=0){
-        int f = 8;
-    }
+void Hiker::moveToView(double moved) {
     Coordinates pos = getPosition();
     pos.y -= moved;
-    //pos.y = 0;
     setPosition(pos);
 }
 
@@ -18,29 +14,26 @@ int Hiker::getLanes() const {
     return lanes;
 }
 
-void Hiker::setLanes(int lanes) {
-    Hiker::lanes = lanes;
+void Hiker::setLanes(int l) {
+    Hiker::lanes = l;
 }
 
 
-
-std::shared_ptr<Entity> Hiker::remove_shout(double timer) {
-    if(shoutlock) {
-        if (timer > lockedtimer) {
+std::shared_ptr<Entity> Hiker::removeShout(bool force) {
+    if (shoutlock) {
+        if (getTimer() > lockedtimer or force) {
             shoutlock = false;
-            std::shared_ptr<Entity> b = getBalloon();
-            setBalloon(nullptr);
-            setHasballoon(false);
+            std::shared_ptr<Entity> b = getTextBubble();
+            setTextBubble(nullptr);
+            setHasTextBubble(false);
             return b;
-
         }
     }
-
     return nullptr;
 }
 
-void Hiker::setFact(const std::shared_ptr<LayoutFactory> &fact) {
-    Hiker::fact = fact;
+void Hiker::setFact(const std::shared_ptr<LayoutFactory> &f) {
+    Hiker::fact = f;
 }
 
 const std::shared_ptr<LayoutFactory> &Hiker::getFact() const {
@@ -51,28 +44,18 @@ bool Hiker::isShoutlock() const {
     return shoutlock;
 }
 
-void Hiker::setShoutlock(bool shoutlock) {
-    Hiker::shoutlock = shoutlock;
+void Hiker::setShoutlock(bool s) {
+    Hiker::shoutlock = s;
 }
 
-double Hiker::getLockedtimer() const {
-    return lockedtimer;
+void Hiker::setLockedtimer(double l) {
+    Hiker::lockedtimer = l;
 }
 
-void Hiker::setLockedtimer(double lockedtimer) {
-    Hiker::lockedtimer = lockedtimer;
-}
 
-bool Hiker::isHorizontal() const {
-    return horizontal;
-}
 
-void Hiker::setHorizontal(bool horizontal) {
-    Hiker::horizontal = horizontal;
-}
-
-void Hiker::setScoretext(const std::shared_ptr<Entity> &scoretext) {
-    Hiker::scoretext = scoretext;
+void Hiker::setScoretext(const std::shared_ptr<Entity> &s) {
+    Hiker::scoretext = s;
 }
 
 const std::shared_ptr<Entity> &Hiker::getScoretext() const {

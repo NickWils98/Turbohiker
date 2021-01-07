@@ -21,7 +21,7 @@ std::shared_ptr<Hiker> EnemyFactory::createHiker(Coordinates size, Coordinates p
     std::shared_ptr<Hiker> player = std::make_shared<EnemySFML>(EnemySFML(window, texture, sfmlsize, sfmlposition, view));
     player->setPosition(position.x, position.y);
     player->setSize(size.x+4, size.y+3);
-    player->setHeavynes(0.5);
+    player->setHeaviness(0.5);
     player->setFact(fact);
     player->setMaxspeed(100);
     player->setEnemy(true);

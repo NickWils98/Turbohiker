@@ -10,6 +10,6 @@ PlayerSFML::PlayerSFML(sf::RenderWindow& w, const std::shared_ptr<sf::Texture>& 
 
 }
 
-bool PlayerSFML::updateVisuals(Coordinates s) {
-    return sfml->updateVisuals(s, getPosition().y);
+void PlayerSFML::updateVisuals(Coordinates s) {
+    sfml->updateVisuals(s, getPosition().y);
 }

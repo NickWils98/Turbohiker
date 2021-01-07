@@ -17,17 +17,17 @@ public:
 
     Coordinates update() override;
 
-    virtual bool updateVisuals(Coordinates s) = 0;
+    virtual void updateVisuals(Coordinates s) = 0;
 
-    void movetoview(double d) override;
+    void moveToView(double d) override;
 
     void speedup(int i, int i1) override;
 
-    std::shared_ptr<Entity> shout(double d, double x, double e) override{return nullptr;};
+    std::shared_ptr<Entity> shout(double x, double e) override{return nullptr;};
 
-    std::shared_ptr<Entity> remove_shout(double timer) override;
+    std::shared_ptr<Entity> removeShout(bool force) override{return nullptr;};
 
-    void fixdebuff(double d) override;
+    void removeBuff() override;
 };
 
 

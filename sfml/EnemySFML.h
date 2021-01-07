@@ -16,7 +16,7 @@ public:
 
     void render() override{sfml->render();};
 
-    bool updateVisuals(Coordinates s) override;
+    void updateVisuals(Coordinates s) override;
 private:
     std::shared_ptr<HikerSFML> sfml;
 };

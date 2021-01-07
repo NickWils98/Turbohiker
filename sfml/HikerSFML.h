@@ -18,7 +18,7 @@ public:
     ~HikerSFML();
 
     void render() ;
-    bool updateVisuals(Coordinates s, double);;
+    void updateVisuals(Coordinates s, double);;
 
 
 private:

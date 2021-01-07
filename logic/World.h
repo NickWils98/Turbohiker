@@ -6,83 +6,99 @@
 #define TURBOHIKER_WORLD_H
 
 
-#include <vector>
 #include "Entity.h"
-#include "../sfml/LanesSFML.h"
 #include "../Factory/HikerFactory/HikerFactory.h"
-#include <iostream>
-#include "Collider.h"
 #include "../Factory/LayoutFactory/LayoutFactory.h"
-#include <algorithm>
-
+#include "Collider.h"
 
 
 class World : public Entity {
 public:
     World();
+
     ~World() override = default;
-    void remove(std::shared_ptr<Entity> toDel);
-    void render() override;
-    Coordinates update() override;
-    void add(std::shared_ptr<Entity> obj);
-    void addLane(std::vector<std::shared_ptr<HikerFactory>> f, std::vector<std::shared_ptr<LayoutFactory>>l, int amount);
-    bool updateVisuals(Coordinates s)override{};
-    double getplayerposy();
-    double getplayerspeed();
-    double getplayermaxspeed();
-    void speedup(int, int);
-    int speedupPlayer(int);
-    void movetoview(double) override;
 
-    double gethelper(){return player->helpcout();};
-
-    void setTimer(double timer, double t);
-
-    void removeLock();
-    double Collision(int);
+    void
+    initGame(std::vector<std::shared_ptr<HikerFactory>> hikerFactorys,
+             std::vector<std::shared_ptr<LayoutFactory>> layoutFactorys, int amount);
 
     void generateObstacle(std::vector<std::shared_ptr<HikerFactory>> f, int);
-    void generateObstacle2(std::shared_ptr<HikerFactory> f, int);
-    void removeObstacle();
-    std::shared_ptr<Entity> shout(double, double, double) override;
-    void removeBalloon();
 
-    std::shared_ptr<Entity> remove_shout(double timer) override;
+    void removeEntity();
 
-    void fixdebuff(double) override;
+    void removeTimeLock();
+
+    void render() override;
+
+    Coordinates update() override;
+
+    std::shared_ptr<Entity> shout(double, double) override;
+
+    void speedup(int speedv, int speedh) override;
+
+    void moveToView(double moved) override;
+
+    double Collision();
+
+    void setTimers(double timer, double delta);
+
+    void removeBuff() override;
+
+    double getPlayerPosy();
+
+    double getPlayerSpeed();
+
+    double getPlayerMaxSpeed();
 
     void setTracklength(int tracklength);
 
-    void setVieuw(double vieuw);
-    void removeEnd();
+    void setViewPos(double view);
 
-    const std::shared_ptr<Hiker> &getPlayer() const;
+    bool isFinished() const;
 
-    int getFinishing() const;
+    int getPlacement() const;
 
-    int getScore1() const;
+    int getWorldScore() const;
 
 private:
-    int score = 0;
-    int finishing = 0;
-    std::vector<int> ai(std::shared_ptr<Entity> e);
-    //List of all objects of the world
+    void addLaneLine(const std::shared_ptr<LayoutFactory> &factory, double firstlanePos);
+
+    void addPlayer(const std::shared_ptr<HikerFactory> &factory, int place);
+
+    void addEnemy(const std::shared_ptr<HikerFactory> &factory, int place);
+
+    void addLayout(std::vector<std::shared_ptr<LayoutFactory>> factorys);
+
+    void remove(std::shared_ptr<Entity> &toDel);
+
+    std::shared_ptr<Entity> removeShout(bool force) override { return nullptr; };
+
+    void updateVisuals(Coordinates s) override {};
+
+    int speedupPlayer(int speedh);
+
+    std::vector<int> ai(const std::shared_ptr<Entity> &entity);
+
+    void obstacleInLane(const std::shared_ptr<Entity> &e, int distance);
+
+    bool checkClosesdObstacleInLane(const std::shared_ptr<Entity> &hiker, int distance);
+
+    std::vector<bool> checkLaneSwitch(const std::shared_ptr<Entity> &e);
+
+private:
+    //List of all hikers of the world
     std::vector<std::shared_ptr<Entity>> entityList;
-    int lanes = 0;
-    std::vector<std::shared_ptr<Entity>> lanelist;
-    std::shared_ptr<Hiker> player = nullptr;
-    double lanelength =0;
-    double firstlane =0;
-    double timer;
+    //List of all obstacles of the world
     std::vector<std::shared_ptr<Entity>> obstacles = {};
+
+    std::shared_ptr<Hiker> player = nullptr;
+    int worldScore = 0;
+    int placement = 0;
+    int playercount = 0;
+    double laneWidth = 0;
     double tracklength = 86;
-    void ObstacleInLane(std::shared_ptr<Entity> e, int);
-    bool CheckClosesdObstacleInLane(std::shared_ptr<Entity> e, int);
-
-    std::vector<bool> checklaneswitch(std::shared_ptr<Entity> e);
-    double vieuw = 0;
-
-
+    double firstPlayerPos = 0;
+    double viewPos = 0;
 };
 
 

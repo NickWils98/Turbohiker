@@ -21,7 +21,7 @@ std::shared_ptr<Entity> SpeechBubbleFactory::createProp(Coordinates size, Coordi
     std::shared_ptr<Entity> player = std::make_shared<SpeechBubbleSFML>(SpeechBubbleSFML(window, texture, sfmlsize, sfmlposition, view));
     player->setPosition(position.x, position.y);
     player->setSize(size.x+4, size.y+3);
-    player->setHeavynes(1);
-    player->setGottrough(true);
+    player->setHeaviness(1);
+    player->setTransparant(true);
     return player;
 }

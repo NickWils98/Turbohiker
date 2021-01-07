@@ -14,9 +14,7 @@ public:
     ~TextFieldSFML() override;
 
     void render() override;
-    void movetoview(double) override;
-
-    std::shared_ptr<Entity> remove_shout(double timer) override;
+    void moveToView(double) override;
 
 private:
     sf::Text body;

@@ -9,6 +9,6 @@ EnemySFML::EnemySFML(sf::RenderWindow& w, const std::shared_ptr<sf::Texture>& te
 
 
 }
-bool EnemySFML::updateVisuals(Coordinates s) {
-    return sfml->updateVisuals(s, getPosition().y);
+void EnemySFML::updateVisuals(Coordinates s) {
+    sfml->updateVisuals(s, getPosition().y);
 }

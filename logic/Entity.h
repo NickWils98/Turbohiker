@@ -4,144 +4,126 @@
 
 #ifndef TURBOHIKER_ENTITY_H
 #define TURBOHIKER_ENTITY_H
+
 #include <memory>
+#include <vector>
+#include <algorithm>
+#include "Coordinates.h"
 #include "../Transformation.h"
 #include "../RandomeNumber.h"
 #include "../Subject.h"
 #include "../Scoring.h"
 #include "../Client.h"
-#include "Coordinates.h"
-
 
 class Entity {
 public:
 
-    const Coordinates &getPosition() const;
-    const Coordinates &getSize() const;
-    void setPosition(double x, double y);
-    void setPosition(const Coordinates &position);
-    void setSize(double x, double y);
-    double getSpeed() const;
-    double getMaxSpeed() const;
-
-    void setMaxspeed(double maxspeed);
-
-    void setSpeed(double speed);
-    int getMylane() const;
-    void setMylane(int mylane);
-
-
-    virtual double helpcout(){return 0;};
-
-    Entity(){
-        subject = std::make_shared<Scoring>();
-        std::shared_ptr<Observer> o = std::make_shared<Client>();
-        subject->registerObserver(o);
-        observer.push_back( o);
-    };
-    Coordinates GetHalfSize() const;
-    void Move(double dx, double dy){setPosition(getPosition().x+dx, getPosition().y+dy);};
-
+    Entity();
 
     virtual ~Entity() = default;
 
     virtual void render() = 0;
+
     virtual Coordinates update() = 0;
-    virtual bool updateVisuals(Coordinates s) = 0;
-    virtual void movetoview(double) = 0;
+
+    virtual void updateVisuals(Coordinates s) = 0;
+
+    virtual void moveToView(double) = 0;
+
     virtual void speedup(int, int) = 0;
-    virtual std::shared_ptr<Entity> shout(double, double, double) = 0;
 
-    double getHeavynes() const;
+    virtual std::shared_ptr<Entity> shout(double, double) = 0;
 
-    void setHeavynes(double heavynes);
+    virtual void removeBuff() = 0;
 
-    bool isGottrough() const;
+    virtual std::shared_ptr<Entity> removeShout(bool force) = 0;
 
-    void setGottrough(bool gottrough);
+    const Coordinates &getPosition() const;
 
-    bool isSlowdown() const;
+    void Move(double dx, double dy);
 
-    void setSlowdown(bool slowdown);
+    void setPosition(double x, double y);
 
-    bool isHasballoon() const;
+    void setPosition(const Coordinates &position);
 
-    void setHasballoon(bool hasballoon);
+    const Coordinates &getSize() const;
 
-    const std::shared_ptr<Entity> &getBalloon() const;
-    virtual std::shared_ptr<Entity> remove_shout(double timer) =0;
+    void setSize(double x, double y);
 
+    double getSpeedv() const;
 
-    void setBalloon(const std::shared_ptr<Entity> &balloon);
+    void setSpeedv(double speed);
 
-    bool isDebuff() const;
+    double getMaxSpeed() const;
 
-    void setDebuff(bool debuff);
+    void setMaxspeed(double maxspeed);
 
-    virtual void fixdebuff(double) = 0;
+    int getMyLane() const;
 
-    double getDebufftimer() const;
+    void setMyLane(int mylane);
+
+    Coordinates GetHalfSize() const;
+
+    double getHeaviness() const;
+
+    void setHeaviness(double h);
+
+    bool isTransparant() const;
+
+    void setTransparant(bool g);
+
+    bool isSlowedDown() const;
+
+    void setSlowedDown(bool s);
+
+    bool isHasTextBubble() const;
+
+    void setHasTextBubble(bool t);
+
+    const std::shared_ptr<Entity> &getTextBubble() const;
+
+    void setTextBubble(const std::shared_ptr<Entity> &t);
+
+    bool isBuffed() const;
+
+    void setBuffed(bool d);
+
+    double getBuffedTimer() const;
 
     void setDebufftimer(double debufftimer);
 
-    double getLock() const;
+    double getTimeLock() const;
 
-    void setLock(double lock);
+    void setTimeLock(double lock);
 
-    bool isLocked() const;
+    bool isTimeLocked() const;
 
-    void setLocked(bool locked);
+    void setTimeLocked(bool locked);
 
-    bool isWannashout() const;
+    bool isWantToShout() const;
 
-    void setWannashout(bool wannashout);
+    void setWantToShout(bool wannashout);
 
     double getTimer() const;
 
     void setTimer(double timer);
 
-    bool isIsobstacle() const;
+    bool isObstacle() const;
 
-    void setIsobstacle(bool isobstacle);
+    void setObstacle(bool isobstacle);
 
-    double getOldtimer() const;
+    double getDeltaTimer() const;
 
-    void setOldtimer(double oldtimer);
+    void setDeltaTimer(double d);
 
     int getScore() const;
 
     void setScore(int score);
 
-    const std::string &getScoring() const;
+    const std::string &getScoreText() const;
 
-    void setScoring(const int &scoring);
+    void setScoreText(const int &scoring);
 
-private:
-    std::string scoring ="";
-    std::shared_ptr<Subject> subject;
-    std::vector<std::shared_ptr<Observer>> observer;
-    int score = 0;
-    Coordinates position{0, 0};
-    Coordinates size{0, 0};
-    double maxspeed = 120;
-    double speedv = 0;
-    int speedh = 0;
-    double timer = 0;
-    double oldtimer = 0;
-
-    double heavynes = 0;
-    bool gottrough = false;
-    bool slowdown = false;
-    bool hasballoon = false;
-    bool debuff = false;
-    double debufftimer = 0;
-    double lock=0;
-    bool locked = false;
-    std::shared_ptr<Entity> balloon= nullptr;
-    bool wannashout = false;
-    bool isobstacle = false;
-    bool enemy = false;
-public:
     bool isEnemy() const;
 
     void setEnemy(bool enemy);
@@ -151,7 +133,38 @@ public:
     void setSpeedh(int speedh);
 
 private:
-    int mylane = -1;
+    std::string scoreText;
+    std::shared_ptr<Subject> subject;
+    std::vector<std::shared_ptr<Observer>> observer;
+    Coordinates position{0, 0};
+    Coordinates size{0, 0};
+    double maxspeed = 120;
+    double speedv = 0;
+    int speedh = 0;
+    double timer = 0;
+    double deltaTime = 0;
+//    percentage of how much a hiker will move in collision
+    double heaviness = 0;
+//    true if it has no collision
+    bool transparant = false;
+//    buffed of a hiker
+    bool slowedDown = false;
+    bool buffed = false;
+    double buffedTimer = 0;
+//    text bubble if yelled
+    bool hasTextBubble = false;
+    std::shared_ptr<Entity> textBubble = nullptr;
+//    lock on horizontal movement speed
+    double timeLock = 0;
+    bool timeLocked = false;
+//    ai wants to shout
+    bool wantToShout = false;
+//    entity is an obstacle
+    bool obstacle = false;
+//    entity is an enemy
+    bool enemy = false;
+//    lane of the hiker
+    int myLane = -1;
 
 };
 

@@ -13,14 +13,18 @@ public:
     HikerPassing();
 
     void speedup(int, int) override;
-    std::shared_ptr<Entity> shout(double, double, double) override;
+    std::shared_ptr<Entity> shout(double, double) override;
     Coordinates update();
 
-    void fixdebuff(double d) override;
+    void removeBuff() override;
+
+    bool isHorizontal() const;
+
+    void setHorizontal(bool horizontal);
 
 private:
-    int moveing = 0;
     int move = 0;
+    bool horizontal = false;
 };
 
 

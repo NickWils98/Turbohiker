@@ -21,7 +21,7 @@ bool Collider::CheckCollision(std::shared_ptr<Entity> first, std::shared_ptr<Ent
     double deltaY = otherPosition.y - thisPosition.y;
 
     double intersectY = abs(deltaY) - (otherHalfSize.y + thisHalfSize.y);
-    return first->getMylane() == other->getMylane() && intersectY < 0.0f;
+    return first->getMyLane() == other->getMyLane() && intersectY < 0.0f;
 }
 
 
@@ -38,12 +38,12 @@ bool Collider::checklaneswitch(std::shared_ptr<Entity> first, std::shared_ptr<En
 
     if(intersectY < 0.0f){
         if(left){
-            if(first->getMylane()-1==other->getMylane()){
+            if(first->getMyLane() - 1 == other->getMyLane()){
                 return false;
             }
         }
         else{
-            if(first->getMylane()+1==other->getMylane()){
+            if(first->getMyLane() + 1 == other->getMyLane()){
                 return false;
             }
         }
@@ -63,25 +63,25 @@ std::vector<double> Collider::CollisionDetection(std::shared_ptr<Entity> first, 
     double intersectY = abs(deltaY) - (otherHalfSize.y + thisHalfSize.y);
     double firstret = 0;
     double otherret = 0;
-    if(CheckCollision(first, other)){
+    if(first->getMyLane() == other->getMyLane() && intersectY < 0.0f){
 
-        firstret = intersectY * (first->getHeavynes()/(other->getHeavynes()+first->getHeavynes()));
-        otherret = intersectY * (other->getHeavynes()/(other->getHeavynes()+first->getHeavynes()));
-        if(first->isSlowdown() and !other->isGottrough()){
-            other->setDebuff(true);
+        firstret = intersectY * (first->getHeaviness() / (other->getHeaviness() + first->getHeaviness()));
+        otherret = intersectY * (other->getHeaviness() / (other->getHeaviness() + first->getHeaviness()));
+        if(first->isSlowedDown() and !other->isTransparant()){
+            other->setBuffed(true);
         }
-        if(other->isSlowdown() and !first->isGottrough()){
-            if(!first->isDebuff()) {
+        if(other->isSlowedDown() and !first->isTransparant()){
+            if(!first->isBuffed()) {
                 first->setMaxspeed(first->getMaxSpeed()/2);
-                first->setDebuff(true);
+                first->setBuffed(true);
                 first->setDebufftimer(timer+5000000);
 
             }
         }
-        if(first->isGottrough()){
+        if(first->isTransparant()){
 
             return {0,0};
-        } else if(other->isGottrough()){
+        } else if(other->isTransparant()){
 
 
             return {0,0};
@@ -91,17 +91,12 @@ std::vector<double> Collider::CollisionDetection(std::shared_ptr<Entity> first, 
             first->Move(0.0f, firstret);
             other->Move(0.0f, otherret);
 
-            //object->setHit(0,1);
-            //other.object->setHit(0,-1);
         } else{
             firstret *= -1;
             first->Move(0.0f, firstret);
             other->Move(0.0f, otherret);
 
-            //object->setHit(0,-1);
-            //other.object->setHit(0,1);
         }
-        //}
 
         return {firstret, otherret};
     }

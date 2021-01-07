@@ -20,12 +20,12 @@ std::shared_ptr<Hiker> VerminFactory::createHiker(Coordinates size, Coordinates 
     std::shared_ptr<Hiker> player = std::make_shared<PassingSFML>(PassingSFML(window, texture, sfmlsize, sfmlposition, view));
     player->setPosition(position.x, position.y);
     player->setSize(size.x+4, size.y+3);
-    player->setHeavynes(0);
-    player->setGottrough(true);
-    player->setSlowdown(true);
-    player->setSpeed(70);
+    player->setHeaviness(0);
+    player->setTransparant(true);
+    player->setSlowedDown(true);
+    player->setSpeedv(70);
     player->setMaxspeed(70);
-    player->setIsobstacle(true);
+    player->setObstacle(true);
     return player;
 
 }

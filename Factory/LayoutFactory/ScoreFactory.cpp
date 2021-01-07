@@ -24,7 +24,7 @@ std::shared_ptr<Entity> ScoreFactory::createProp(Coordinates size, Coordinates p
     std::shared_ptr<Entity> player = std::make_shared<TextFieldSFML>(TextFieldSFML(window, color, sfmlposition, text, font, toupdate));
     player->setPosition(position.x, position.y);
     player->setSize(size.x+4, size.y+3);
-    player->setHeavynes(1);
-    player->setGottrough(true);
+    player->setHeaviness(1);
+    player->setTransparant(true);
     return player;
 }

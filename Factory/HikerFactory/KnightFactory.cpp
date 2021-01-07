@@ -17,12 +17,12 @@ std::shared_ptr<Hiker> KnightFactory::createHiker(Coordinates size, Coordinates 
     Coordinates p = t->logic_to_pixles(position.x, position.y);
     sf::Vector2f sfmlposition = sf::Vector2f(p.x,p.y);
 
-    std::shared_ptr<Hiker> player = std::make_shared<PassingSFML>(PassingSFML(window, texture, sfmlsize, sfmlposition, view));
+    std::shared_ptr<HikerPassing> player = std::make_shared<PassingSFML>(PassingSFML(window, texture, sfmlsize, sfmlposition, view));
     player->setPosition(position.x, position.y);
     player->setSize(size.x+4, size.y+3);
-    player->setHeavynes(0);
+    player->setHeaviness(0);
     player->setHorizontal(true);
-    player->setIsobstacle(true);
+    player->setObstacle(true);
 
     return player;
 

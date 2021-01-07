@@ -5,26 +5,24 @@
 #include "HikerPlayer.h"
 
 void HikerPlayer::speedup(int speedup, int speedh) {
-    int currentSpeed = getSpeed();
-    double x = (getOldtimer())*20;
-//    std::cout<<x<<std::endl;
+    int currentSpeed = getSpeedv();
     if(speedup==0){
         if(currentSpeed>0){
 
-            currentSpeed -= 1*(getOldtimer()*20);
+            currentSpeed -= 1*(getDeltaTimer() * 20);
         } else if(currentSpeed<0){
 
-            currentSpeed += 1*(getOldtimer()*20);
+            currentSpeed += 1*(getDeltaTimer() * 20);
         }
     }
     if(speedup>0 and 0 >currentSpeed){
-        currentSpeed +=2*(getOldtimer()*20);
+        currentSpeed +=2*(getDeltaTimer() * 20);
     }
     if(speedup<0 and 0<currentSpeed){
-        currentSpeed -=2*(getOldtimer()*20);
+        currentSpeed -=2*(getDeltaTimer() * 20);
     }
-    currentSpeed+= speedup*(getOldtimer()*20);
-    setSpeed(currentSpeed);
+    currentSpeed+= speedup*(getDeltaTimer() * 20);
+    setSpeedv(currentSpeed);
     setSpeedh(speedh);
 }
 
@@ -32,53 +30,45 @@ HikerPlayer::HikerPlayer() {
 
 }
 
-std::shared_ptr<Entity> HikerPlayer::shout(double timer, double start, double length) {
-//    if(timer>lockedtimer){
-//        shoutlock = false;
-//
-//    }
+std::shared_ptr<Entity> HikerPlayer::shout(double start, double length) {
     if(!isShoutlock()){
         setShoutlock(true);
-        std::shared_ptr<Entity> b = getFact()->createProp(Coordinates(getSize().x - 4, getSize().y - 3), Coordinates(start + length * getMylane(), getPosition().y - 0.5));
-        setBalloon(b);
-        setLockedtimer(timer+2000000);
-        setHasballoon(true);
+        std::shared_ptr<Entity> b = getFact()->createProp(Coordinates(getSize().x - 4, getSize().y - 3), Coordinates(start + length *
+                                                                                                                                     getMyLane(), getPosition().y - 0.5));
+        setTextBubble(b);
+        setLockedtimer(getTimer()+2000000);
+        setHasTextBubble(true);
         return b;
     }
     return nullptr;
 }
 Coordinates HikerPlayer::update() {
     if(getSpeedh()>0){
-        if(getMylane()<getLanes()){
-            setMylane(getMylane()+1);
+        if(getMyLane() < getLanes()){
+            setMyLane(getMyLane() + 1);
             move+= 1;
         }
     } else if(getSpeedh()<0){
-        if(getMylane()!=0){
-            setMylane(getMylane()-1);
+        if(getMyLane() != 0){
+            setMyLane(getMyLane() - 1);
             move-= 1;
         }
     }
-
-    if(getSpeed()>0){
-        int x = 5;
-    }
     Coordinates pos = getPosition();
-    double zer = pos.y-0.01*getSpeed();
-    pos.y -= 0.0005*getSpeed()*(getOldtimer()*20);
+    pos.y -= 0.0005 * getSpeedv() * (getDeltaTimer() * 20);
     if(pos.y>3){
         pos.y = 3;
     }
     setPosition(pos);
 
-    Coordinates toreturn = Coordinates(-move, 0.005 * getSpeed() * (getOldtimer() * 20));
+    Coordinates toreturn = Coordinates(-move, 0.005 * getSpeedv() * (getDeltaTimer() * 20));
     move = 0;
     return toreturn;
 }
 
-void HikerPlayer::fixdebuff(double timer) {
-    if(getDebufftimer()<timer){
-        setDebuff(false);
+void HikerPlayer::removeBuff() {
+    if(getBuffedTimer() < getTimer()){
+        setBuffed(false);
         setMaxspeed(getMaxSpeed()*2);
     }
 }

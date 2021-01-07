@@ -13,10 +13,10 @@ public:
     HikerEnemy();
 
     void speedup(int, int) override;
-    std::shared_ptr<Entity> shout(double, double, double) override;
+    std::shared_ptr<Entity> shout(double, double) override;
     Coordinates update() override;
 
-    void fixdebuff(double d) override;
+    void removeBuff() override;
 
 private:
     int move = 0;

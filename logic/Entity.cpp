@@ -21,15 +21,15 @@ void Entity::setSize(double x, double y) {
     size.y = y;
 }
 
-double Entity::getSpeed() const {
+double Entity::getSpeedv() const {
     return speedv;
 }
 
-void Entity::setSpeed(double s) {
-    if(maxspeed>=s and -maxspeed/2<=s ){
+void Entity::setSpeedv(double s) {
+    if(maxspeed >= s and -maxspeed / 2 <= s ){
         speedv = s;
     } else{
-        if( maxspeed<s){
+        if(maxspeed < s){
             speedv = maxspeed;
         } else{
             speedv = -maxspeed/2;
@@ -49,12 +49,12 @@ Coordinates Entity::GetHalfSize() const {
     return halfsize;
 }
 
-int Entity::getMylane() const {
-    return mylane;
+int Entity::getMyLane() const {
+    return myLane;
 }
 
-void Entity::setMylane(int l) {
-    Entity::mylane = l;
+void Entity::setMyLane(int l) {
+    Entity::myLane = l;
 }
 
 int Entity::getSpeedh() const {
@@ -65,88 +65,88 @@ void Entity::setSpeedh(int s) {
     Entity::speedh = s;
 }
 
-double Entity::getHeavynes() const {
-    return heavynes;
+double Entity::getHeaviness() const {
+    return heaviness;
 }
 
-void Entity::setHeavynes(double h) {
-    Entity::heavynes = h;
+void Entity::setHeaviness(double h) {
+    Entity::heaviness = h;
 }
 
-bool Entity::isGottrough() const {
-    return gottrough;
+bool Entity::isTransparant() const {
+    return transparant;
 }
 
-void Entity::setGottrough(bool g) {
-    Entity::gottrough = g;
+void Entity::setTransparant(bool g) {
+    Entity::transparant = g;
 }
 
-bool Entity::isSlowdown() const {
-    return slowdown;
+bool Entity::isSlowedDown() const {
+    return slowedDown;
 }
 
-void Entity::setSlowdown(bool s) {
-    Entity::slowdown = s;
+void Entity::setSlowedDown(bool s) {
+    Entity::slowedDown = s;
 }
 
-bool Entity::isHasballoon() const {
-    return hasballoon;
+bool Entity::isHasTextBubble() const {
+    return hasTextBubble;
 }
 
-void Entity::setHasballoon(bool b) {
-    Entity::hasballoon = b;
+void Entity::setHasTextBubble(bool b) {
+    Entity::hasTextBubble = b;
 }
 
-const std::shared_ptr<Entity> &Entity::getBalloon() const {
-    return balloon;
+const std::shared_ptr<Entity> &Entity::getTextBubble() const {
+    return textBubble;
 }
 
-void Entity::setBalloon(const std::shared_ptr<Entity> &b) {
-    Entity::balloon = b;
+void Entity::setTextBubble(const std::shared_ptr<Entity> &balloon) {
+    Entity::textBubble = balloon;
 }
 
-bool Entity::isDebuff() const {
-    return debuff;
+bool Entity::isBuffed() const {
+    return buffed;
 }
 
-void Entity::setDebuff(bool b) {
-    Entity::debuff = b;
+void Entity::setBuffed(bool b) {
+    Entity::buffed = b;
 }
 
-double Entity::getDebufftimer() const {
-    return debufftimer;
+double Entity::getBuffedTimer() const {
+    return buffedTimer;
 }
 
 void Entity::setDebufftimer(double bt) {
-    Entity::debufftimer = bt;
+    Entity::buffedTimer = bt;
 }
 
 void Entity::setMaxspeed(double ms) {
     Entity::maxspeed = ms;
 }
 
-double Entity::getLock() const {
-    return lock;
+double Entity::getTimeLock() const {
+    return timeLock;
 }
 
-void Entity::setLock(double l) {
-    Entity::lock = l;
+void Entity::setTimeLock(double l) {
+    Entity::timeLock = l;
 }
 
-bool Entity::isLocked() const {
-    return locked;
+bool Entity::isTimeLocked() const {
+    return timeLocked;
 }
 
-void Entity::setLocked(bool l) {
-    Entity::locked = l;
+void Entity::setTimeLocked(bool l) {
+    Entity::timeLocked = l;
 }
 
-bool Entity::isWannashout() const {
-    return wannashout;
+bool Entity::isWantToShout() const {
+    return wantToShout;
 }
 
-void Entity::setWannashout(bool ws) {
-    Entity::wannashout = ws;
+void Entity::setWantToShout(bool ws) {
+    Entity::wantToShout = ws;
 }
 
 double Entity::getTimer() const {
@@ -157,20 +157,20 @@ void Entity::setTimer(double t) {
     Entity::timer = t;
 }
 
-bool Entity::isIsobstacle() const {
-    return isobstacle;
+bool Entity::isObstacle() const {
+    return obstacle;
 }
 
-void Entity::setIsobstacle(bool o) {
-    Entity::isobstacle = o;
+void Entity::setObstacle(bool o) {
+    Entity::obstacle = o;
 }
 
-double Entity::getOldtimer() const {
-    return oldtimer;
+double Entity::getDeltaTimer() const {
+    return deltaTime;
 }
 
-void Entity::setOldtimer(double ot) {
-    Entity::oldtimer = ot;
+void Entity::setDeltaTimer(double ot) {
+    Entity::deltaTime = ot;
 }
 
 int Entity::getScore() const {
@@ -182,13 +182,13 @@ void Entity::setScore(int s) {
     subject->setScore(s);
 }
 
-const std::string &Entity::getScoring() const {
-    return scoring;
+const std::string &Entity::getScoreText() const {
+    return scoreText;
 }
 
-void Entity::setScoring(const int &s) {
+void Entity::setScoreText(const int &s) {
     std::string s_text = std::to_string(s);
-    Entity::scoring = s_text;
+    Entity::scoreText = s_text;
 }
 
 bool Entity::isEnemy() const {
@@ -199,3 +199,13 @@ void Entity::setEnemy(bool e) {
     Entity::enemy = e;
 }
 
+Entity::Entity() {
+    subject = std::make_shared<Scoring>();
+    std::shared_ptr<Observer> o = std::make_shared<Client>();
+    subject->registerObserver(o);
+    observer.push_back(o);
+}
+
+void Entity::Move(double dx, double dy) {
+    setPosition(getPosition().x + dx, getPosition().y + dy);
+}

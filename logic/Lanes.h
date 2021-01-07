@@ -14,15 +14,17 @@ public:
 
     Coordinates update() override { return Coordinates(0, 0); };
 
-    bool updateVisuals(Coordinates s) override {};
+    void updateVisuals(Coordinates s) override {};
 
-    virtual void movetoview(double) = 0;
+    virtual void moveToView(double) = 0;
 
     void speedup(int, int) override {};
 
-    void fixdebuff(double) override {};
+    void removeBuff() override {};
 
-    std::shared_ptr<Entity> shout(double d, double e, double g) override {
+    std::shared_ptr<Entity> removeShout(bool force) override {return nullptr;};
+
+    std::shared_ptr<Entity> shout(double e, double g) override {
         return nullptr;
     }
 };

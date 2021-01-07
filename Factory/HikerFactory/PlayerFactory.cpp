@@ -22,7 +22,7 @@ std::shared_ptr<Hiker> PlayerFactory::createHiker(Coordinates size, Coordinates 
     player->setPosition(position.x, position.y);
     player->setSize(size.x+4, size.y+3);
 
-    player->setHeavynes(0.5);
+    player->setHeaviness(0.5);
     player->setFact(fact);
     return player;
 }

@@ -4,20 +4,16 @@
 
 #include "HikerPassing.h"
 
-HikerPassing::HikerPassing() {}
+HikerPassing::HikerPassing() = default;
 
 void HikerPassing::speedup(int v, int h) {
 
 }
 
-std::shared_ptr<Entity> HikerPassing::shout(double timer, double start, double length) {
-//    if(timer>lockedtimer){
-//        shoutlock = false;
-//
-//    }
+std::shared_ptr<Entity> HikerPassing::shout(double start, double length) {
     std::shared_ptr<RandomeNumber> r = r->getInstance();
     int percent = r->getintpercent();
-    if(isHorizontal()){
+    if(horizontal){
         if(percent<=25){
             setSpeedh(-1);
         } else if(percent<=50){
@@ -25,27 +21,27 @@ std::shared_ptr<Entity> HikerPassing::shout(double timer, double start, double l
         }
     } else{
         if(percent<=50){
-            if(!isDebuff()) {
-                setDebufftimer(timer + 5000000);
-                setDebuff(true);
+            if(!isBuffed()) {
+                setDebufftimer(getTimer() + 5000000);
+                setBuffed(true);
                 setMaxspeed(getMaxSpeed()*2);
-                setSpeed(getMaxSpeed());
+                setSpeedv(getMaxSpeed());
             }
         }
     }
     return nullptr;
 }
 Coordinates HikerPassing::update() {
-    if(isHorizontal()){
+    if(horizontal){
         if(getSpeedh()!=0){
             if(getSpeedh()>0){
-                if(getMylane()<getLanes()){
-                    setMylane(getMylane()+1);
+                if(getMyLane() < getLanes()){
+                    setMyLane(getMyLane() + 1);
                     move+= 1;
                 }
             } else if(getSpeedh()<0){
-                if(getMylane()!=0){
-                    setMylane(getMylane()-1);
+                if(getMyLane() != 0){
+                    setMyLane(getMyLane() - 1);
                     move-= 1;
                 }
             }
@@ -54,20 +50,24 @@ Coordinates HikerPassing::update() {
     } else {
 
         Coordinates pos = getPosition();
-        double zer = pos.y - 0.01 * getSpeed();
-        pos.y -= 0.0005 * getSpeed()*(getOldtimer()*20);
+        double zer = pos.y - 0.01 * getSpeedv();
+        pos.y -= 0.0005 * getSpeedv() * (getDeltaTimer() * 20);
         setPosition(pos);
     }
 
-    Coordinates toreturn = Coordinates(-move, 0.005 * getSpeed() * (getOldtimer() * 20));
+    Coordinates toreturn = Coordinates(-move, 0.005 * getSpeedv() * (getDeltaTimer() * 20));
     move = 0;
     return toreturn;
 }
 
-void HikerPassing::fixdebuff(double timer) {
-    if(getDebufftimer()<timer){
-        setDebuff(false);
+void HikerPassing::removeBuff() {
+    if(getBuffedTimer() < getTimer()){
+        setBuffed(false);
         setMaxspeed(getMaxSpeed()/2);
-        setSpeed(getMaxSpeed());
+        setSpeedv(getMaxSpeed());
     }
+}
+
+void HikerPassing::setHorizontal(bool horizontal) {
+    HikerPassing::horizontal = horizontal;
 }
