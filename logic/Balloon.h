@@ -7,6 +7,7 @@
 
 
 #include "Entity.h"
+
 namespace turbohiker {
     class Balloon : public Entity {
     public:

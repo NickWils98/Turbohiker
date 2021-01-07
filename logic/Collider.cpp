@@ -3,6 +3,7 @@
 //
 
 #include "Collider.h"
+
 namespace turbohiker {
     bool Collider::CheckCollision(const std::shared_ptr<Entity> &first, const std::shared_ptr<Entity> &other) {
         Coordinates otherPosition = other->getPosition();

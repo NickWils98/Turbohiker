@@ -3,6 +3,7 @@
 //
 
 #include "Game.h"
+
 namespace turbohikerSFML {
     Game::Game()
             : window(sf::VideoMode(1088, 600), "Turbohiker", sf::Style::Close | sf::Style::Resize),
@@ -140,20 +141,22 @@ namespace turbohikerSFML {
         std::shared_ptr<sf::Texture> SpeechBubbleTexture = std::make_shared<sf::Texture>();
         SpeechBubbleTexture->loadFromFile("./../res/textbubble.png");
         textures.push_back(SpeechBubbleTexture);
-        std::shared_ptr<turbohiker::LayoutFactory> speechBubble = std::make_shared<SpeechBubbleFactory>(window, SpeechBubbleTexture,
-                                                                                            view);
+        std::shared_ptr<turbohiker::LayoutFactory> speechBubble = std::make_shared<SpeechBubbleFactory>(window,
+                                                                                                        SpeechBubbleTexture,
+                                                                                                        view);
 
 
         std::shared_ptr<sf::Texture> playerTexture = std::make_shared<sf::Texture>();
         playerTexture->loadFromFile("./../res/player.png");
         textures.push_back(playerTexture);
         std::shared_ptr<turbohiker::HikerFactory> player = std::make_shared<PlayerFactory>(window, playerTexture, view,
-                                                                               speechBubble);
+                                                                                           speechBubble);
 
         std::shared_ptr<sf::Texture> enemyTexture = std::make_shared<sf::Texture>();
         enemyTexture->loadFromFile("./../res/enemy.png");
         textures.push_back(enemyTexture);
-        std::shared_ptr<turbohiker::HikerFactory> enemy = std::make_shared<EnemyFactory>(window, enemyTexture, view, speechBubble);
+        std::shared_ptr<turbohiker::HikerFactory> enemy = std::make_shared<EnemyFactory>(window, enemyTexture, view,
+                                                                                         speechBubble);
 
         std::vector<std::shared_ptr<turbohiker::HikerFactory>> hikers;
         hikers.push_back(player);
@@ -182,10 +185,12 @@ namespace turbohikerSFML {
                 LineFactory(window, sf::Color::White, view, true));
         std::shared_ptr<turbohiker::LayoutFactory> endlLine = std::make_shared<LineFactory>(
                 LineFactory(window, sf::Color::White, view, false));
-        std::shared_ptr<turbohiker::LayoutFactory> liveScore = std::make_shared<ScoreFactory>(window, sf::Color::White, view,
-                                                                                  "Score:\n", f, true);
-        std::shared_ptr<turbohiker::LayoutFactory> highScore = std::make_shared<ScoreFactory>(window, sf::Color::White, view,
-                                                                                  higscoretext, f, false);
+        std::shared_ptr<turbohiker::LayoutFactory> liveScore = std::make_shared<ScoreFactory>(window, sf::Color::White,
+                                                                                              view,
+                                                                                              "Score:\n", f, true);
+        std::shared_ptr<turbohiker::LayoutFactory> highScore = std::make_shared<ScoreFactory>(window, sf::Color::White,
+                                                                                              view,
+                                                                                              higscoretext, f, false);
         layout.push_back(laneLine);
         layout.push_back(endlLine);
         layout.push_back(liveScore);

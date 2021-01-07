@@ -3,6 +3,7 @@
 //
 
 #include "Transformation.h"
+
 namespace turbohiker {
     std::shared_ptr<Transformation> Transformation::instance = nullptr;
 

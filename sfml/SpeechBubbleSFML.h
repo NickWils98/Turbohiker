@@ -7,6 +7,7 @@
 
 #include <SFML/Graphics.hpp>
 #include "../logic/Balloon.h"
+
 namespace turbohikerSFML {
     class SpeechBubbleSFML : public turbohiker::Balloon {
     public:

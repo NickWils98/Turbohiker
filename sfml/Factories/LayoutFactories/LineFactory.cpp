@@ -3,13 +3,15 @@
 //
 
 #include "LineFactory.h"
+
 namespace turbohikerSFML {
     LineFactory::LineFactory(sf::RenderWindow &w, const sf::Color col, sf::View &v, bool m)
             : view(v), window(w), color(col), movable(m) {
 
     }
 
-    std::shared_ptr<turbohiker::Entity> LineFactory::createProp(turbohiker::Coordinates size, turbohiker::Coordinates position) {
+    std::shared_ptr<turbohiker::Entity>
+    LineFactory::createProp(turbohiker::Coordinates size, turbohiker::Coordinates position) {
         std::shared_ptr<turbohiker::Transformation> t = t->getInstance();
         turbohiker::Coordinates s = t->logic_to_pixles(size.x, size.y);
         sf::Vector2f sfmlsize = sf::Vector2f(static_cast<float>(s.x), static_cast<float>(s.y));

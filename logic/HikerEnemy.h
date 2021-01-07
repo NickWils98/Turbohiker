@@ -7,6 +7,7 @@
 
 
 #include "Hiker.h"
+
 namespace turbohiker {
     class HikerEnemy : public Hiker {
     public:

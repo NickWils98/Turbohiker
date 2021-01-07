@@ -8,6 +8,7 @@
 
 #include "../logic/Lanes.h"
 #include <SFML/Graphics.hpp>
+
 namespace turbohikerSFML {
     class LanesSFML : public turbohiker::Lanes {
     public:

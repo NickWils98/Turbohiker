@@ -3,6 +3,7 @@
 //
 
 #include "ScoreFactory.h"
+
 namespace turbohikerSFML {
     ScoreFactory::ScoreFactory(sf::RenderWindow &w, const sf::Color col, sf::View &v, std::string s,
                                std::shared_ptr<sf::Font> &f, bool u)
@@ -12,7 +13,8 @@ namespace turbohikerSFML {
         toupdate = u;
     }
 
-    std::shared_ptr<turbohiker::Entity> ScoreFactory::createProp(turbohiker::Coordinates size, turbohiker::Coordinates position) {
+    std::shared_ptr<turbohiker::Entity>
+    ScoreFactory::createProp(turbohiker::Coordinates size, turbohiker::Coordinates position) {
         std::shared_ptr<turbohiker::Transformation> t = t->getInstance();
 
         turbohiker::Coordinates p = t->logic_to_pixles(position.x, position.y);

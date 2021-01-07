@@ -9,13 +9,15 @@
 #include "../../../logic/Factories/HikerFactory.h"
 #include <SFML/Graphics.hpp>
 #include "../../EnemySFML.h"
+
 namespace turbohikerSFML {
     class EnemyFactory : public turbohiker::HikerFactory {
     public:
         EnemyFactory(sf::RenderWindow &w, std::shared_ptr<sf::Texture> &t, sf::View &v,
                      const std::shared_ptr<turbohiker::LayoutFactory> &f);
 
-        std::shared_ptr<turbohiker::Hiker> createHiker(turbohiker::Coordinates size, turbohiker::Coordinates position) override;
+        std::shared_ptr<turbohiker::Hiker>
+        createHiker(turbohiker::Coordinates size, turbohiker::Coordinates position) override;
 
 
     private:

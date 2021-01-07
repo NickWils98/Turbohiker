@@ -9,6 +9,7 @@
 #include <vector>
 #include "../Entity.h"
 #include "../Singletons/Transformation.h"
+
 namespace turbohiker {
     class LayoutFactory {
     public:

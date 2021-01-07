@@ -1,4 +1,4 @@
-#include "Game.h"
+#include "sfml/Game.h"
 
 int main() {
     bool rungame = true;

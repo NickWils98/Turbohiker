@@ -9,6 +9,7 @@
 #include <tuple>
 #include <memory>
 #include "../Coordinates.h"
+
 namespace turbohiker {
     class Transformation {
         static std::shared_ptr<Transformation> instance;

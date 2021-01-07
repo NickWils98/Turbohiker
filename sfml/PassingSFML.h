@@ -8,6 +8,7 @@
 
 #include "../logic/HikerPassing.h"
 #include "HikerSFML.h"
+
 namespace turbohikerSFML {
     class PassingSFML : public turbohiker::HikerPassing {
     public:

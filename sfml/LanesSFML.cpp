@@ -3,6 +3,7 @@
 //
 
 #include "LanesSFML.h"
+
 namespace turbohikerSFML {
     LanesSFML::LanesSFML(sf::RenderWindow &w, sf::Color col, sf::Vector2f size, sf::Vector2f position)
             : window(w) {

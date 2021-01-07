@@ -14,6 +14,7 @@
 #include "Observer/SubjectInterface.h"
 #include "Observer/Subject.h"
 #include "Observer/Observer.h"
+
 namespace turbohiker {
     class Entity {
     public:

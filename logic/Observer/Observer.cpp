@@ -3,6 +3,7 @@
 //
 
 #include "Observer.h"
+
 namespace turbohiker {
     void Observer::update(int s) {
         score += s;

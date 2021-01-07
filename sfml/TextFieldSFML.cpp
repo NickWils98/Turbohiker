@@ -3,6 +3,7 @@
 //
 
 #include "TextFieldSFML.h"
+
 namespace turbohikerSFML {
     TextFieldSFML::TextFieldSFML(sf::RenderWindow &w, sf::Color col, sf::Vector2f position, const std::string &s,
                                  const std::shared_ptr<sf::Font> &f, bool u)

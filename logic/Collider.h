@@ -8,6 +8,7 @@
 
 #include <memory>
 #include "Hiker.h"
+
 namespace turbohiker {
     class Collider {
     public:

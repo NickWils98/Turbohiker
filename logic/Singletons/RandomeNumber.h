@@ -9,6 +9,7 @@
 #include<iostream>
 #include<cstdlib>
 #include <memory>
+
 namespace turbohiker {
     class RandomeNumber {
         std::random_device rd;

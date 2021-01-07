@@ -3,6 +3,7 @@
 //
 
 #include "HikerEnemy.h"
+
 namespace turbohiker {
     void HikerEnemy::speedup(int speedv, int speedh) {
 //  speedv 1 if obstacle in front else 0

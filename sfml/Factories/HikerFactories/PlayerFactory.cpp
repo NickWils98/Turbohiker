@@ -3,6 +3,7 @@
 //
 
 #include "PlayerFactory.h"
+
 namespace turbohikerSFML {
     PlayerFactory::PlayerFactory(sf::RenderWindow &w, std::shared_ptr<sf::Texture> &t, sf::View &v,
                                  const std::shared_ptr<turbohiker::LayoutFactory> &f)
@@ -12,7 +13,8 @@ namespace turbohikerSFML {
         fact = f;
     }
 
-    std::shared_ptr<turbohiker::Hiker> PlayerFactory::createHiker(turbohiker::Coordinates size, turbohiker::Coordinates position) {
+    std::shared_ptr<turbohiker::Hiker>
+    PlayerFactory::createHiker(turbohiker::Coordinates size, turbohiker::Coordinates position) {
         std::shared_ptr<turbohiker::Transformation> t = t->getInstance();
         turbohiker::Coordinates s = t->logic_to_pixles(size.x, size.y);
         sf::Vector2f sfmlsize = sf::Vector2f(static_cast<float>(s.x), static_cast<float>(s.y));

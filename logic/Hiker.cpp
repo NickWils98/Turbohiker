@@ -3,6 +3,7 @@
 //
 
 #include "Hiker.h"
+
 namespace turbohiker {
     void Hiker::moveToView(double moved) {
         Coordinates pos = getPosition();

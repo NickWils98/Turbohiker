@@ -9,19 +9,19 @@
 #include <fstream>
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include "logic/Singletons/Transformation.h"
-#include "logic/Singletons/RandomeNumber.h"
-#include "logic/Entity.h"
-#include "logic/World.h"
-#include "sfml/HikerSFML.h"
-#include "sfml/Factories/HikerFactories/PlayerFactory.h"
-#include "logic/Factories/HikerFactory.h"
-#include "sfml/Factories/HikerFactories/EnemyFactory.h"
-#include "sfml/Factories/HikerFactories/KnightFactory.h"
-#include "sfml/Factories/LayoutFactories/LineFactory.h"
-#include "sfml/Factories/HikerFactories/VerminFactory.h"
-#include "sfml/Factories/LayoutFactories/SpeechBubbleFactory.h"
-#include "sfml/Factories/LayoutFactories/ScoreFactory.h"
+#include "../logic/Singletons/Transformation.h"
+#include "../logic/Singletons/RandomeNumber.h"
+#include "../logic/Entity.h"
+#include "../logic/World.h"
+#include "HikerSFML.h"
+#include "Factories/HikerFactories/PlayerFactory.h"
+#include "../logic/Factories/HikerFactory.h"
+#include "Factories/HikerFactories/EnemyFactory.h"
+#include "Factories/HikerFactories/KnightFactory.h"
+#include "Factories/LayoutFactories/LineFactory.h"
+#include "Factories/HikerFactories/VerminFactory.h"
+#include "Factories/LayoutFactories/SpeechBubbleFactory.h"
+#include "Factories/LayoutFactories/ScoreFactory.h"
 
 namespace turbohikerSFML {
     class Game {

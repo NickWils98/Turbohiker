@@ -7,6 +7,7 @@
 
 #include "../logic/ScoreTextField.h"
 #include <SFML/Graphics.hpp>
+
 namespace turbohikerSFML {
     class TextFieldSFML : public turbohiker::ScoreTextField {
     public:

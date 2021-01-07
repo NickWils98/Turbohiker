@@ -3,6 +3,7 @@
 //
 
 #include "HikerPlayer.h"
+
 namespace turbohiker {
     void HikerPlayer::speedup(int speedup, int speedh) {
         double currentSpeed = getSpeedv();

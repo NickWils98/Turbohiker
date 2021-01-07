@@ -8,12 +8,14 @@
 #include "../../../logic/Factories/LayoutFactory.h"
 #include "../../LanesSFML.h"
 #include <SFML/Graphics.hpp>
+
 namespace turbohikerSFML {
     class LineFactory : public turbohiker::LayoutFactory {
     public:
         LineFactory(sf::RenderWindow &w, sf::Color col, sf::View &v, bool m);
 
-        std::shared_ptr<turbohiker::Entity> createProp(turbohiker::Coordinates size, turbohiker::Coordinates position) override;
+        std::shared_ptr<turbohiker::Entity>
+        createProp(turbohiker::Coordinates size, turbohiker::Coordinates position) override;
 
 
     private:

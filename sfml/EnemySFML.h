@@ -8,6 +8,7 @@
 
 #include "HikerSFML.h"
 #include "../logic/HikerEnemy.h"
+
 namespace turbohikerSFML {
     class EnemySFML : public turbohiker::HikerEnemy {
     public:

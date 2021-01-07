@@ -3,6 +3,7 @@
 //
 
 #include "Subject.h"
+
 namespace turbohiker {
     void Subject::registerObserver(std::shared_ptr<ObserverInterface> &observer) {
         observers.push_back(observer);

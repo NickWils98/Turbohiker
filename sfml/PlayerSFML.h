@@ -8,6 +8,7 @@
 
 #include "../logic/HikerPlayer.h"
 #include "HikerSFML.h"
+
 namespace turbohikerSFML {
     class PlayerSFML : public turbohiker::HikerPlayer {
     public:

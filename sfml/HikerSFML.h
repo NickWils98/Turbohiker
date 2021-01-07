@@ -8,6 +8,7 @@
 #include <SFML/Graphics.hpp>
 #include <memory>
 #include "../logic/Singletons/Transformation.h"
+
 namespace turbohikerSFML {
     class HikerSFML {
     public:

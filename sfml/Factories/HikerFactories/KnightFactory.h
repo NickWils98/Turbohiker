@@ -8,12 +8,14 @@
 #include "../../../logic/Factories/HikerFactory.h"
 #include <SFML/Graphics.hpp>
 #include "../../PassingSFML.h"
+
 namespace turbohikerSFML {
     class KnightFactory : public turbohiker::HikerFactory {
     public:
         KnightFactory(sf::RenderWindow &w, std::shared_ptr<sf::Texture> &t, sf::View &v);
 
-        std::shared_ptr<turbohiker::Hiker> createHiker(turbohiker::Coordinates size, turbohiker::Coordinates position) override;
+        std::shared_ptr<turbohiker::Hiker>
+        createHiker(turbohiker::Coordinates size, turbohiker::Coordinates position) override;
 
     private:
         sf::RenderWindow &window;

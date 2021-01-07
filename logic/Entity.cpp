@@ -3,6 +3,7 @@
 //
 
 #include "Entity.h"
+
 namespace turbohiker {
     Entity::Entity() {
         subject = std::make_shared<Subject>();

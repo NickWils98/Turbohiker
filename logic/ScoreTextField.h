@@ -6,6 +6,7 @@
 #define TURBOHIKER_SCORETEXTFIELD_H
 
 #include "Entity.h"
+
 namespace turbohiker {
     class ScoreTextField : public Entity {
     public:
