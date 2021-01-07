@@ -6,9 +6,9 @@
 #define TURBOHIKER_ENEMYFACTORY_H
 
 
-#include "../../logic/Factories/HikerFactory.h"
+#include "../../../logic/Factories/HikerFactory.h"
 #include <SFML/Graphics.hpp>
-#include "../../sfml/EnemySFML.h"
+#include "../../EnemySFML.h"
 namespace turbohikerSFML {
     class EnemyFactory : public turbohiker::HikerFactory {
     public:

@@ -5,9 +5,9 @@
 #ifndef TURBOHIKER_KNIGHTFACTORY_H
 #define TURBOHIKER_KNIGHTFACTORY_H
 
-#include "../../logic/Factories/HikerFactory.h"
+#include "../../../logic/Factories/HikerFactory.h"
 #include <SFML/Graphics.hpp>
-#include "../../sfml/PassingSFML.h"
+#include "../../PassingSFML.h"
 namespace turbohikerSFML {
     class KnightFactory : public turbohiker::HikerFactory {
     public:

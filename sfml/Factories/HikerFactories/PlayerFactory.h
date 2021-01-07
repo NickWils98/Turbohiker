@@ -5,9 +5,9 @@
 #ifndef TURBOHIKER_PLAYERFACTORY_H
 #define TURBOHIKER_PLAYERFACTORY_H
 
-#include "../../logic/Factories/HikerFactory.h"
+#include "../../../logic/Factories/HikerFactory.h"
 #include <SFML/Graphics.hpp>
-#include "../../sfml/PlayerSFML.h"
+#include "../../PlayerSFML.h"
 namespace turbohikerSFML {
     class PlayerFactory : public turbohiker::HikerFactory {
     public:

@@ -5,8 +5,8 @@
 #ifndef TURBOHIKER_SPEECHBUBBLEFACTORY_H
 #define TURBOHIKER_SPEECHBUBBLEFACTORY_H
 
-#include "../../logic/Factories/LayoutFactory.h"
-#include "../../sfml/SpeechBubbleSFML.h"
+#include "../../../logic/Factories/LayoutFactory.h"
+#include "../../SpeechBubbleSFML.h"
 #include <SFML/Graphics.hpp>
 namespace turbohikerSFML {
     class SpeechBubbleFactory : public turbohiker::LayoutFactory {

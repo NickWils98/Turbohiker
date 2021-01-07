@@ -5,8 +5,8 @@
 #ifndef TURBOHIKER_LINEFACTORY_H
 #define TURBOHIKER_LINEFACTORY_H
 
-#include "../../logic/Factories/LayoutFactory.h"
-#include "../../sfml/LanesSFML.h"
+#include "../../../logic/Factories/LayoutFactory.h"
+#include "../../LanesSFML.h"
 #include <SFML/Graphics.hpp>
 namespace turbohikerSFML {
     class LineFactory : public turbohiker::LayoutFactory {

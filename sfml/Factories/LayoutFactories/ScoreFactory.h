@@ -5,8 +5,8 @@
 #ifndef TURBOHIKER_SCOREFACTORY_H
 #define TURBOHIKER_SCOREFACTORY_H
 
-#include "../../logic/Factories/LayoutFactory.h"
-#include "../../sfml/TextFieldSFML.h"
+#include "../../../logic/Factories/LayoutFactory.h"
+#include "../../TextFieldSFML.h"
 #include <SFML/Graphics.hpp>
 namespace turbohikerSFML {
     class ScoreFactory : public turbohiker::LayoutFactory {

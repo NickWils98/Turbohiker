@@ -14,14 +14,14 @@
 #include "logic/Entity.h"
 #include "logic/World.h"
 #include "sfml/HikerSFML.h"
-#include "Factory/HikerFactory/PlayerFactory.h"
+#include "sfml/Factories/HikerFactories/PlayerFactory.h"
 #include "logic/Factories/HikerFactory.h"
-#include "Factory/HikerFactory/EnemyFactory.h"
-#include "Factory/HikerFactory/KnightFactory.h"
-#include "Factory/LayoutFactory/LineFactory.h"
-#include "Factory/HikerFactory/VerminFactory.h"
-#include "Factory/LayoutFactory/SpeechBubbleFactory.h"
-#include "Factory/LayoutFactory/ScoreFactory.h"
+#include "sfml/Factories/HikerFactories/EnemyFactory.h"
+#include "sfml/Factories/HikerFactories/KnightFactory.h"
+#include "sfml/Factories/LayoutFactories/LineFactory.h"
+#include "sfml/Factories/HikerFactories/VerminFactory.h"
+#include "sfml/Factories/LayoutFactories/SpeechBubbleFactory.h"
+#include "sfml/Factories/LayoutFactories/ScoreFactory.h"
 
 namespace turbohikerSFML {
     class Game {
