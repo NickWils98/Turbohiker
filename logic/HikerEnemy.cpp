@@ -81,7 +81,7 @@ std::shared_ptr<Entity> HikerEnemy::shout(double timer, double start, double len
 //    }
     if(!isShoutlock()){
         setShoutlock(true);
-        std::shared_ptr<Entity> b = getFact()->createProp(std::tuple<double, double>(getSize().x-4, getSize().y-3), std::tuple<double, double>(start+length*getMylane(), getPosition().y-0.5));
+        std::shared_ptr<Entity> b = getFact()->createProp(Coordinates(getSize().x - 4, getSize().y - 3), Coordinates(start + length * getMylane(), getPosition().y - 0.5));
         setBalloon(b);
         setLockedtimer(timer+2000000);
         setHasballoon(true);
@@ -89,7 +89,7 @@ std::shared_ptr<Entity> HikerEnemy::shout(double timer, double start, double len
     }
     return nullptr;
 }
-std::tuple<double, double> HikerEnemy::update() {
+Coordinates HikerEnemy::update() {
     if(getSpeedh()>0){
         if(getMylane()<getLanes()){
             setMylane(getMylane()+1);
@@ -105,11 +105,11 @@ std::tuple<double, double> HikerEnemy::update() {
     if(getSpeed()>0){
         int x = 5;
     }
-    coordinats pos = getPosition();
+    Coordinates pos = getPosition();
     double zer = pos.y-0.01*getSpeed();
     pos.y -= 0.0005*getSpeed()*(getOldtimer()*20);
     setPosition(pos);
-    std::tuple<double, double> toreturn = std::make_tuple(-move, 0.005*getSpeed()*(getOldtimer()*20));
+    Coordinates toreturn = Coordinates(-move, 0.005 * getSpeed() * (getOldtimer() * 20));
     move = 0;
     return toreturn;
 }

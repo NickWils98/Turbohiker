@@ -35,7 +35,7 @@ std::shared_ptr<Entity> HikerPassing::shout(double timer, double start, double l
     }
     return nullptr;
 }
-std::tuple<double, double> HikerPassing::update() {
+Coordinates HikerPassing::update() {
     if(isHorizontal()){
         if(getSpeedh()!=0){
             if(getSpeedh()>0){
@@ -53,13 +53,13 @@ std::tuple<double, double> HikerPassing::update() {
         }
     } else {
 
-        coordinats pos = getPosition();
+        Coordinates pos = getPosition();
         double zer = pos.y - 0.01 * getSpeed();
         pos.y -= 0.0005 * getSpeed()*(getOldtimer()*20);
         setPosition(pos);
     }
 
-    std::tuple<double, double> toreturn = std::make_tuple(-move, 0.005*getSpeed()*(getOldtimer()*20));
+    Coordinates toreturn = Coordinates(-move, 0.005 * getSpeed() * (getOldtimer() * 20));
     move = 0;
     return toreturn;
 }

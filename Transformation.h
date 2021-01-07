@@ -8,6 +8,7 @@
 #include <iostream>
 #include <tuple>
 #include <memory>
+#include "logic/Coordinates.h"
 class Transformation {
     static std::shared_ptr<Transformation> instance;
     int window_x = 100;
@@ -24,9 +25,9 @@ public:
         return instance;
     }
 
-    std::tuple<int, int> logic_to_pixles(double x, double y) const;
+    Coordinates logic_to_pixles(double x, double y) const;
 
-    std::tuple<double, double> pixle_to_logic(double x, double y);
+    Coordinates pixle_to_logic(double x, double y);
 
     int logic_to_pixle_y(double y) const;
 

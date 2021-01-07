@@ -15,9 +15,9 @@ public:
 
     virtual void render() = 0;
 
-    std::tuple<double, double> update() override;
+    Coordinates update() override;
 
-    virtual bool updateVisuals(std::tuple<int, int> s) = 0;
+    virtual bool updateVisuals(Coordinates s) = 0;
 
     void movetoview(double d) override;
 

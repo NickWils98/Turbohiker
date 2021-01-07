@@ -4,50 +4,11 @@
 
 #include "Hiker.h"
 
-//void Hiker::updatePlayerv(int speedup) {
-//    //speedup*=2;
-//    int currentSpeed = getSpeed();
-//
-//    if(speedup==0){
-//        if(currentSpeed>0){
-//
-//            currentSpeed -= 0.00001;
-//        } else if(currentSpeed<0){
-//
-//            currentSpeed += 0.000001;
-//        }
-//    }
-//    if(speedup>0 and 0 >currentSpeed){
-//        currentSpeed +=2;
-//    }
-//    if(speedup<0 and 0<currentSpeed){
-//        currentSpeed -=2;
-//    }
-//    currentSpeed+= speedup*0.02;
-//    setSpeed(currentSpeed);
-//
-//}
-//void Hiker::updatePlayerh(int speedh) {
-//    if(speedh>0){
-//        if(getMylane()<lanes){
-//            setMylane(getMylane()+1);
-//            move+= 1;
-//        }
-//    } else if(speedh<0){
-//        if(getMylane()!=0){
-//            setMylane(getMylane()-1);
-//            move-= 1;
-//        }
-//    }
-//
-//}
-
-
 void Hiker::movetoview(double moved) {
     if(moved!=0){
         int f = 8;
     }
-    coordinats pos = getPosition();
+    Coordinates pos = getPosition();
     pos.y -= moved;
     //pos.y = 0;
     setPosition(pos);

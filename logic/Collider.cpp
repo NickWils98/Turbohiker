@@ -13,10 +13,10 @@ Collider::~Collider() {
 }
 
 bool Collider::CheckCollision(std::shared_ptr<Entity> first, std::shared_ptr<Entity> other) {
-    Entity::coordinats otherPosition = other->getPosition();
-    Entity::coordinats otherHalfSize = other->GetHalfSize();
-    Entity::coordinats thisPosition = first->getPosition();
-    Entity::coordinats thisHalfSize = first->GetHalfSize();
+    Coordinates otherPosition = other->getPosition();
+    Coordinates otherHalfSize = other->GetHalfSize();
+    Coordinates thisPosition = first->getPosition();
+    Coordinates thisHalfSize = first->GetHalfSize();
 
     double deltaY = otherPosition.y - thisPosition.y;
 
@@ -27,10 +27,10 @@ bool Collider::CheckCollision(std::shared_ptr<Entity> first, std::shared_ptr<Ent
 
 
 bool Collider::checklaneswitch(std::shared_ptr<Entity> first, std::shared_ptr<Entity> other, bool left) {
-    Entity::coordinats otherPosition = other->getPosition();
-    Entity::coordinats otherHalfSize = other->GetHalfSize();
-    Entity::coordinats thisPosition = first->getPosition();
-    Entity::coordinats thisHalfSize = first->GetHalfSize();
+    Coordinates otherPosition = other->getPosition();
+    Coordinates otherHalfSize = other->GetHalfSize();
+    Coordinates thisPosition = first->getPosition();
+    Coordinates thisHalfSize = first->GetHalfSize();
 
     double deltaY = otherPosition.y - thisPosition.y;
 
@@ -53,10 +53,10 @@ bool Collider::checklaneswitch(std::shared_ptr<Entity> first, std::shared_ptr<En
 
 std::vector<double> Collider::CollisionDetection(std::shared_ptr<Entity> first, std::shared_ptr<Entity> other, double timer) {
 
-    Entity::coordinats otherPosition = other->getPosition();
-    Entity::coordinats otherHalfSize = other->GetHalfSize();
-    Entity::coordinats thisPosition = first->getPosition();
-    Entity::coordinats thisHalfSize = first->GetHalfSize();
+    Coordinates otherPosition = other->getPosition();
+    Coordinates otherHalfSize = other->GetHalfSize();
+    Coordinates thisPosition = first->getPosition();
+    Coordinates thisHalfSize = first->GetHalfSize();
 
     double deltaY = otherPosition.y - thisPosition.y;
 
@@ -108,5 +108,4 @@ std::vector<double> Collider::CollisionDetection(std::shared_ptr<Entity> first, 
 
 
     return {firstret, otherret};
-    return std::vector<double>();
 }

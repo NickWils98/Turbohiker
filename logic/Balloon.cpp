@@ -6,8 +6,8 @@
 
 
 
-std::tuple<double, double> Balloon::update() {
-    return std::tuple<double, double>();
+Coordinates Balloon::update() {
+    return Coordinates{0, 0};
 }
 
 
@@ -21,10 +21,9 @@ void Balloon::speedup(int i, int i1) {
 }
 
 std::shared_ptr<Entity> Balloon::remove_shout(double timer) {
-    return std::shared_ptr<Entity>();
+    return nullptr;
 }
 
 void Balloon::fixdebuff(double d) {
-
 }
 

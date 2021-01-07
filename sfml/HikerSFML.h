@@ -18,7 +18,7 @@ public:
     ~HikerSFML();
 
     void render() ;
-    bool updateVisuals(std::tuple<int, int> s, double);;
+    bool updateVisuals(Coordinates s, double);;
 
 
 private:

@@ -12,7 +12,7 @@
 class SpeechBubbleFactory : public LayoutFactory {
 public:
     SpeechBubbleFactory(sf::RenderWindow& w, std::shared_ptr<sf::Texture> &t, sf::View& v);
-    std::shared_ptr<Entity>  createProp(std::tuple<double, double> size, std::tuple<double, double> position) override;
+    std::shared_ptr<Entity>  createProp(Coordinates size, Coordinates position) override;
 
 private:
     sf::RenderWindow& window;

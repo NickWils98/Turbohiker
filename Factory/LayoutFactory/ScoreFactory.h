@@ -12,7 +12,7 @@
 class ScoreFactory : public LayoutFactory {
 public:
     ScoreFactory(sf::RenderWindow& w, sf::Color col, sf::View& v, std::string s, std::shared_ptr<sf::Font>& f, bool);
-    std::shared_ptr<Entity>  createProp(std::tuple<double, double> size, std::tuple<double, double> position) override;
+    std::shared_ptr<Entity>  createProp(Coordinates size, Coordinates position) override;
 
 
 private:

@@ -5,55 +5,80 @@
 #ifndef TURBOHIKER_GAME_H
 #define TURBOHIKER_GAME_H
 
-#include <SFML/Graphics.hpp>
 #include <memory>
-#include "logic/Entity.h"
-#include "logic/World.h"
-#include "Factory/HikerFactory/PlayerFactory.h"
-#include "Factory/HikerFactory/HikerFactory.h"
+#include <fstream>
+#include <iostream>
+#include <SFML/Graphics.hpp>
 #include "Transformation.h"
 #include "RandomeNumber.h"
-#include <iostream>
-#include <fstream>
+#include "logic/Entity.h"
+#include "logic/World.h"
+#include "sfml/HikerSFML.h"
+#include "Factory/HikerFactory/PlayerFactory.h"
+#include "Factory/HikerFactory/HikerFactory.h"
+#include "Factory/HikerFactory/EnemyFactory.h"
+#include "Factory/HikerFactory/KnightFactory.h"
+#include "Factory/LayoutFactory/LineFactory.h"
+#include "Factory/HikerFactory/VerminFactory.h"
+#include "Factory/LayoutFactory/SpeechBubbleFactory.h"
+#include "Factory/LayoutFactory/ScoreFactory.h"
 
 class Game {
 public:
     Game();
 
-    virtual ~Game();
+    ~Game();
 
     bool run();
 
-    void init();
-
+private:
     void handleEvent();
 
-    std::vector<int> getInput();
+    void handleFrames(std::clock_t beginRound, std::clock_t startTime);
 
-    double moveView(double, double);
+    void init();
 
+    void initBackground();
 
-    void DrawBackground(double);
-    void desperate (int finished, int player);
-    bool restart();
+    void initStartPosition();
+
+    void initObstacles();
+
+    static std::vector<int> getInput();
+
+    static bool restartInput();
+
+    double moveView();
+
+    int calculateViewAdjustment();
+
+    void drawBackground();
+
+    void endLoop(int finished, int player);
+
+    std::vector<sf::Text> getScoreScreen(int placement, int score);
+
     void writeHighscore();
+
     void getHighscores();
+
 private:
     std::shared_ptr<Transformation> t;
-    sf::RenderWindow m_window;
-    sf::View view;
+    std::shared_ptr<RandomeNumber> r;
+
     std::shared_ptr<World> world;
+
+    sf::RenderWindow window;
+    sf::View view;
+
     std::vector<std::shared_ptr<sf::Texture>> textures = {};
-    std::vector<sf::Sprite>backgrounds = {};
+    std::vector<sf::Sprite> backgrounds = {};
     std::vector<std::shared_ptr<sf::Font>> fonts = {};
 
-
-    double deltaTime = 0;
-    std::shared_ptr<RandomeNumber> r;
     int playercount = 0;
-    bool goagain = false;
     std::vector<int> scores;
 
+    bool restartGame = false;
 };
 
 

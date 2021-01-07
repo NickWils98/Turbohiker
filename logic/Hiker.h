@@ -18,12 +18,9 @@ public:
     virtual ~Hiker() = default;
 
     virtual void render() = 0;
-    virtual bool updateVisuals(std::tuple<int, int> s) = 0;
-    void updatePlayerv(int);
-    void updatePlayerh(int);
-    virtual std::tuple<double, double> update() = 0;
+    virtual bool updateVisuals(Coordinates s) = 0;
+    virtual Coordinates update() = 0;
     void movetoview(double) override;
-    virtual double helpcout(){return 0;};
 
     int getLanes() const;
 

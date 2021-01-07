@@ -5,24 +5,21 @@
 #ifndef TURBOHIKER_ENTITY_H
 #define TURBOHIKER_ENTITY_H
 #include <memory>
-#include <tuple>
-#include "ColorLogic.h"
 #include "../Transformation.h"
 #include "../RandomeNumber.h"
 #include "../Subject.h"
 #include "../Scoring.h"
 #include "../Client.h"
+#include "Coordinates.h"
+
 
 class Entity {
 public:
-    struct coordinats {
-        double x = 0;
-        double y = 0;
-    };
-    const coordinats &getPosition() const;
-    const coordinats &getSize() const;
+
+    const Coordinates &getPosition() const;
+    const Coordinates &getSize() const;
     void setPosition(double x, double y);
-    void setPosition(const coordinats &position);
+    void setPosition(const Coordinates &position);
     void setSize(double x, double y);
     double getSpeed() const;
     double getMaxSpeed() const;
@@ -42,15 +39,15 @@ public:
         subject->registerObserver(o);
         observer.push_back( o);
     };
-    coordinats GetHalfSize();
+    Coordinates GetHalfSize() const;
     void Move(double dx, double dy){setPosition(getPosition().x+dx, getPosition().y+dy);};
 
 
     virtual ~Entity() = default;
 
     virtual void render() = 0;
-    virtual std::tuple<double, double> update() = 0;
-    virtual bool updateVisuals(std::tuple<int, int> s) = 0;
+    virtual Coordinates update() = 0;
+    virtual bool updateVisuals(Coordinates s) = 0;
     virtual void movetoview(double) = 0;
     virtual void speedup(int, int) = 0;
     virtual std::shared_ptr<Entity> shout(double, double, double) = 0;
@@ -124,8 +121,8 @@ private:
     std::shared_ptr<Subject> subject;
     std::vector<std::shared_ptr<Observer>> observer;
     int score = 0;
-    coordinats position;
-    coordinats size;
+    Coordinates position{0, 0};
+    Coordinates size{0, 0};
     double maxspeed = 120;
     double speedv = 0;
     int speedh = 0;

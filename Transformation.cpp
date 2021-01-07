@@ -4,7 +4,7 @@
 
 #include "Transformation.h"
 std::shared_ptr<Transformation> Transformation::instance = 0;
-std::tuple<int, int> Transformation::logic_to_pixles(double x, double y) const {
+Coordinates Transformation::logic_to_pixles(double x, double y) const {
     x+=4;
     y+=3;
     x /=8.0;
@@ -17,17 +17,17 @@ std::tuple<int, int> Transformation::logic_to_pixles(double x, double y) const {
     if(y<0){
         y-=0.5;
     }
-    std::tuple<int, int>toreturn = std::make_tuple(x+0.5,y);
+    Coordinates toreturn{x + 0.5, y};
     return toreturn;
 }
-std::tuple<double, double> Transformation::pixle_to_logic(double x, double y) {
+Coordinates Transformation::pixle_to_logic(double x, double y) {
     x/=window_x;
     y/= window_y;
     x *=8;
     y *=6;
     x-=4;
     y-=3;
-    std::tuple<double, double>toreturn = std::make_tuple(x,y);
+    Coordinates toreturn(x, y);
     return toreturn;
 }
 

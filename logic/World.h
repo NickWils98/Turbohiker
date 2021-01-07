@@ -20,13 +20,13 @@
 class World : public Entity {
 public:
     World();
-    virtual ~World() = default;
+    ~World() override = default;
     void remove(std::shared_ptr<Entity> toDel);
-    void render();
-    std::tuple<double, double> update() override;
+    void render() override;
+    Coordinates update() override;
     void add(std::shared_ptr<Entity> obj);
     void addLane(std::vector<std::shared_ptr<HikerFactory>> f, std::vector<std::shared_ptr<LayoutFactory>>l, int amount);
-    bool updateVisuals(std::tuple<int, int> s)override{};
+    bool updateVisuals(Coordinates s)override{};
     double getplayerposy();
     double getplayerspeed();
     double getplayermaxspeed();
@@ -75,7 +75,7 @@ private:
     double firstlane =0;
     double timer;
     std::vector<std::shared_ptr<Entity>> obstacles = {};
-    int tracklength = 86;
+    double tracklength = 86;
     void ObstacleInLane(std::shared_ptr<Entity> e, int);
     bool CheckClosesdObstacleInLane(std::shared_ptr<Entity> e, int);
 

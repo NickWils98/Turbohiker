@@ -20,13 +20,13 @@ void HikerSFML::render() {
     window.draw(body);
 }
 
-bool HikerSFML::updateVisuals(std::tuple<int, int> pos, double posi) {
+bool HikerSFML::updateVisuals(Coordinates pos, double posi) {
     std::shared_ptr<Transformation>t = t->getInstance();
     int oldp = t->logic_to_pixle_y(0);
     int newp = t->logic_to_pixle_y(posi);
     float updatep = (float)newp-(float)oldp;
     body.setPosition(body.getPosition().x, updatep +view.getCenter().y);
-    body.move(std::get<0>(pos),0);
+    body.move(pos.x,0);
     if(body.getPosition().y>window.getSize().y){
         body.setPosition(body.getPosition().x, window.getSize().y);
 //        todo: remove this?

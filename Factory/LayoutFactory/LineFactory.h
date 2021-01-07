@@ -12,7 +12,7 @@
 class LineFactory : public LayoutFactory {
 public:
     LineFactory(sf::RenderWindow& w, sf::Color col, sf::View& v, bool m);
-    std::shared_ptr<Entity>  createProp(std::tuple<double, double> size, std::tuple<double, double> position) override;
+    std::shared_ptr<Entity>  createProp(Coordinates size, Coordinates position) override;
 
 
 private:

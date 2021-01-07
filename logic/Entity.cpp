@@ -3,7 +3,7 @@
 //
 
 #include "Entity.h"
-const Entity::coordinats &Entity::getPosition() const {
+const Coordinates &Entity::getPosition() const {
     return position;
 }
 
@@ -12,7 +12,7 @@ void Entity::setPosition(double x, double y) {
     position.y = y;
 }
 
-const Entity::coordinats &Entity::getSize() const {
+const Coordinates &Entity::getSize() const {
     return size;
 }
 
@@ -36,19 +36,16 @@ void Entity::setSpeed(double s) {
         }
     }
 }
-void Entity::setPosition(const Entity::coordinats &position) {
-    Entity::position = position;
+void Entity::setPosition(const Coordinates &p) {
+    Entity::position = p;
 }
 
 double Entity::getMaxSpeed() const {
     return maxspeed;
 }
 
-Entity::coordinats Entity::GetHalfSize() {
-    coordinats halfsize;
-    halfsize.x = getSize().x/2.0f;
-    halfsize.y = getSize().y/2.0f;
-
+Coordinates Entity::GetHalfSize() const {
+    Coordinates halfsize{getSize().x / 2.0f, getSize().y / 2.0f};
     return halfsize;
 }
 
@@ -56,124 +53,124 @@ int Entity::getMylane() const {
     return mylane;
 }
 
-void Entity::setMylane(int mylane) {
-    Entity::mylane = mylane;
+void Entity::setMylane(int l) {
+    Entity::mylane = l;
 }
 
 int Entity::getSpeedh() const {
     return speedh;
 }
 
-void Entity::setSpeedh(int speedh) {
-    Entity::speedh = speedh;
+void Entity::setSpeedh(int s) {
+    Entity::speedh = s;
 }
 
 double Entity::getHeavynes() const {
     return heavynes;
 }
 
-void Entity::setHeavynes(double heavynes) {
-    Entity::heavynes = heavynes;
+void Entity::setHeavynes(double h) {
+    Entity::heavynes = h;
 }
 
 bool Entity::isGottrough() const {
     return gottrough;
 }
 
-void Entity::setGottrough(bool gottrough) {
-    Entity::gottrough = gottrough;
+void Entity::setGottrough(bool g) {
+    Entity::gottrough = g;
 }
 
 bool Entity::isSlowdown() const {
     return slowdown;
 }
 
-void Entity::setSlowdown(bool slowdown) {
-    Entity::slowdown = slowdown;
+void Entity::setSlowdown(bool s) {
+    Entity::slowdown = s;
 }
 
 bool Entity::isHasballoon() const {
     return hasballoon;
 }
 
-void Entity::setHasballoon(bool hasballoon) {
-    Entity::hasballoon = hasballoon;
+void Entity::setHasballoon(bool b) {
+    Entity::hasballoon = b;
 }
 
 const std::shared_ptr<Entity> &Entity::getBalloon() const {
     return balloon;
 }
 
-void Entity::setBalloon(const std::shared_ptr<Entity> &balloon) {
-    Entity::balloon = balloon;
+void Entity::setBalloon(const std::shared_ptr<Entity> &b) {
+    Entity::balloon = b;
 }
 
 bool Entity::isDebuff() const {
     return debuff;
 }
 
-void Entity::setDebuff(bool debuff) {
-    Entity::debuff = debuff;
+void Entity::setDebuff(bool b) {
+    Entity::debuff = b;
 }
 
 double Entity::getDebufftimer() const {
     return debufftimer;
 }
 
-void Entity::setDebufftimer(double debufftimer) {
-    Entity::debufftimer = debufftimer;
+void Entity::setDebufftimer(double bt) {
+    Entity::debufftimer = bt;
 }
 
-void Entity::setMaxspeed(double maxspeed) {
-    Entity::maxspeed = maxspeed;
+void Entity::setMaxspeed(double ms) {
+    Entity::maxspeed = ms;
 }
 
 double Entity::getLock() const {
     return lock;
 }
 
-void Entity::setLock(double lock) {
-    Entity::lock = lock;
+void Entity::setLock(double l) {
+    Entity::lock = l;
 }
 
 bool Entity::isLocked() const {
     return locked;
 }
 
-void Entity::setLocked(bool locked) {
-    Entity::locked = locked;
+void Entity::setLocked(bool l) {
+    Entity::locked = l;
 }
 
 bool Entity::isWannashout() const {
     return wannashout;
 }
 
-void Entity::setWannashout(bool wannashout) {
-    Entity::wannashout = wannashout;
+void Entity::setWannashout(bool ws) {
+    Entity::wannashout = ws;
 }
 
 double Entity::getTimer() const {
     return timer;
 }
 
-void Entity::setTimer(double timer) {
-    Entity::timer = timer;
+void Entity::setTimer(double t) {
+    Entity::timer = t;
 }
 
 bool Entity::isIsobstacle() const {
     return isobstacle;
 }
 
-void Entity::setIsobstacle(bool isobstacle) {
-    Entity::isobstacle = isobstacle;
+void Entity::setIsobstacle(bool o) {
+    Entity::isobstacle = o;
 }
 
 double Entity::getOldtimer() const {
     return oldtimer;
 }
 
-void Entity::setOldtimer(double oldtimer) {
-    Entity::oldtimer = oldtimer;
+void Entity::setOldtimer(double ot) {
+    Entity::oldtimer = ot;
 }
 
 int Entity::getScore() const {
@@ -181,9 +178,8 @@ int Entity::getScore() const {
     return x;
 }
 
-void Entity::setScore(int score) {
-    Entity::score += score;
-    subject->setScore(score);
+void Entity::setScore(int s) {
+    subject->setScore(s);
 }
 
 const std::string &Entity::getScoring() const {
@@ -199,7 +195,7 @@ bool Entity::isEnemy() const {
     return enemy;
 }
 
-void Entity::setEnemy(bool enemy) {
-    Entity::enemy = enemy;
+void Entity::setEnemy(bool e) {
+    Entity::enemy = e;
 }
 

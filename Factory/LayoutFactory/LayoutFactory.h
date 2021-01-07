@@ -11,7 +11,7 @@
 #include "../../Transformation.h"
 class LayoutFactory {
 public:
-    virtual std::shared_ptr<Entity>  createProp(std::tuple<double, double> size, std::tuple<double, double> position) = 0;
+    virtual std::shared_ptr<Entity>  createProp(Coordinates size, Coordinates position) = 0;
 
 };
 
