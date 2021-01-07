@@ -11,12 +11,13 @@
 
 class KnightFactory : public HikerFactory {
 public:
-    KnightFactory(sf::RenderWindow& w, std::shared_ptr<sf::Texture> &t, sf::View& v);
-    std::shared_ptr<Hiker>  createHiker(Coordinates size, Coordinates position) override;
+    KnightFactory(sf::RenderWindow &w, std::shared_ptr<sf::Texture> &t, sf::View &v);
+
+    std::shared_ptr<Hiker> createHiker(Coordinates size, Coordinates position) override;
 
 private:
-    sf::RenderWindow& window;
-    sf::View& view;
+    sf::RenderWindow &window;
+    sf::View &view;
     std::shared_ptr<sf::Texture> texture;
 };
 

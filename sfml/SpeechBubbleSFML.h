@@ -5,22 +5,25 @@
 #ifndef TURBOHIKER_SPEECHBUBBLESFML_H
 #define TURBOHIKER_SPEECHBUBBLESFML_H
 
-#include "HikerSFML.h"
+#include <SFML/Graphics.hpp>
 #include "../logic/Balloon.h"
+
 class SpeechBubbleSFML : public Balloon {
 
 
 public:
-    SpeechBubbleSFML(sf::RenderWindow& w, const std::shared_ptr<sf::Texture>& tex, sf::Vector2f size, sf::Vector2f position, sf::View& );
+    SpeechBubbleSFML(sf::RenderWindow &w, const std::shared_ptr<sf::Texture> &tex, sf::Vector2f size,
+                     sf::Vector2f position, sf::View &);
+
     void render() override;
+
     void updateVisuals(Coordinates s) override;
 
 
 private:
     sf::RectangleShape body;
-    sf::RenderWindow& window;
-    sf::View& view;
-    std::shared_ptr<sf::Texture> tex;
+    sf::RenderWindow &window;
+    sf::View &view;
 };
 
 

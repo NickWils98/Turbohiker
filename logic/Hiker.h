@@ -16,52 +16,41 @@ public:
     Hiker() = default;
 
     ~Hiker() override {
-            scoretext = nullptr;
-            fact = nullptr;
+        scoretext = nullptr;
+        bubbleFact = nullptr;
     };
-
-    virtual void render() = 0;
-
-    virtual void updateVisuals(Coordinates s) = 0;
-
-    virtual Coordinates update() = 0;
-
-    virtual void speedup(int, int) = 0;
-
-    virtual std::shared_ptr<Entity> shout(double, double) = 0;
-
-    virtual void removeBuff() = 0;
 
     void moveToView(double) override;
 
     std::shared_ptr<Entity> removeShout(bool force) override;
 
-    int getLanes() const;
+    int getAllLaneCount() const;
 
-    void setLanes(int lanes);
+    void setAllLaneCount(int lanes);
 
-    void setFact(const std::shared_ptr<LayoutFactory> &fact);
+    void setBubbleFact(const std::shared_ptr<LayoutFactory> &fact);
 
-    const std::shared_ptr<LayoutFactory> &getFact() const;
+    const std::shared_ptr<LayoutFactory> &getBubbleFact() const;
 
     bool isShoutlock() const;
 
     void setShoutlock(bool shoutlock);
 
-    void setLockedtimer(double lockedtimer);
+    void setShoutLockedtimer(double lockedtimer);
 
     void setScoretext(const std::shared_ptr<Entity> &scoretext);
 
     const std::shared_ptr<Entity> &getScoretext() const;
 
 private:
-    int lanes = 0;
-    double lockedtimer = 0;
+    int allLaneCount = 0;
+//    lock shout for a time so you cant keep shouting
+    double shoutLockTimer = 0;
     bool shoutlock = false;
-    std::shared_ptr<LayoutFactory> fact = nullptr;
+//    factory to make a speech bubble
+    std::shared_ptr<LayoutFactory> bubbleFact = nullptr;
+//    link the score to a hiker
     std::shared_ptr<Entity> scoretext = nullptr;
-
-
 };
 
 

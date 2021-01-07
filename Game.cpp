@@ -8,7 +8,7 @@ Game::Game()
         : window(sf::VideoMode(1088, 600), "Turbohiker", sf::Style::Close | sf::Style::Resize),
           view(window.getDefaultView()) {
     view.move(-300, 0);
-    window.setFramerateLimit(60);
+//    window.setFramerateLimit(60);
     world = std::make_shared<World>();
     r = RandomeNumber::getInstance();
     t = Transformation::getInstance();
@@ -33,14 +33,15 @@ bool Game::run() {
 //        if you are faster then 60 frames per sec wait
         std::clock_t beginRound = startTime;
         startTime = std::clock();
-        handleFrames(beginRound, startTime);
+        double delta = handleFrames(beginRound, startTime);
+//        std::cout<<delta/700<<std::endl;
         startTime = std::clock();
 
 //        set input to 60 Frames per sec
-        world->setTimers(beginRound, 1.0f / 20.0f);
+        world->setTimers(beginRound, delta / 20000.0);
 //        timeLock is for moving playercount
         world->removeTimeLock();
-//        input player verical speed, horizontal speed, yell
+//        input player verical speed, knight speed, yell
         std::vector<int> input = getInput();
 //        handle input and generate/handle input for ai
         world->speedup(input[0], input[1]);
@@ -83,7 +84,7 @@ bool Game::run() {
 }
 
 void Game::handleEvent() {
-    sf::Event evnt;
+    sf::Event evnt{};
     while (window.pollEvent(evnt)) {
         switch (evnt.type) {
             case sf::Event::Closed:
@@ -98,13 +99,14 @@ void Game::handleEvent() {
     }
 }
 
-void Game::handleFrames(std::clock_t beginRound, std::clock_t startTime) {
+double Game::handleFrames(std::clock_t beginRound, std::clock_t startTime) {
     double deltaTime = (double) startTime - beginRound;
-    while (deltaTime / CLOCKS_PER_SEC < 0.016667) {
-
-        startTime = std::clock();
-        deltaTime = (double) startTime - beginRound;
-    }
+//    while (deltaTime / CLOCKS_PER_SEC < 0.016667) {
+//
+//        startTime = std::clock();
+//        deltaTime = (double) startTime - beginRound;
+//    }
+    return deltaTime;
 }
 
 void Game::init() {
@@ -116,7 +118,7 @@ void Game::init() {
 
 void Game::initBackground() {
     std::shared_ptr<sf::Texture> backgroundTex = std::make_shared<sf::Texture>();
-    backgroundTex->loadFromFile("../mapscoree.png");
+    backgroundTex->loadFromFile("./../res/map.png");
     textures.push_back(backgroundTex);
 
     sf::Sprite background(*backgroundTex);
@@ -136,19 +138,19 @@ void Game::initBackground() {
 void Game::initStartPosition() {
 //    make a speech bubble factory for the hikers sow they can yell
     std::shared_ptr<sf::Texture> SpeechBubbleTexture = std::make_shared<sf::Texture>();
-    SpeechBubbleTexture->loadFromFile("./../whaaagh.png");
+    SpeechBubbleTexture->loadFromFile("./../res/textbubble.png");
     textures.push_back(SpeechBubbleTexture);
     std::shared_ptr<LayoutFactory> speechBubble = std::make_shared<SpeechBubbleFactory>(window, SpeechBubbleTexture,
                                                                                         view);
 
 
     std::shared_ptr<sf::Texture> playerTexture = std::make_shared<sf::Texture>();
-    playerTexture->loadFromFile("./../zombieee.png");
+    playerTexture->loadFromFile("./../res/player.png");
     textures.push_back(playerTexture);
     std::shared_ptr<HikerFactory> player = std::make_shared<PlayerFactory>(window, playerTexture, view, speechBubble);
 
     std::shared_ptr<sf::Texture> enemyTexture = std::make_shared<sf::Texture>();
-    enemyTexture->loadFromFile("./../enemycuty.png");
+    enemyTexture->loadFromFile("./../res/enemy.png");
     textures.push_back(enemyTexture);
     std::shared_ptr<HikerFactory> enemy = std::make_shared<EnemyFactory>(window, enemyTexture, view, speechBubble);
 
@@ -157,7 +159,7 @@ void Game::initStartPosition() {
     hikers.push_back(enemy);
 
     std::shared_ptr<sf::Font> f = std::make_shared<sf::Font>();
-    if (!f->loadFromFile("../Hardigan.otf")) {
+    if (!f->loadFromFile("./../res/Hardigan.otf")) {
         std::cout << "error loading file" << std::endl;
         system("pause");
     }
@@ -167,10 +169,10 @@ void Game::initStartPosition() {
     int y = 0;
     for (auto score : scores) {
         y++;
+        higscoretext += std::to_string(score) + "\n";
         if (y == 10) {
             break;
         }
-        higscoretext += std::to_string(score) + "\n";
     }
 
 //    layout factory
@@ -199,11 +201,11 @@ void Game::initStartPosition() {
 
 void Game::initObstacles() {
     std::shared_ptr<sf::Texture> knightTexture = std::make_shared<sf::Texture>();
-    knightTexture->loadFromFile("./../knight.png");
+    knightTexture->loadFromFile("./../res/knight.png");
     textures.push_back(knightTexture);
 
     std::shared_ptr<sf::Texture> ratTexture = std::make_shared<sf::Texture>();
-    ratTexture->loadFromFile("./../rat2.png");
+    ratTexture->loadFromFile("./../res/rat.png");
     textures.push_back(ratTexture);
 
     std::shared_ptr<HikerFactory> knight = std::make_shared<KnightFactory>(window, knightTexture, view);
@@ -257,12 +259,12 @@ double Game::moveView() {
 //    only move the view if the speed is greater then 0 and the player above the place where it may be
     if (speed >= 0) {
         if (viewPosy < adjustment) {
-            view.move(0, (double) viewPosy - adjustment);
+            view.move(0, (float) (viewPosy - adjustment));
 //            calulate how much is moved
             double speedy = t->pixle_to_logic_y(viewPosy);
             double newpospixley = t->pixle_to_logic_y(adjustment);
-            double counting = speedy - newpospixley;
-            return counting;
+            double adjustmentcalc = speedy - newpospixley;
+            return adjustmentcalc;
         }
     }
     return 0;
@@ -271,6 +273,10 @@ double Game::moveView() {
 int Game::calculateViewAdjustment() {
     double speed = world->getPlayerSpeed();
     double maxspeed = world->getPlayerMaxSpeed();
+//    if the player is debuffed then it can his max speed is reduced by half
+    if (world->isPlayerBuffed()) {
+        maxspeed *= 2;
+    }
 //    scaling formula
     double scaledspeed = (speed + maxspeed) / (maxspeed * 2);
 //    scale to the logic coordinates
@@ -335,10 +341,10 @@ std::vector<sf::Text> Game::getScoreScreen(int placement, int score) {
     int y = 0;
     for (auto highscore : scores) {
         y++;
+        higscoretext += std::to_string(highscore) + "\n";
         if (y == 10) {
             break;
         }
-        higscoretext += std::to_string(highscore) + "\n";
     }
 //    updated highscore
     sf::Text highscoretext;
@@ -355,14 +361,14 @@ std::vector<sf::Text> Game::getScoreScreen(int placement, int score) {
 
 void Game::writeHighscore() {
     std::ofstream myfile;
-    myfile.open("../worldScore.txt");
+    myfile.open("./../worldScore.txt");
     int y = 0;
     for (auto score : scores) {
         y++;
+        myfile << std::to_string(score) << std::endl;
         if (y == 10) {
             break;
         }
-        myfile << std::to_string(score) << std::endl;
     }
     myfile.close();
 
@@ -370,7 +376,7 @@ void Game::writeHighscore() {
 
 void Game::getHighscores() {
     std::string myText;
-    std::ifstream myfile("../worldScore.txt");
+    std::ifstream myfile("./../worldScore.txt");
     if (myfile.is_open()) {
         while (getline(myfile, myText)) {
 

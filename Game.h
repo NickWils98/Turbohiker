@@ -9,8 +9,8 @@
 #include <fstream>
 #include <iostream>
 #include <SFML/Graphics.hpp>
-#include "Transformation.h"
-#include "RandomeNumber.h"
+#include "logic/Singletons/Transformation.h"
+#include "logic/Singletons/RandomeNumber.h"
 #include "logic/Entity.h"
 #include "logic/World.h"
 #include "sfml/HikerSFML.h"
@@ -34,7 +34,7 @@ public:
 private:
     void handleEvent();
 
-    void handleFrames(std::clock_t beginRound, std::clock_t startTime);
+    static double handleFrames(std::clock_t beginRound, std::clock_t startTime);
 
     void init();
 

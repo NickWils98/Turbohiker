@@ -7,25 +7,26 @@
 
 #include <SFML/Graphics.hpp>
 #include <memory>
-#include "../Transformation.h"
+#include "../logic/Singletons/Transformation.h"
 
 class HikerSFML {
 
 
 public:
-    HikerSFML(sf::RenderWindow& w, const std::shared_ptr<sf::Texture>& tex, sf::Vector2f size, sf::Vector2f position, sf::View& );
+    HikerSFML(sf::RenderWindow &w, const std::shared_ptr<sf::Texture> &tex, sf::Vector2f size, sf::Vector2f position,
+              sf::View &);
 
-    ~HikerSFML();
+    ~HikerSFML() = default;
 
-    void render() ;
+    void render();
+
     void updateVisuals(Coordinates s, double);;
 
 
 private:
     sf::RectangleShape body;
-    sf::RenderWindow& window;
-    sf::View& view;
-    std::shared_ptr<sf::Texture> tex;
+    sf::RenderWindow &window;
+    sf::View &view;
 };
 
 

@@ -10,21 +10,19 @@
 
 class HikerPassing : public Hiker {
 public:
-    HikerPassing();
-
-    void speedup(int, int) override;
     std::shared_ptr<Entity> shout(double, double) override;
-    Coordinates update();
+
+    Coordinates update() override;
 
     void removeBuff() override;
 
-    bool isHorizontal() const;
+    void setKnight(bool h);
 
-    void setHorizontal(bool horizontal);
+    void speedup(int, int) override {};
 
 private:
-    int move = 0;
-    bool horizontal = false;
+//    knight if true else Rat
+    bool knight = false;
 };
 
 

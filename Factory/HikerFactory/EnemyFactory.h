@@ -12,16 +12,19 @@
 
 class EnemyFactory : public HikerFactory {
 public:
-    EnemyFactory(sf::RenderWindow& w, std::shared_ptr<sf::Texture> &t, sf::View& v, const std::shared_ptr<LayoutFactory> &f);
-    std::shared_ptr<Hiker>  createHiker(Coordinates size, Coordinates position) override;
+    EnemyFactory(sf::RenderWindow &w, std::shared_ptr<sf::Texture> &t, sf::View &v,
+                 const std::shared_ptr<LayoutFactory> &f);
+
+    std::shared_ptr<Hiker> createHiker(Coordinates size, Coordinates position) override;
 
 
 private:
 
 
-    sf::RenderWindow& window;
-    sf::View& view;
-    std::shared_ptr<sf::Texture> texture;private:
+    sf::RenderWindow &window;
+    sf::View &view;
+    std::shared_ptr<sf::Texture> texture;
+private:
     std::shared_ptr<LayoutFactory> fact = nullptr;
 
 };

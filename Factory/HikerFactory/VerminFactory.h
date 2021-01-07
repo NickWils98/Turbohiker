@@ -11,18 +11,18 @@
 
 class VerminFactory : public HikerFactory {
 public:
-    VerminFactory(sf::RenderWindow& w, std::shared_ptr<sf::Texture> &t, sf::View& v);
-    std::shared_ptr<Hiker>  createHiker(Coordinates size, Coordinates position) override;
+    VerminFactory(sf::RenderWindow &w, std::shared_ptr<sf::Texture> &t, sf::View &v);
+
+    std::shared_ptr<Hiker> createHiker(Coordinates size, Coordinates position) override;
 
 
 private:
 
 
-    sf::RenderWindow& window;
-    sf::View& view;
+    sf::RenderWindow &window;
+    sf::View &view;
     std::shared_ptr<sf::Texture> texture;
 };
-
 
 
 #endif //TURBOHIKER_VERMINFACTORY_H

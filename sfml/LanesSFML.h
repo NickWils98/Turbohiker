@@ -11,18 +11,20 @@
 
 class LanesSFML : public Lanes {
 public:
-    LanesSFML(sf::RenderWindow& window, sf::Color col, sf::Vector2f size, sf::Vector2f position);
-    ~LanesSFML() override;
+    LanesSFML(sf::RenderWindow &window, sf::Color col, sf::Vector2f size, sf::Vector2f position);
+
+    ~LanesSFML() override = default;
 
     void render() override;
-    void moveToView(double) override;
 
+    void moveToView(double) override;
 
     void setToupdate(bool t);
 
 private:
     sf::RectangleShape body;
-    sf::RenderWindow& window;
+    sf::RenderWindow &window;
+//    lines that divide lanes should move with the view but the enline does not
     bool toupdate = false;
 };
 

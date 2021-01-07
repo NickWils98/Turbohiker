@@ -10,16 +10,13 @@
 
 class HikerPlayer : public Hiker {
 public:
-    HikerPlayer();
-
     void speedup(int, int) override;
+
     std::shared_ptr<Entity> shout(double, double) override;
+
     Coordinates update() override;
 
     void removeBuff() override;
-
-private:
-    int move = 0;
 };
 
 

@@ -4,52 +4,53 @@
 
 #include "HikerEnemy.h"
 
-HikerEnemy::HikerEnemy() {}
-
 void HikerEnemy::speedup(int speedv, int speedh) {
 //  speedv 1 if obstacle in front else 0
 //  speedh 3 if obstacle left and right, 2 if obstacle left, 1 if obstacle right else 0
-    std::shared_ptr<RandomeNumber>r = r->getInstance();
+    std::shared_ptr<RandomeNumber> r = r->getInstance();
     int precent = r->getintpercent();
     int setspeedh = 0;
-    if(speedv==1){
-        if(speedh == 3){
+//    only update if ther is an obstacle in front of enemy
+    if (speedv == 1) {
+//        if not other option shout
+        if (speedh == 3) {
             setWantToShout(true);
-        } else if(speedh == 2){
-            if(precent>99){
+//        try to move to the left or shout
+        } else if (speedh == 2) {
+            if (precent > 99) {
                 setWantToShout(true);
 
             } else {
-                if(isTimeLocked()) {
+                if (isTimeLocked()) {
                     setWantToShout(true);
-                } else{
+                } else {
                     setTimeLock(getTimer() + 600000);
                     setTimeLocked(true);
                     setspeedh = -1;
                 }
             }
-
-        } else if(speedh == 1){
-            if(precent>99){
+//        try to move to the right or shout
+        } else if (speedh == 1) {
+            if (precent > 99) {
                 setWantToShout(true);
             } else {
-                if(isTimeLocked()) {
+                if (isTimeLocked()) {
                     setWantToShout(true);
-                } else{
+                } else {
                     setTimeLock(getTimer() + 600000);
                     setTimeLocked(true);
                     setspeedh = 1;
                 }
             }
-        } else{
-            int x = (precent<=40) ? 1 : -1;
-            if(precent>99){
+//        try to move to the left or right or shout
+        } else {
+            int x = (precent <= 40) ? 1 : -1;
+            if (precent > 99) {
                 setWantToShout(true);
-
             } else {
-                if(isTimeLocked()) {
+                if (isTimeLocked()) {
                     setWantToShout(true);
-                } else{
+                } else {
                     setTimeLock(getTimer() + 600000);
                     setTimeLocked(true);
                     setspeedh = x;
@@ -57,55 +58,51 @@ void HikerEnemy::speedup(int speedv, int speedh) {
             }
         }
     }
-    int speedup = 1;
-    int currentSpeed = getSpeedv();
-
-    if(speedup>0 and 0 >currentSpeed){
-        currentSpeed +=2*(getDeltaTimer() * 20);
-    }
-    if(speedup<0 and 0<currentSpeed){
-        currentSpeed -=2*(getDeltaTimer() * 20);
-    }
-    currentSpeed+= speedup*(getDeltaTimer() * 20);
+    double currentSpeed = (getSpeedv());
+    currentSpeed += getDeltaTimer();
     setSpeedv(currentSpeed);
     setSpeedh(setspeedh);
 }
 
 std::shared_ptr<Entity> HikerEnemy::shout(double start, double length) {
-    if(!isShoutlock()){
+    if (!isShoutlock()) {
         setShoutlock(true);
-        std::shared_ptr<Entity> b = getFact()->createProp(Coordinates(getSize().x - 4, getSize().y - 3), Coordinates(start + length *
-                                                                                                                                     getMyLane(), getPosition().y - 0.5));
+        Coordinates size{getSize().x - 4, getSize().y - 3};
+        Coordinates pos{start + length * getMyLane(), getPosition().y - 0.5};
+        std::shared_ptr<Entity> b = getBubbleFact()->createProp(size, pos);
         setTextBubble(b);
-        setLockedtimer(getTimer()+2000000);
+        setShoutLockedtimer(getTimer() + 2000000);
         setHasTextBubble(true);
         return b;
     }
     return nullptr;
 }
+
 Coordinates HikerEnemy::update() {
-    if(getSpeedh()>0){
-        if(getMyLane() < getLanes()){
+    int movedh = 0;
+//    move lanes
+    if (getSpeedh() > 0) {
+        if (getMyLane() < getAllLaneCount()) {
             setMyLane(getMyLane() + 1);
-            move+= 1;
+            movedh += 1;
         }
-    } else if(getSpeedh()<0){
-        if(getMyLane() != 0){
+    } else if (getSpeedh() < 0) {
+        if (getMyLane() != 0) {
             setMyLane(getMyLane() - 1);
-            move-= 1;
+            movedh -= 1;
         }
     }
+//    move up and down
     Coordinates pos = getPosition();
-    pos.y -= 0.0005 * getSpeedv() * (getDeltaTimer() * 20);
+    pos.y -= 0.0005 * getSpeedv() * (getDeltaTimer());
     setPosition(pos);
-    Coordinates toreturn = Coordinates(-move, 0.005 * getSpeedv() * (getDeltaTimer() * 20));
-    move = 0;
+    Coordinates toreturn = Coordinates(-movedh, 0.005 * getSpeedv() * (getDeltaTimer()));
     return toreturn;
 }
 
 void HikerEnemy::removeBuff() {
-    if(getBuffedTimer() < getTimer()){
+    if (getBuffedTimer() < getTimer()) {
         setBuffed(false);
-        setMaxspeed(getMaxSpeed()*2);
+        setMaxspeed(getMaxSpeed() * 2);
     }
 }

@@ -12,11 +12,13 @@
 class EnemySFML : public HikerEnemy {
 public:
 
-    EnemySFML(sf::RenderWindow& w, const std::shared_ptr<sf::Texture>& tex, sf::Vector2f size, sf::Vector2f position, sf::View& );
+    EnemySFML(sf::RenderWindow &w, const std::shared_ptr<sf::Texture> &tex, sf::Vector2f size, sf::Vector2f position,
+              sf::View &);
 
-    void render() override{sfml->render();};
+    void render() override { sfml->render(); };
 
     void updateVisuals(Coordinates s) override;
+
 private:
     std::shared_ptr<HikerSFML> sfml;
 };

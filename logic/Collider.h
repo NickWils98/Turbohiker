@@ -11,17 +11,16 @@
 
 class Collider {
 public:
-    explicit Collider();
-    ~Collider();
+    explicit Collider() = default;
 
-    //void Move(float dx, float dy){setPosition(getPosition().x+dx, getPosition().y+dy);};
+    ~Collider() = default;
 
-    std::vector<double> CollisionDetection(std::shared_ptr<Entity>, std::shared_ptr<Entity>, double timer);
-    bool checklaneswitch(std::shared_ptr<Entity> first, std::shared_ptr<Entity> other, bool);
-    bool CheckCollision(std::shared_ptr<Entity> first, std::shared_ptr<Entity> other);
+    static std::vector<double>
+    CollisionDetection(std::shared_ptr<Entity> &first, std::shared_ptr<Entity> &other, double timer);
 
+    static bool checklaneswitch(const std::shared_ptr<Entity> &first, const std::shared_ptr<Entity> &other, bool);
 
-
+    static bool CheckCollision(const std::shared_ptr<Entity> &first, const std::shared_ptr<Entity> &other);
 
 
 };

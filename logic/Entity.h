@@ -9,11 +9,11 @@
 #include <vector>
 #include <algorithm>
 #include "Coordinates.h"
-#include "../Transformation.h"
-#include "../RandomeNumber.h"
-#include "../Subject.h"
-#include "../Scoring.h"
-#include "../Client.h"
+#include "Singletons/Transformation.h"
+#include "Singletons/RandomeNumber.h"
+#include "Observer/SubjectInterface.h"
+#include "Observer/Subject.h"
+#include "Observer/Observer.h"
 
 class Entity {
 public:
@@ -21,6 +21,8 @@ public:
     Entity();
 
     virtual ~Entity() = default;
+
+    void deleteSubject();
 
     virtual void render() = 0;
 
@@ -134,8 +136,8 @@ public:
 
 private:
     std::string scoreText;
-    std::shared_ptr<Subject> subject;
-    std::vector<std::shared_ptr<Observer>> observer;
+    std::shared_ptr<SubjectInterface> subject;
+    std::vector<std::shared_ptr<ObserverInterface>> observer;
     Coordinates position{0, 0};
     Coordinates size{0, 0};
     double maxspeed = 120;
@@ -147,14 +149,15 @@ private:
     double heaviness = 0;
 //    true if it has no collision
     bool transparant = false;
-//    buffed of a hiker
+//    true if hiker needs to slow down when touched
     bool slowedDown = false;
+//    buff of a hiker
     bool buffed = false;
     double buffedTimer = 0;
 //    text bubble if yelled
     bool hasTextBubble = false;
     std::shared_ptr<Entity> textBubble = nullptr;
-//    lock on horizontal movement speed
+//    lock on knight movement speed
     double timeLock = 0;
     bool timeLocked = false;
 //    ai wants to shout

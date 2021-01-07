@@ -7,13 +7,13 @@
 
 #include <memory>
 #include <vector>
-#include "../../Transformation.h"
+#include "../../logic/Singletons/Transformation.h"
 #include "../../logic/Hiker.h"
 
 
 class HikerFactory {
 public:
-    virtual std::shared_ptr<Hiker>  createHiker(Coordinates size, Coordinates position) = 0;
+    virtual std::shared_ptr<Hiker> createHiker(Coordinates size, Coordinates position) = 0;
 
 
 };

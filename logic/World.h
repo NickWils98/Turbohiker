@@ -14,9 +14,9 @@
 
 class World : public Entity {
 public:
-    World();
+    World() = default;
 
-    ~World() override = default;
+    ~World() override;
 
     void
     initGame(std::vector<std::shared_ptr<HikerFactory>> hikerFactorys,
@@ -50,6 +50,8 @@ public:
 
     double getPlayerMaxSpeed();
 
+    bool isPlayerBuffed();
+
     void setTracklength(int tracklength);
 
     void setViewPos(double view);
@@ -71,6 +73,8 @@ private:
 
     void remove(std::shared_ptr<Entity> &toDel);
 
+    void removeHelper(std::shared_ptr<Entity> &toDel);
+
     std::shared_ptr<Entity> removeShout(bool force) override { return nullptr; };
 
     void updateVisuals(Coordinates s) override {};
@@ -87,7 +91,7 @@ private:
 
 private:
     //List of all hikers of the world
-    std::vector<std::shared_ptr<Entity>> entityList;
+    std::vector<std::shared_ptr<Entity>> entityList = {};
     //List of all obstacles of the world
     std::vector<std::shared_ptr<Entity>> obstacles = {};
 

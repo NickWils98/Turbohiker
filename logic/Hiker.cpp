@@ -10,18 +10,17 @@ void Hiker::moveToView(double moved) {
     setPosition(pos);
 }
 
-int Hiker::getLanes() const {
-    return lanes;
+int Hiker::getAllLaneCount() const {
+    return allLaneCount;
 }
 
-void Hiker::setLanes(int l) {
-    Hiker::lanes = l;
+void Hiker::setAllLaneCount(int l) {
+    Hiker::allLaneCount = l;
 }
-
 
 std::shared_ptr<Entity> Hiker::removeShout(bool force) {
     if (shoutlock) {
-        if (getTimer() > lockedtimer or force) {
+        if (getTimer() > shoutLockTimer or force) {
             shoutlock = false;
             std::shared_ptr<Entity> b = getTextBubble();
             setTextBubble(nullptr);
@@ -32,12 +31,12 @@ std::shared_ptr<Entity> Hiker::removeShout(bool force) {
     return nullptr;
 }
 
-void Hiker::setFact(const std::shared_ptr<LayoutFactory> &f) {
-    Hiker::fact = f;
+void Hiker::setBubbleFact(const std::shared_ptr<LayoutFactory> &fact) {
+    Hiker::bubbleFact = fact;
 }
 
-const std::shared_ptr<LayoutFactory> &Hiker::getFact() const {
-    return fact;
+const std::shared_ptr<LayoutFactory> &Hiker::getBubbleFact() const {
+    return bubbleFact;
 }
 
 bool Hiker::isShoutlock() const {
@@ -48,11 +47,9 @@ void Hiker::setShoutlock(bool s) {
     Hiker::shoutlock = s;
 }
 
-void Hiker::setLockedtimer(double l) {
-    Hiker::lockedtimer = l;
+void Hiker::setShoutLockedtimer(double l) {
+    Hiker::shoutLockTimer = l;
 }
-
-
 
 void Hiker::setScoretext(const std::shared_ptr<Entity> &s) {
     Hiker::scoretext = s;

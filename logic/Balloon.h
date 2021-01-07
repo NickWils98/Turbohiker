@@ -8,26 +8,21 @@
 
 #include "Entity.h"
 
-class Balloon : public Entity{
+class Balloon : public Entity {
 public:
-
     ~Balloon() override = default;
 
-    virtual void render() = 0;
+    Coordinates update() override { return {0, 0}; };
 
-    Coordinates update() override;
+    void moveToView(double d) override {};
 
-    virtual void updateVisuals(Coordinates s) = 0;
+    void speedup(int i, int i1) override {};
 
-    void moveToView(double d) override;
+    std::shared_ptr<Entity> shout(double x, double e) override { return nullptr; };
 
-    void speedup(int i, int i1) override;
+    std::shared_ptr<Entity> removeShout(bool force) override { return nullptr; };
 
-    std::shared_ptr<Entity> shout(double x, double e) override{return nullptr;};
-
-    std::shared_ptr<Entity> removeShout(bool force) override{return nullptr;};
-
-    void removeBuff() override;
+    void removeBuff() override {};
 };
 
 

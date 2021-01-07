@@ -4,9 +4,10 @@
 
 #ifndef TURBOHIKER_RANDOMENUMBER_H
 #define TURBOHIKER_RANDOMENUMBER_H
+
 #include <random>
 #include<iostream>
-#include<stdlib.h>
+#include<cstdlib>
 #include <memory>
 
 class RandomeNumber {
@@ -16,15 +17,12 @@ class RandomeNumber {
     static std::shared_ptr<RandomeNumber> instance;
 
     // Private constructor so that no objects can be created.
-    RandomeNumber(){
+    RandomeNumber() {
+//        seed random
         std::mt19937 gen2(rd());
         gen = gen2;
-
-        std::uniform_int_distribution<int> distrib2(1,100);
+        std::uniform_int_distribution<int> distrib2(1, 100);
         distrib = distrib2;
-
-
-
     };
 
 public:
@@ -32,14 +30,15 @@ public:
         if (!instance) {
             instance.reset(new RandomeNumber());
         }
-//            instance = std::make_shared<Transformation>();
         return instance;
     }
-    int getintpercent(){return distrib(gen);};
-    double getint(int i){
-        std::uniform_real_distribution<double> distrib3(1,i);
 
+    int getintpercent() { return distrib(gen); };
+
+    double getint(int maxInt) {
+        std::uniform_real_distribution<double> distrib3(1, maxInt);
         return distrib3(gen);
     };
 };
+
 #endif //TURBOHIKER_RANDOMENUMBER_H

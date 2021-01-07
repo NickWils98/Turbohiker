@@ -9,13 +9,15 @@
 #include "../logic/HikerPlayer.h"
 #include "HikerSFML.h"
 
-class PlayerSFML : public HikerPlayer  {
+class PlayerSFML : public HikerPlayer {
 public:
-    PlayerSFML(sf::RenderWindow& w, const std::shared_ptr<sf::Texture>& tex, sf::Vector2f size, sf::Vector2f position, sf::View& );
+    PlayerSFML(sf::RenderWindow &w, const std::shared_ptr<sf::Texture> &tex, sf::Vector2f size, sf::Vector2f position,
+               sf::View &);
 
-    void render() override{sfml->render();};
+    void render() override { sfml->render(); };
 
     void updateVisuals(Coordinates s) override;
+
 private:
     std::shared_ptr<HikerSFML> sfml;
 };

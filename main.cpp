@@ -2,7 +2,7 @@
 
 int main() {
     bool rungame = true;
-    while(rungame) {
+    while (rungame) {
         Game game;
         rungame = game.run();
     }

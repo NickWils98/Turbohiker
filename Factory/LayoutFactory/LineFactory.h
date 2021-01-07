@@ -11,15 +11,16 @@
 
 class LineFactory : public LayoutFactory {
 public:
-    LineFactory(sf::RenderWindow& w, sf::Color col, sf::View& v, bool m);
-    std::shared_ptr<Entity>  createProp(Coordinates size, Coordinates position) override;
+    LineFactory(sf::RenderWindow &w, sf::Color col, sf::View &v, bool m);
+
+    std::shared_ptr<Entity> createProp(Coordinates size, Coordinates position) override;
 
 
 private:
 
 
-    sf::RenderWindow& window;
-    sf::View& view;
+    sf::RenderWindow &window;
+    sf::View &view;
     const sf::Color color;
     bool movable;
 };

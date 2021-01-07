@@ -4,8 +4,13 @@
 
 #include "World.h"
 
-World::World() {
-    entityList = {};
+World::~World() {
+    while (!entityList.empty()) {
+        remove(entityList.back());
+    }
+    if (player) {
+        player = nullptr;
+    }
 }
 
 void World::initGame(std::vector<std::shared_ptr<HikerFactory>> hikerFactorys,
@@ -46,7 +51,7 @@ void World::initGame(std::vector<std::shared_ptr<HikerFactory>> hikerFactorys,
 
 void World::generateObstacle(std::vector<std::shared_ptr<HikerFactory>> f, int obstacleAmount) {
 //    multiply the amount of obstacles with the lane amount
-    obstacleAmount *= player->getLanes();
+    obstacleAmount *= player->getAllLaneCount();
     std::shared_ptr<RandomeNumber> r = r->getInstance();
     for (int i = 1; i < obstacleAmount; i++) {
 //        randome choice between both factories
@@ -55,23 +60,21 @@ void World::generateObstacle(std::vector<std::shared_ptr<HikerFactory>> f, int o
         double randomeHeight = r->getint((int) tracklength - 3);
 //        randome lane
         int randomeLane = r->getintpercent();
-        int lane = randomeLane % (player->getLanes() + 1);
+        int lane = randomeLane % (player->getAllLaneCount() + 1);
         std::shared_ptr<Hiker> hiker3;
         hiker3 = f[fact]->createHiker(Coordinates(laneWidth / 1.1 - 4, -2.5f),
                                       Coordinates(firstPlayerPos + laneWidth * lane, -3.0f - randomeHeight));
-        hiker3->setLanes(player->getLanes());
+        hiker3->setAllLaneCount(player->getAllLaneCount());
         hiker3->setMyLane(lane);
 
         bool push = true;
 //        if the obstacle is in collision with another generated obstacle -> redo this obstacle
         if (!obstacles.empty()) {
-            for (const auto& o : obstacles) {
+            for (const auto &o : obstacles) {
                 if (o != hiker3) {
-                    Collider c = Collider();
-                    if (c.CheckCollision(o, hiker3)) {
+                    if (Collider::CheckCollision(o, hiker3)) {
                         i--;
                         push = false;
-
                     }
                 }
             }
@@ -195,14 +198,13 @@ void World::moveToView(double moved) {
 double World::Collision() {
     std::vector<double> moved = {0, 0};
     if (!entityList.empty()) {
-        Collider col = Collider();
         for (int i = 0; i < entityList.size() - 1; i++) {
             for (int j = i; j < entityList.size(); j++) {
                 if (i != j) {
 //                    two objects shouldn't collide
                     if (!entityList[i]->isObstacle() or !entityList[j]->isObstacle()) {
 //                        do collision detection
-                        moved = col.CollisionDetection(entityList[i], entityList[j], getTimer());
+                        moved = Collider::CollisionDetection(entityList[i], entityList[j], getTimer());
 //                        if there was a collision
                         if (moved[0] != 0 or moved[1] != 0) {
 //                            if the player was in collision deduct worldScore
@@ -256,6 +258,10 @@ double World::getPlayerMaxSpeed() {
     return player->getMaxSpeed();
 }
 
+bool World::isPlayerBuffed() {
+    return player->isBuffed();
+}
+
 void World::setTracklength(int t) {
     World::tracklength = t;
 }
@@ -265,7 +271,7 @@ void World::setViewPos(double view) {
 }
 
 bool World::isFinished() const {
-    if(player == nullptr){
+    if (player == nullptr) {
         return true;
     }
     return false;
@@ -289,7 +295,7 @@ void World::addLaneLine(const std::shared_ptr<LayoutFactory> &factory, double fi
 void World::addPlayer(const std::shared_ptr<HikerFactory> &factory, int place) {
     std::shared_ptr<Hiker> hiker = factory->createHiker(Coordinates{laneWidth / 1.1 - 4, -2.5f},
                                                         Coordinates{firstPlayerPos + laneWidth * place, 2.5f});
-    hiker->setLanes(playercount);
+    hiker->setAllLaneCount(playercount);
     hiker->setMyLane(place);
     player = hiker;
     entityList.push_back(hiker);
@@ -298,7 +304,7 @@ void World::addPlayer(const std::shared_ptr<HikerFactory> &factory, int place) {
 void World::addEnemy(const std::shared_ptr<HikerFactory> &factory, int place) {
     std::shared_ptr<Hiker> hiker = factory->createHiker(Coordinates{laneWidth / 1.1 - 4, -2.5f},
                                                         Coordinates{firstPlayerPos + laneWidth * place, 2.5f});
-    hiker->setLanes(playercount);
+    hiker->setAllLaneCount(playercount);
     hiker->setMyLane(place);
     entityList.push_back(hiker);
 }
@@ -322,9 +328,14 @@ void World::remove(std::shared_ptr<Entity> &toDel) {
     if (toDel->isHasTextBubble()) {
         std::shared_ptr<Entity> bubble = toDel->removeShout(true);
         if (bubble) {
-            remove(bubble);
+            removeHelper(bubble);
         }
     }
+    toDel->deleteSubject();
+    removeHelper(toDel);
+}
+
+void World::removeHelper(std::shared_ptr<Entity> &toDel) {
     entityList.erase(std::remove(entityList.begin(), entityList.end(), toDel), entityList.end());
     if (std::find(obstacles.begin(), obstacles.end(), toDel) != obstacles.end()) {
 
@@ -334,23 +345,22 @@ void World::remove(std::shared_ptr<Entity> &toDel) {
 
 int World::speedupPlayer(int speedh) {
     int finalSpeedh = 0;
-    Collider c = Collider();
     if (speedh != 0) {
         bool left = (speedh < 0) ? true : false;
         bool canChangeLane = true;
         for (auto &entity : entityList) {
             if (entity != player) {
 //                check if there is no object in the lane beside player
-                if (not c.checklaneswitch(player, entity, left)) {
+                if (not Collider::checklaneswitch(player, entity, left)) {
                     canChangeLane = false;
                 }
 //                check if player is not in collision (can not move if iin collision)
-                if (c.CheckCollision(player, entity)) {
+                if (Collider::CheckCollision(player, entity)) {
                     canChangeLane = false;
                 }
             }
         }
-//        timeLock so you cant switch lanes to quickly
+//        timeLock so you cant switch allLaneCount to quickly
         if (not player->isTimeLocked() and canChangeLane) {
             finalSpeedh = speedh;
             player->setTimeLock(getTimer() + 200000);
@@ -360,7 +370,7 @@ int World::speedupPlayer(int speedh) {
     return finalSpeedh;
 }
 
-void World::obstacleInLane(const std::shared_ptr<Entity>& e, int distance) {
+void World::obstacleInLane(const std::shared_ptr<Entity> &e, int distance) {
     for (auto &o : obstacles) {
         if (e->getMyLane() == o->getMyLane()) {
             if (e->getPosition().y > o->getPosition().y and e->getPosition().y - distance < o->getPosition().y) {
@@ -371,7 +381,7 @@ void World::obstacleInLane(const std::shared_ptr<Entity>& e, int distance) {
     }
 }
 
-std::vector<int> World::ai(const std::shared_ptr<Entity>& entity) {
+std::vector<int> World::ai(const std::shared_ptr<Entity> &entity) {
 //    v will be 1 if ther is an obstacle in front of it else 0
 //    h 3 if obstacle left and right, 2 if obstacle left, 1 if obstacle right else 0
     int v = 0;
@@ -391,7 +401,7 @@ std::vector<int> World::ai(const std::shared_ptr<Entity>& entity) {
     return {v, h};
 }
 
-bool World::checkClosesdObstacleInLane(const std::shared_ptr<Entity>& hiker, int distance) {
+bool World::checkClosesdObstacleInLane(const std::shared_ptr<Entity> &hiker, int distance) {
     for (auto &o : obstacles) {
 //        check if obstacle is in the same name as the hiker
         if (hiker->getMyLane() == o->getMyLane()) {
@@ -408,16 +418,14 @@ bool World::checkClosesdObstacleInLane(const std::shared_ptr<Entity>& hiker, int
 std::vector<bool> World::checkLaneSwitch(const std::shared_ptr<Entity> &e) {
     bool leftSide = true;
     bool rightSide = true;
-    Collider c = Collider();
-
     for (auto &entity : entityList) {
         if (entity != e) {
 //            check if hiker can move left
-            if (not c.checklaneswitch(e, entity, true) or e->getMyLane() == 0) {
+            if (not Collider::checklaneswitch(e, entity, true) or e->getMyLane() == 0) {
                 leftSide = false;
             }
 //            check if hiker can move right
-            if (not c.checklaneswitch(e, entity, false) or e->getMyLane() == playercount) {
+            if (not Collider::checklaneswitch(e, entity, false) or e->getMyLane() == playercount) {
                 rightSide = false;
             }
         }

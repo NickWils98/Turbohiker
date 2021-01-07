@@ -8,13 +8,15 @@
 #include <iostream>
 #include <tuple>
 #include <memory>
-#include "logic/Coordinates.h"
+#include "../Coordinates.h"
+
 class Transformation {
     static std::shared_ptr<Transformation> instance;
     int window_x = 100;
-    int window_y=100;
+    int window_y = 100;
+
     // Private constructor so that no objects can be created.
-    Transformation()=default;
+    Transformation() = default;
 
 public:
     static std::shared_ptr<Transformation> getInstance() {
@@ -27,13 +29,11 @@ public:
 
     Coordinates logic_to_pixles(double x, double y) const;
 
-    Coordinates pixle_to_logic(double x, double y);
-
     int logic_to_pixle_y(double y) const;
 
     double pixle_to_logic_y(double y) const;
 
-    void changeWindow(const int x, const int y){
+    void changeWindow(const int x, const int y) {
         window_x = x;
         window_y = y;
     }

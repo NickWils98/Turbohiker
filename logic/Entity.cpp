@@ -3,6 +3,14 @@
 //
 
 #include "Entity.h"
+
+Entity::Entity() {
+    subject = std::make_shared<Subject>();
+    std::shared_ptr<ObserverInterface> o = std::make_shared<Observer>();
+    subject->registerObserver(o);
+    observer.push_back(o);
+}
+
 const Coordinates &Entity::getPosition() const {
     return position;
 }
@@ -26,16 +34,18 @@ double Entity::getSpeedv() const {
 }
 
 void Entity::setSpeedv(double s) {
-    if(maxspeed >= s and -maxspeed / 2 <= s ){
+//    check if the new speed does not go over the old speed
+    if (maxspeed >= s and -maxspeed / 2 <= s) {
         speedv = s;
-    } else{
-        if(maxspeed < s){
+    } else {
+        if (maxspeed < s) {
             speedv = maxspeed;
-        } else{
-            speedv = -maxspeed/2;
+        } else {
+            speedv = -maxspeed / 2;
         }
     }
 }
+
 void Entity::setPosition(const Coordinates &p) {
     Entity::position = p;
 }
@@ -174,7 +184,7 @@ void Entity::setDeltaTimer(double ot) {
 }
 
 int Entity::getScore() const {
-    int x=observer[0]->getScore();
+    int x = observer[0]->getScore();
     return x;
 }
 
@@ -199,13 +209,13 @@ void Entity::setEnemy(bool e) {
     Entity::enemy = e;
 }
 
-Entity::Entity() {
-    subject = std::make_shared<Scoring>();
-    std::shared_ptr<Observer> o = std::make_shared<Client>();
-    subject->registerObserver(o);
-    observer.push_back(o);
-}
-
 void Entity::Move(double dx, double dy) {
     setPosition(getPosition().x + dx, getPosition().y + dy);
+}
+
+void Entity::deleteSubject() {
+    subject = nullptr;
+    while (!observer.empty()) {
+        observer.pop_back();
+    }
 }

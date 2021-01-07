@@ -4,28 +4,24 @@
 
 #include "LanesSFML.h"
 
-LanesSFML::LanesSFML(sf::RenderWindow& w, sf::Color col, sf::Vector2f size, sf::Vector2f position)
-        : window(w){
+LanesSFML::LanesSFML(sf::RenderWindow &w, sf::Color col, sf::Vector2f size, sf::Vector2f position)
+        : window(w) {
 
     body.setSize(size);
     body.setFillColor(col);
     body.setPosition(position);
 }
 
-LanesSFML::~LanesSFML() = default;
-
-
 void LanesSFML::render() {
     window.draw(body);
 }
 
 void LanesSFML::moveToView(double moved) {
-    if(toupdate){
-
+    if (toupdate) {
         std::shared_ptr<Transformation> t = t->getInstance();
         int oldp = t->logic_to_pixle_y(0);
         int newp = t->logic_to_pixle_y(moved);
-        float updatep = (float)newp-(float)oldp;
+        float updatep = (float) newp - (float) oldp;
         body.move(0, updatep);
     }
 }
