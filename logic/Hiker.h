@@ -8,50 +8,50 @@
 
 #include "Entity.h"
 #include "Balloon.h"
-#include "../Factory/LayoutFactory/LayoutFactory.h"
+#include "Factories/LayoutFactory.h"
 
+namespace turbohiker {
+    class Hiker : public Entity {
+    public:
+        Hiker() = default;
 
-class Hiker : public Entity {
-public:
-    Hiker() = default;
+        ~Hiker() override {
+            scoretext = nullptr;
+            bubbleFact = nullptr;
+        };
 
-    ~Hiker() override {
-        scoretext = nullptr;
-        bubbleFact = nullptr;
-    };
+        void moveToView(double) override;
 
-    void moveToView(double) override;
+        std::shared_ptr<Entity> removeShout(bool force) override;
 
-    std::shared_ptr<Entity> removeShout(bool force) override;
+        int getAllLaneCount() const;
 
-    int getAllLaneCount() const;
+        void setAllLaneCount(int lanes);
 
-    void setAllLaneCount(int lanes);
+        void setBubbleFact(const std::shared_ptr<LayoutFactory> &fact);
 
-    void setBubbleFact(const std::shared_ptr<LayoutFactory> &fact);
+        const std::shared_ptr<LayoutFactory> &getBubbleFact() const;
 
-    const std::shared_ptr<LayoutFactory> &getBubbleFact() const;
+        bool isShoutlock() const;
 
-    bool isShoutlock() const;
+        void setShoutlock(bool shoutlock);
 
-    void setShoutlock(bool shoutlock);
+        void setShoutLockedtimer(double lockedtimer);
 
-    void setShoutLockedtimer(double lockedtimer);
+        void setScoretext(const std::shared_ptr<Entity> &scoretext);
 
-    void setScoretext(const std::shared_ptr<Entity> &scoretext);
+        const std::shared_ptr<Entity> &getScoretext() const;
 
-    const std::shared_ptr<Entity> &getScoretext() const;
-
-private:
-    int allLaneCount = 0;
+    private:
+        int allLaneCount = 0;
 //    lock shout for a time so you cant keep shouting
-    double shoutLockTimer = 0;
-    bool shoutlock = false;
+        double shoutLockTimer = 0;
+        bool shoutlock = false;
 //    factory to make a speech bubble
-    std::shared_ptr<LayoutFactory> bubbleFact = nullptr;
+        std::shared_ptr<LayoutFactory> bubbleFact = nullptr;
 //    link the score to a hiker
-    std::shared_ptr<Entity> scoretext = nullptr;
-};
-
+        std::shared_ptr<Entity> scoretext = nullptr;
+    };
+}
 
 #endif //TURBOHIKER_HIKER_H

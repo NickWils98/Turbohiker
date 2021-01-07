@@ -3,5 +3,6 @@
 //
 
 #include "RandomeNumber.h"
-
-std::shared_ptr<RandomeNumber> RandomeNumber::instance = nullptr;
+namespace turbohiker {
+    std::shared_ptr<RandomeNumber> RandomeNumber::instance = nullptr;
+}

@@ -3,12 +3,13 @@
 //
 
 #include "Observer.h"
+namespace turbohiker {
+    void Observer::update(int s) {
+        score += s;
 
-void Observer::update(int s) {
-    score += s;
+    }
 
-}
-
-int Observer::getScore() {
-    return (int) score;
+    int Observer::getScore() {
+        return (int) score;
+    }
 }

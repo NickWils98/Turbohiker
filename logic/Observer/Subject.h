@@ -8,22 +8,24 @@
 #include "SubjectInterface.h"
 #include "ObserverInterface.h"
 
+namespace turbohiker {
 /**
  * A concrete implementation of the SubjectInterface interface
  */
-class Subject : public SubjectInterface {
-    int value = 0;
-public:
-    ~Subject() override;
+    class Subject : public SubjectInterface {
+        int value = 0;
+    public:
+        ~Subject() override;
 
-    std::vector<std::shared_ptr<ObserverInterface>> observers;
+        std::vector<std::shared_ptr<ObserverInterface>> observers;
 
-    void registerObserver(std::shared_ptr<ObserverInterface> &observer) override;
+        void registerObserver(std::shared_ptr<ObserverInterface> &observer) override;
 
-    void notifyObservers() override;
+        void notifyObservers() override;
 
-    void setScore(int s) override;
+        void setScore(int s) override;
 
-};
+    };
+}
 
 #endif //TURBOHIKER_SUBJECT_H

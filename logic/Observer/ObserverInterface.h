@@ -5,16 +5,16 @@
 #ifndef TURBOHIKER_OBSERVERINTERFACE_H
 #define TURBOHIKER_OBSERVERINTERFACE_H
 
+namespace turbohiker {
+    class ObserverInterface {
+    public:
 
-class ObserverInterface {
-public:
+        virtual ~ObserverInterface() = default;
 
-    virtual ~ObserverInterface() = default;
+        virtual void update(int s) = 0;
 
-    virtual void update(int s) = 0;
-
-    virtual int getScore() = 0;
-};
-
+        virtual int getScore() = 0;
+    };
+}
 
 #endif //TURBOHIKER_OBSERVERINTERFACE_H

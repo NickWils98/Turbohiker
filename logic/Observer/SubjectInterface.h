@@ -10,20 +10,20 @@
 #include <vector>
 #include <algorithm>
 
+namespace turbohiker {
+    class SubjectInterface {
 
-class SubjectInterface {
+    public:
 
-public:
+        virtual ~SubjectInterface() = default;
 
-    virtual ~SubjectInterface() = default;
+        virtual void registerObserver(std::shared_ptr<ObserverInterface> &observer) = 0;
 
-    virtual void registerObserver(std::shared_ptr<ObserverInterface> &observer) = 0;
+        virtual void notifyObservers() = 0;
 
-    virtual void notifyObservers() = 0;
+        virtual void setScore(int) = 0;
 
-    virtual void setScore(int) = 0;
-
-};
-
+    };
+}
 
 #endif //TURBOHIKER_SUBJECTINTERFACE_H

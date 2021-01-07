@@ -15,7 +15,7 @@
 #include "logic/World.h"
 #include "sfml/HikerSFML.h"
 #include "Factory/HikerFactory/PlayerFactory.h"
-#include "Factory/HikerFactory/HikerFactory.h"
+#include "logic/Factories/HikerFactory.h"
 #include "Factory/HikerFactory/EnemyFactory.h"
 #include "Factory/HikerFactory/KnightFactory.h"
 #include "Factory/LayoutFactory/LineFactory.h"
@@ -23,63 +23,64 @@
 #include "Factory/LayoutFactory/SpeechBubbleFactory.h"
 #include "Factory/LayoutFactory/ScoreFactory.h"
 
-class Game {
-public:
-    Game();
+namespace turbohikerSFML {
+    class Game {
+    public:
+        Game();
 
-    ~Game();
+        ~Game();
 
-    bool run();
+        bool run();
 
-private:
-    void handleEvent();
+    private:
+        void handleEvent();
 
-    static double handleFrames(std::clock_t beginRound, std::clock_t startTime);
+        static double handleFrames(std::clock_t beginRound, std::clock_t startTime);
 
-    void init();
+        void init();
 
-    void initBackground();
+        void initBackground();
 
-    void initStartPosition();
+        void initStartPosition();
 
-    void initObstacles();
+        void initObstacles();
 
-    static std::vector<int> getInput();
+        static std::vector<int> getInput();
 
-    static bool restartInput();
+        static bool restartInput();
 
-    double moveView();
+        double moveView();
 
-    int calculateViewAdjustment();
+        int calculateViewAdjustment();
 
-    void drawBackground();
+        void drawBackground();
 
-    void endLoop(int finished, int player);
+        void endLoop(int finished, int player);
 
-    std::vector<sf::Text> getScoreScreen(int placement, int score);
+        std::vector<sf::Text> getScoreScreen(int placement, int score);
 
-    void writeHighscore();
+        void writeHighscore();
 
-    void getHighscores();
+        void getHighscores();
 
-private:
-    std::shared_ptr<Transformation> t;
-    std::shared_ptr<RandomeNumber> r;
+    private:
+        std::shared_ptr<turbohiker::Transformation> t;
+        std::shared_ptr<turbohiker::RandomeNumber> r;
 
-    std::shared_ptr<World> world;
+        std::shared_ptr<turbohiker::World> world;
 
-    sf::RenderWindow window;
-    sf::View view;
+        sf::RenderWindow window;
+        sf::View view;
 
-    std::vector<std::shared_ptr<sf::Texture>> textures = {};
-    std::vector<sf::Sprite> backgrounds = {};
-    std::vector<std::shared_ptr<sf::Font>> fonts = {};
+        std::vector<std::shared_ptr<sf::Texture>> textures = {};
+        std::vector<sf::Sprite> backgrounds = {};
+        std::vector<std::shared_ptr<sf::Font>> fonts = {};
 
-    int playercount = 0;
-    std::vector<int> scores;
+        int playercount = 0;
+        std::vector<int> scores;
 
-    bool restartGame = false;
-};
-
+        bool restartGame = false;
+    };
+}
 
 #endif //TURBOHIKER_GAME_H

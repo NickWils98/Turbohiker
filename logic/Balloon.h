@@ -7,23 +7,23 @@
 
 
 #include "Entity.h"
+namespace turbohiker {
+    class Balloon : public Entity {
+    public:
+        ~Balloon() override = default;
 
-class Balloon : public Entity {
-public:
-    ~Balloon() override = default;
+        Coordinates update() override { return {0, 0}; };
 
-    Coordinates update() override { return {0, 0}; };
+        void moveToView(double d) override {};
 
-    void moveToView(double d) override {};
+        void speedup(int i, int i1) override {};
 
-    void speedup(int i, int i1) override {};
+        std::shared_ptr<Entity> shout(double x, double e) override { return nullptr; };
 
-    std::shared_ptr<Entity> shout(double x, double e) override { return nullptr; };
+        std::shared_ptr<Entity> removeShout(bool force) override { return nullptr; };
 
-    std::shared_ptr<Entity> removeShout(bool force) override { return nullptr; };
-
-    void removeBuff() override {};
-};
-
+        void removeBuff() override {};
+    };
+}
 
 #endif //TURBOHIKER_BALLOON_H

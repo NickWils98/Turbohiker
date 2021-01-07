@@ -7,23 +7,23 @@
 
 
 #include "Entity.h"
+namespace turbohiker {
+    class Lanes : public Entity {
+    public:
+        void render() override {};
 
-class Lanes : public Entity {
-public:
-    void render() override {};
+        Coordinates update() override { return {0, 0}; };
 
-    Coordinates update() override { return {0, 0}; };
+        void updateVisuals(Coordinates s) override {};
 
-    void updateVisuals(Coordinates s) override {};
+        void speedup(int, int) override {};
 
-    void speedup(int, int) override {};
+        void removeBuff() override {};
 
-    void removeBuff() override {};
+        std::shared_ptr<Entity> removeShout(bool force) override { return nullptr; };
 
-    std::shared_ptr<Entity> removeShout(bool force) override { return nullptr; };
-
-    std::shared_ptr<Entity> shout(double e, double g) override { return nullptr; };
-};
-
+        std::shared_ptr<Entity> shout(double e, double g) override { return nullptr; };
+    };
+}
 
 #endif //TURBOHIKER_LANES_H

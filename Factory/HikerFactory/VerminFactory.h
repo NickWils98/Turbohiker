@@ -5,24 +5,21 @@
 #ifndef TURBOHIKER_VERMINFACTORY_H
 #define TURBOHIKER_VERMINFACTORY_H
 
-#include "HikerFactory.h"
+#include "../../logic/Factories/HikerFactory.h"
 #include <SFML/Graphics.hpp>
 #include "../../sfml/PassingSFML.h"
+namespace turbohikerSFML {
+    class VerminFactory : public turbohiker::HikerFactory {
+    public:
+        VerminFactory(sf::RenderWindow &w, std::shared_ptr<sf::Texture> &t, sf::View &v);
 
-class VerminFactory : public HikerFactory {
-public:
-    VerminFactory(sf::RenderWindow &w, std::shared_ptr<sf::Texture> &t, sf::View &v);
+        std::shared_ptr<turbohiker::Hiker> createHiker(turbohiker::Coordinates size, turbohiker::Coordinates position) override;
 
-    std::shared_ptr<Hiker> createHiker(Coordinates size, Coordinates position) override;
-
-
-private:
-
-
-    sf::RenderWindow &window;
-    sf::View &view;
-    std::shared_ptr<sf::Texture> texture;
-};
-
+    private:
+        sf::RenderWindow &window;
+        sf::View &view;
+        std::shared_ptr<sf::Texture> texture;
+    };
+}
 
 #endif //TURBOHIKER_VERMINFACTORY_H

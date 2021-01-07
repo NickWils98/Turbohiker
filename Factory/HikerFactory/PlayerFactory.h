@@ -5,26 +5,26 @@
 #ifndef TURBOHIKER_PLAYERFACTORY_H
 #define TURBOHIKER_PLAYERFACTORY_H
 
-#include "HikerFactory.h"
+#include "../../logic/Factories/HikerFactory.h"
 #include <SFML/Graphics.hpp>
 #include "../../sfml/PlayerSFML.h"
+namespace turbohikerSFML {
+    class PlayerFactory : public turbohiker::HikerFactory {
+    public:
+        PlayerFactory(sf::RenderWindow &w, std::shared_ptr<sf::Texture> &t, sf::View &v,
+                      const std::shared_ptr<turbohiker::LayoutFactory> &f);
 
-class PlayerFactory : public HikerFactory {
-public:
-    PlayerFactory(sf::RenderWindow &w, std::shared_ptr<sf::Texture> &t, sf::View &v,
-                  const std::shared_ptr<LayoutFactory> &f);
+        std::shared_ptr<turbohiker::Hiker> createHiker(turbohiker::Coordinates size, turbohiker::Coordinates position) override;
 
-    std::shared_ptr<Hiker> createHiker(Coordinates size, Coordinates position) override;
-
-private:
+    private:
 
 
-    sf::RenderWindow &window;
-    sf::View &view;
-    std::shared_ptr<sf::Texture> texture;
-private:
-    std::shared_ptr<LayoutFactory> fact = nullptr;
-};
-
+        sf::RenderWindow &window;
+        sf::View &view;
+        std::shared_ptr<sf::Texture> texture;
+    private:
+        std::shared_ptr<turbohiker::LayoutFactory> fact = nullptr;
+    };
+}
 
 #endif //TURBOHIKER_PLAYERFACTORY_H

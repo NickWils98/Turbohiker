@@ -5,25 +5,25 @@
 #ifndef TURBOHIKER_LINEFACTORY_H
 #define TURBOHIKER_LINEFACTORY_H
 
-#include "LayoutFactory.h"
+#include "../../logic/Factories/LayoutFactory.h"
 #include "../../sfml/LanesSFML.h"
 #include <SFML/Graphics.hpp>
+namespace turbohikerSFML {
+    class LineFactory : public turbohiker::LayoutFactory {
+    public:
+        LineFactory(sf::RenderWindow &w, sf::Color col, sf::View &v, bool m);
 
-class LineFactory : public LayoutFactory {
-public:
-    LineFactory(sf::RenderWindow &w, sf::Color col, sf::View &v, bool m);
-
-    std::shared_ptr<Entity> createProp(Coordinates size, Coordinates position) override;
-
-
-private:
+        std::shared_ptr<turbohiker::Entity> createProp(turbohiker::Coordinates size, turbohiker::Coordinates position) override;
 
 
-    sf::RenderWindow &window;
-    sf::View &view;
-    const sf::Color color;
-    bool movable;
-};
+    private:
 
+
+        sf::RenderWindow &window;
+        sf::View &view;
+        const sf::Color color;
+        bool movable;
+    };
+}
 
 #endif //TURBOHIKER_LINEFACTORY_H

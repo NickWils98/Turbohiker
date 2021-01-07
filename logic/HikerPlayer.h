@@ -7,17 +7,17 @@
 
 
 #include "Hiker.h"
+namespace turbohiker {
+    class HikerPlayer : public Hiker {
+    public:
+        void speedup(int, int) override;
 
-class HikerPlayer : public Hiker {
-public:
-    void speedup(int, int) override;
+        std::shared_ptr<Entity> shout(double, double) override;
 
-    std::shared_ptr<Entity> shout(double, double) override;
+        Coordinates update() override;
 
-    Coordinates update() override;
-
-    void removeBuff() override;
-};
-
+        void removeBuff() override;
+    };
+}
 
 #endif //TURBOHIKER_HIKERPLAYER_H

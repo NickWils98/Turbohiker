@@ -9,20 +9,21 @@
 #include "ObserverInterface.h"
 #include "SubjectInterface.h"
 
+namespace turbohiker {
 /**
  * a client that implements the ObserverInterface interface
  */
-class Observer : public ObserverInterface {
-    double score = 0;
-public:
+    class Observer : public ObserverInterface {
+        double score = 0;
+    public:
 
-    Observer() = default;
+        Observer() = default;
 
-    void update(int s) override;
+        void update(int s) override;
 
-    int getScore() override;
+        int getScore() override;
 
-};
-
+    };
+}
 
 #endif //TURBOHIKER_OBSERVER_H

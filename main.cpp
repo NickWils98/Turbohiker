@@ -3,7 +3,7 @@
 int main() {
     bool rungame = true;
     while (rungame) {
-        Game game;
+        turbohikerSFML::Game game;
         rungame = game.run();
     }
     return 0;

@@ -3,92 +3,94 @@
 //
 
 #include "Collider.h"
+namespace turbohiker {
+    bool Collider::CheckCollision(const std::shared_ptr<Entity> &first, const std::shared_ptr<Entity> &other) {
+        Coordinates otherPosition = other->getPosition();
+        Coordinates otherHalfSize = other->GetHalfSize();
+        Coordinates thisPosition = first->getPosition();
+        Coordinates thisHalfSize = first->GetHalfSize();
 
-bool Collider::CheckCollision(const std::shared_ptr<Entity> &first, const std::shared_ptr<Entity> &other) {
-    Coordinates otherPosition = other->getPosition();
-    Coordinates otherHalfSize = other->GetHalfSize();
-    Coordinates thisPosition = first->getPosition();
-    Coordinates thisHalfSize = first->GetHalfSize();
+        double deltaY = otherPosition.y - thisPosition.y;
+        double intersectY = std::abs(deltaY) - (otherHalfSize.y + thisHalfSize.y);
 
-    double deltaY = otherPosition.y - thisPosition.y;
-    double intersectY = std::abs(deltaY) - (otherHalfSize.y + thisHalfSize.y);
-
-    return first->getMyLane() == other->getMyLane() && intersectY < 0.0f;
-}
-
-
-bool Collider::checklaneswitch(const std::shared_ptr<Entity> &first, const std::shared_ptr<Entity> &other, bool left) {
-    Coordinates otherPosition = other->getPosition();
-    Coordinates otherHalfSize = other->GetHalfSize();
-    Coordinates thisPosition = first->getPosition();
-    Coordinates thisHalfSize = first->GetHalfSize();
-
-    double deltaY = otherPosition.y - thisPosition.y;
-    double intersectY = std::abs(deltaY) - (otherHalfSize.y + thisHalfSize.y);
-
-    if (intersectY < 0.0f) {
-        if (left) {
-            if (first->getMyLane() - 1 == other->getMyLane()) {
-                return false;
-            }
-        } else {
-            if (first->getMyLane() + 1 == other->getMyLane()) {
-                return false;
-            }
-        }
+        return first->getMyLane() == other->getMyLane() && intersectY < 0.0f;
     }
-    return true;
-}
 
-std::vector<double>
-Collider::CollisionDetection(std::shared_ptr<Entity> &first, std::shared_ptr<Entity> &other, double timer) {
 
-    Coordinates otherPosition = other->getPosition();
-    Coordinates otherHalfSize = other->GetHalfSize();
-    Coordinates thisPosition = first->getPosition();
-    Coordinates thisHalfSize = first->GetHalfSize();
+    bool
+    Collider::checklaneswitch(const std::shared_ptr<Entity> &first, const std::shared_ptr<Entity> &other, bool left) {
+        Coordinates otherPosition = other->getPosition();
+        Coordinates otherHalfSize = other->GetHalfSize();
+        Coordinates thisPosition = first->getPosition();
+        Coordinates thisHalfSize = first->GetHalfSize();
 
-    double deltaY = otherPosition.y - thisPosition.y;
-    double intersectY = std::abs(deltaY) - (otherHalfSize.y + thisHalfSize.y);
-    double movedBackFirst = 0;
-    double movedBackOther = 0;
+        double deltaY = otherPosition.y - thisPosition.y;
+        double intersectY = std::abs(deltaY) - (otherHalfSize.y + thisHalfSize.y);
+
+        if (intersectY < 0.0f) {
+            if (left) {
+                if (first->getMyLane() - 1 == other->getMyLane()) {
+                    return false;
+                }
+            } else {
+                if (first->getMyLane() + 1 == other->getMyLane()) {
+                    return false;
+                }
+            }
+        }
+        return true;
+    }
+
+    std::vector<double>
+    Collider::CollisionDetection(std::shared_ptr<Entity> &first, std::shared_ptr<Entity> &other, double timer) {
+
+        Coordinates otherPosition = other->getPosition();
+        Coordinates otherHalfSize = other->GetHalfSize();
+        Coordinates thisPosition = first->getPosition();
+        Coordinates thisHalfSize = first->GetHalfSize();
+
+        double deltaY = otherPosition.y - thisPosition.y;
+        double intersectY = std::abs(deltaY) - (otherHalfSize.y + thisHalfSize.y);
+        double movedBackFirst = 0;
+        double movedBackOther = 0;
 //    if in collision
-    if (first->getMyLane() == other->getMyLane() && intersectY < 0.0f) {
+        if (first->getMyLane() == other->getMyLane() && intersectY < 0.0f) {
 //        see how much each hiker needs to move back
-        movedBackFirst = intersectY * (first->getHeaviness() / (other->getHeaviness() + first->getHeaviness()));
-        movedBackOther = intersectY * (other->getHeaviness() / (other->getHeaviness() + first->getHeaviness()));
+            movedBackFirst = intersectY * (first->getHeaviness() / (other->getHeaviness() + first->getHeaviness()));
+            movedBackOther = intersectY * (other->getHeaviness() / (other->getHeaviness() + first->getHeaviness()));
 //        if you toch a rat you need to slow down
-        if (first->isSlowedDown() and !other->isTransparant()) {
-            if (!other->isBuffed()) {
-                other->setMaxspeed(other->getMaxSpeed() / 2);
-                other->setBuffed(true);
-                other->setDebufftimer(timer + 5000000);
+            if (first->isSlowedDown() and !other->isTransparant()) {
+                if (!other->isBuffed()) {
+                    other->setMaxspeed(other->getMaxSpeed() / 2);
+                    other->setBuffed(true);
+                    other->setDebufftimer(timer + 5000000);
+                }
             }
-        }
-        if (other->isSlowedDown() and !first->isTransparant()) {
-            if (!first->isBuffed()) {
-                first->setMaxspeed(first->getMaxSpeed() / 2);
-                first->setBuffed(true);
-                first->setDebufftimer(timer + 5000000);
+            if (other->isSlowedDown() and !first->isTransparant()) {
+                if (!first->isBuffed()) {
+                    first->setMaxspeed(first->getMaxSpeed() / 2);
+                    first->setBuffed(true);
+                    first->setDebufftimer(timer + 5000000);
+                }
             }
-        }
 //        if you toch a transparant object you dont need to move back
-        if (first->isTransparant()) {
-            return {0, 0};
-        } else if (other->isTransparant()) {
-            return {0, 0};
-        }
+            if (first->isTransparant()) {
+                return {0, 0};
+            } else if (other->isTransparant()) {
+                return {0, 0};
+            }
 //        move back the objects
-        if (deltaY > 0.0f) {
-            movedBackOther *= -1;
-            first->Move(0.0f, movedBackFirst);
-            other->Move(0.0f, movedBackOther);
-        } else {
-            movedBackFirst *= -1;
-            first->Move(0.0f, movedBackFirst);
-            other->Move(0.0f, movedBackOther);
+            if (deltaY > 0.0f) {
+                movedBackOther *= -1;
+                first->Move(0.0f, movedBackFirst);
+                other->Move(0.0f, movedBackOther);
+            } else {
+                movedBackFirst *= -1;
+                first->Move(0.0f, movedBackFirst);
+                other->Move(0.0f, movedBackOther);
+            }
+            return {movedBackFirst, movedBackOther};
         }
         return {movedBackFirst, movedBackOther};
     }
-    return {movedBackFirst, movedBackOther};
 }
