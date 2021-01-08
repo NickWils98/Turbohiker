@@ -24,43 +24,104 @@
 #include "Factories/LayoutFactories/ScoreFactory.h"
 
 namespace turbohikerSFML {
+    /**
+     * Run the game loop
+     */
     class Game {
     public:
+        /**
+         * initialize game
+         */
         Game();
 
+        /**
+         * destructor game
+         */
         ~Game();
 
+        /**
+         * run the game loop
+         * @return boolean: true if you want to restart game
+         */
         bool run();
 
     private:
+        /**
+         * handle window events like close and resize
+         */
         void handleEvent();
 
-        static double handleFrames(std::clock_t beginRound, std::clock_t startTime);
-
+        /**
+         * initializes game by sending to helper functions
+         */
         void init();
 
+        /**
+         * initializes background
+         */
         void initBackground();
 
+        /**
+         * initialize hikers and lines
+         */
         void initStartPosition();
 
+        /**
+         * initialize obstacles
+         */
         void initObstacles();
 
+        /**
+         * get input from player
+         * first is 1 if up, -1 if down
+         * second is 1 if right, -1 if down
+         * thirt is 1 if space
+         * @return vector of integers
+         */
         static std::vector<int> getInput();
 
+        /**
+         * get input from user for endloop
+         * @return boolean: true if r is pressed
+         */
         static bool restartInput();
 
         double moveView();
 
+        /**
+         * calculate how much the view needs to be adjusted
+         * @return where the player can be on screen
+         */
         int calculateViewAdjustment();
 
+        /**
+         * draw the background image
+         */
         void drawBackground();
 
-        void endLoop(int finished, int player);
+        /**
+         * end gameloop
+         * @param placement: int placement of player
+         * @param score : int score of the player
+         */
+        void endLoop(int placement, int score);
 
+        /**
+         * get the end text and highscore text for the endloop
+         * @param placement: int placement of player
+         * @param score : int score of the player
+         * @return vector of texts
+         */
         std::vector<sf::Text> getScoreScreen(int placement, int score);
 
+        /**
+         * write top 10 highscores from a file
+         */
         void writeHighscore();
 
+        /**
+         * get the highscores from a file
+         */
         void getHighscores();
 
     private:
@@ -71,14 +132,15 @@ namespace turbohikerSFML {
 
         sf::RenderWindow window;
         sf::View view;
-
+//        keep the textures and fonts
         std::vector<std::shared_ptr<sf::Texture>> textures = {};
         std::vector<sf::Sprite> backgrounds = {};
         std::vector<std::shared_ptr<sf::Font>> fonts = {};
-
+//        how many players
         int playercount = 0;
+//        highscores
         std::vector<int> scores;
-
+//        if true restart the game
         bool restartGame = false;
     };
 }

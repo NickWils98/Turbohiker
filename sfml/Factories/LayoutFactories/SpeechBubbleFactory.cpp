@@ -25,7 +25,7 @@ namespace turbohikerSFML {
         enitity->setPosition(position.x, position.y);
         enitity->setSize(size.x + 4, size.y + 3);
         enitity->setHeaviness(1);
-        enitity->setTransparant(true);
+        enitity->setTransparent(true);
         return enitity;
     }
 }

@@ -197,7 +197,7 @@ namespace turbohiker {
         }
     }
 
-    double World::Collision() {
+    void World::Collision() {
         std::vector<double> moved = {0, 0};
         if (!entityList.empty()) {
             for (int i = 0; i < entityList.size() - 1; i++) {
@@ -228,7 +228,6 @@ namespace turbohiker {
                 }
             }
         }
-        return 0;
     }
 
     void World::setTimers(double time, double delta) {

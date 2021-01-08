@@ -25,7 +25,7 @@ namespace turbohikerSFML {
         hiker->setPosition(position.x, position.y);
         hiker->setSize(size.x + 4, size.y + 3);
         hiker->setHeaviness(0);
-        hiker->setTransparant(true);
+        hiker->setTransparent(true);
         hiker->setSlowedDown(true);
         hiker->setSpeedv(70);
         hiker->setMaxspeed(70);

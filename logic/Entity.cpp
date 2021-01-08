@@ -84,12 +84,12 @@ namespace turbohiker {
         Entity::heaviness = h;
     }
 
-    bool Entity::isTransparant() const {
-        return transparant;
+    bool Entity::isTransparent() const {
+        return transparent;
     }
 
-    void Entity::setTransparant(bool g) {
-        Entity::transparant = g;
+    void Entity::setTransparent(bool g) {
+        Entity::transparent = g;
     }
 
     bool Entity::isSlowedDown() const {

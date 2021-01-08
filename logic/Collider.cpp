@@ -60,24 +60,24 @@ namespace turbohiker {
             movedBackFirst = intersectY * (first->getHeaviness() / (other->getHeaviness() + first->getHeaviness()));
             movedBackOther = intersectY * (other->getHeaviness() / (other->getHeaviness() + first->getHeaviness()));
 //        if you toch a rat you need to slow down
-            if (first->isSlowedDown() and !other->isTransparant()) {
+            if (first->isSlowedDown() and !other->isTransparent()) {
                 if (!other->isBuffed()) {
                     other->setMaxspeed(other->getMaxSpeed() / 2);
                     other->setBuffed(true);
                     other->setDebufftimer(timer + 5000000);
                 }
             }
-            if (other->isSlowedDown() and !first->isTransparant()) {
+            if (other->isSlowedDown() and !first->isTransparent()) {
                 if (!first->isBuffed()) {
                     first->setMaxspeed(first->getMaxSpeed() / 2);
                     first->setBuffed(true);
                     first->setDebufftimer(timer + 5000000);
                 }
             }
-//        if you toch a transparant object you dont need to move back
-            if (first->isTransparant()) {
+//        if you toch a transparent object you dont need to move back
+            if (first->isTransparent()) {
                 return {0, 0};
-            } else if (other->isTransparant()) {
+            } else if (other->isTransparent()) {
                 return {0, 0};
             }
 //        move back the objects

@@ -34,7 +34,7 @@ namespace turbohikerSFML {
 //        if you are faster then 60 frames per sec wait
             std::clock_t beginRound = startTime;
             startTime = std::clock();
-            double delta = handleFrames(beginRound, startTime);
+            double delta = (double) startTime - beginRound;
 //        std::cout<<delta/700<<std::endl;
             startTime = std::clock();
 
@@ -98,16 +98,6 @@ namespace turbohikerSFML {
 
             }
         }
-    }
-
-    double Game::handleFrames(std::clock_t beginRound, std::clock_t startTime) {
-        double deltaTime = (double) startTime - beginRound;
-//    while (deltaTime / CLOCKS_PER_SEC < 0.016667) {
-//
-//        startTime = std::clock();
-//        deltaTime = (double) startTime - beginRound;
-//    }
-        return deltaTime;
     }
 
     void Game::init() {
