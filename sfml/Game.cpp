@@ -141,7 +141,7 @@ namespace turbohikerSFML {
         std::shared_ptr<sf::Texture> SpeechBubbleTexture = std::make_shared<sf::Texture>();
         SpeechBubbleTexture->loadFromFile("./../res/textbubble.png");
         textures.push_back(SpeechBubbleTexture);
-        std::shared_ptr<turbohiker::LayoutFactory> speechBubble = std::make_shared<SpeechBubbleFactory>(window,
+        std::shared_ptr<SpeechBubbleFactory> speechBubble = std::make_shared<SpeechBubbleFactory>(window,
                                                                                                         SpeechBubbleTexture,
                                                                                                         view);
 
@@ -149,13 +149,13 @@ namespace turbohikerSFML {
         std::shared_ptr<sf::Texture> playerTexture = std::make_shared<sf::Texture>();
         playerTexture->loadFromFile("./../res/player.png");
         textures.push_back(playerTexture);
-        std::shared_ptr<turbohiker::HikerFactory> player = std::make_shared<PlayerFactory>(window, playerTexture, view,
+        std::shared_ptr<PlayerFactory> player = std::make_shared<PlayerFactory>(window, playerTexture, view,
                                                                                            speechBubble);
 
         std::shared_ptr<sf::Texture> enemyTexture = std::make_shared<sf::Texture>();
         enemyTexture->loadFromFile("./../res/enemy.png");
         textures.push_back(enemyTexture);
-        std::shared_ptr<turbohiker::HikerFactory> enemy = std::make_shared<EnemyFactory>(window, enemyTexture, view,
+        std::shared_ptr<EnemyFactory> enemy = std::make_shared<EnemyFactory>(window, enemyTexture, view,
                                                                                          speechBubble);
 
         std::vector<std::shared_ptr<turbohiker::HikerFactory>> hikers;

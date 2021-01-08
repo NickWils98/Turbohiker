@@ -15,7 +15,6 @@
 #include "../logic/World.h"
 #include "HikerSFML.h"
 #include "Factories/HikerFactories/PlayerFactory.h"
-#include "../logic/Factories/HikerFactory.h"
 #include "Factories/HikerFactories/EnemyFactory.h"
 #include "Factories/HikerFactories/KnightFactory.h"
 #include "Factories/LayoutFactories/LineFactory.h"
