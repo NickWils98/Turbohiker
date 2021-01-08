@@ -23,12 +23,12 @@ namespace turbohiker {
     public:
 
         /**
-         * initializer entity
+         * constructor
          */
         Entity();
 
         /**
-         * destructor entity
+         * destructor
          */
         virtual ~Entity() = default;
 
@@ -59,7 +59,7 @@ namespace turbohiker {
 
         /**
          * pure virtual function
-         * move position by for updated view
+         * move position for updated view
          * @param s how much needs te be moved
          */
         virtual void moveToView(double s) = 0;

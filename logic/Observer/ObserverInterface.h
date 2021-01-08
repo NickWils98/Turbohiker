@@ -6,13 +6,27 @@
 #define TURBOHIKER_OBSERVERINTERFACE_H
 
 namespace turbohiker {
+    /**
+     * interface class for observer
+     */
     class ObserverInterface {
     public:
 
+        /**
+         * destructor
+         */
         virtual ~ObserverInterface() = default;
 
+        /**
+         * pure virtual function
+         * @param s int: update the observer
+         */
         virtual void update(int s) = 0;
 
+        /**
+         * get the score
+         * @return int: score
+         */
         virtual int getScore() = 0;
     };
 }

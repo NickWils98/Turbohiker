@@ -18,7 +18,7 @@ namespace turbohiker {
     class World : public Entity {
     public:
         /**
-         * initializer
+         * constructor
          */
         World() = default;
 

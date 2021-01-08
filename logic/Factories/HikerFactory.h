@@ -11,11 +11,19 @@
 #include "../Hiker.h"
 
 namespace turbohiker {
+    /**
+     * base interface class for hiker factories
+     */
     class HikerFactory {
     public:
+        /**
+         * pure virtual function
+         * create a hiker
+         * @param size coordinates how big the entity needs to be
+         * @param position coordinates where the entity needs to be
+         * @return
+         */
         virtual std::shared_ptr<Hiker> createHiker(Coordinates size, Coordinates position) = 0;
-
-
     };
 }
 

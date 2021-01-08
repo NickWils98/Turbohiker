@@ -43,7 +43,7 @@ namespace turbohiker {
     }
 
     std::vector<double>
-    Collider::CollisionDetection(std::shared_ptr<Entity> &first, std::shared_ptr<Entity> &other, double timer) {
+    Collider::CollisionDetection(std::shared_ptr<Entity> &first, std::shared_ptr<Entity> &other) {
 
         Coordinates otherPosition = other->getPosition();
         Coordinates otherHalfSize = other->GetHalfSize();
@@ -64,14 +64,14 @@ namespace turbohiker {
                 if (!other->isBuffed()) {
                     other->setMaxspeed(other->getMaxSpeed() / 2);
                     other->setBuffed(true);
-                    other->setDebufftimer(timer + 5000000);
+                    other->setDebufftimer(other->getTimer() + other->getTimer());
                 }
             }
             if (other->isSlowedDown() and !first->isTransparent()) {
                 if (!first->isBuffed()) {
                     first->setMaxspeed(first->getMaxSpeed() / 2);
                     first->setBuffed(true);
-                    first->setDebufftimer(timer + 5000000);
+                    first->setDebufftimer(first->getTimer() + 5000000);
                 }
             }
 //        if you toch a transparent object you dont need to move back

@@ -11,10 +11,19 @@
 #include "../Singletons/Transformation.h"
 
 namespace turbohiker {
+    /**
+     * base interface class for layout factories
+     */
     class LayoutFactory {
     public:
+        /**
+         * pure virtal function
+         * create a layout element
+         * @param size coordinates how big the entity needs to be
+         * @param position coordinates where the entity needs to be
+         * @return
+         */
         virtual std::shared_ptr<Entity> createProp(Coordinates size, Coordinates position) = 0;
-
     };
 }
 

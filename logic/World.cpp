@@ -59,7 +59,7 @@ namespace turbohiker {
 //        randome choice between both factories
             int fact = r->getintpercent() % 2;
 //        randome choice of y coordinates
-            double randomeHeight = r->getint((int) tracklength - 3);
+            double randomeHeight = r->getRealNumber((int) tracklength - 3);
 //        randome lane
             int randomeLane = r->getintpercent();
             int lane = randomeLane % (player->getAllLaneCount() + 1);
@@ -206,7 +206,7 @@ namespace turbohiker {
 //                    two objects shouldn't collide
                         if (!entityList[i]->isObstacle() or !entityList[j]->isObstacle()) {
 //                        do collision detection
-                            moved = Collider::CollisionDetection(entityList[i], entityList[j], getTimer());
+                            moved = Collider::CollisionDetection(entityList[i], entityList[j]);
 //                        if there was a collision
                             if (moved[0] != 0 or moved[1] != 0) {
 //                            if the player was in collision deduct worldScore

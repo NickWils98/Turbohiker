@@ -6,11 +6,11 @@
 #define TURBOHIKER_LANESSFML_H
 
 
-#include "../logic/Lanes.h"
+#include "../logic/Layout.h"
 #include <SFML/Graphics.hpp>
 
 namespace turbohikerSFML {
-    class LanesSFML : public turbohiker::Lanes {
+    class LanesSFML : public turbohiker::Layout {
     public:
         LanesSFML(sf::RenderWindow &window, sf::Color col, sf::Vector2f size, sf::Vector2f position);
 
@@ -19,6 +19,8 @@ namespace turbohikerSFML {
         void render() override;
 
         void moveToView(double) override;
+
+        void updateVisuals(turbohiker::Coordinates s) override{};
 
         void setToupdate(bool t);
 

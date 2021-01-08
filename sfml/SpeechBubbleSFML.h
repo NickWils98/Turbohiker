@@ -6,10 +6,10 @@
 #define TURBOHIKER_SPEECHBUBBLESFML_H
 
 #include <SFML/Graphics.hpp>
-#include "../logic/Balloon.h"
+#include "../logic/Layout.h"
 
 namespace turbohikerSFML {
-    class SpeechBubbleSFML : public turbohiker::Balloon {
+    class SpeechBubbleSFML : public turbohiker::Layout {
     public:
         SpeechBubbleSFML(sf::RenderWindow &w, const std::shared_ptr<sf::Texture> &tex, sf::Vector2f size,
                          sf::Vector2f position, sf::View &);
@@ -18,6 +18,7 @@ namespace turbohikerSFML {
 
         void updateVisuals(turbohiker::Coordinates s) override;
 
+        void moveToView(double s) override{};
 
     private:
         sf::RectangleShape body;
