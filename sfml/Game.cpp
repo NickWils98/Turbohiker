@@ -69,7 +69,6 @@ namespace turbohikerSFML {
                 placement = world->getPlacement();
                 score = world->getWorldScore();
                 scores.push_back(score);
-                writeHighscore();
                 break;
             }
 //        check on collision
@@ -312,6 +311,7 @@ namespace turbohikerSFML {
 
     void Game::endLoop(int placement, int score) {
         std::vector<sf::Text> victorytext = getScoreScreen(placement, score);
+        writeHighscore();
         view.setCenter(300, 300);
         window.setView(view);
         while (window.isOpen()) {
