@@ -18,7 +18,17 @@ namespace turbohikerSFML {
         world->setTracklength((int) -d);
     }
 
-    Game::~Game() = default;
+    Game::~Game(){
+        while(!textures.empty()){
+            textures.pop_back();
+        }
+        while(!backgrounds.empty()){
+            backgrounds.pop_back();
+        }
+        while(!fonts.empty()){
+            fonts.pop_back();
+        }
+    };
 
     bool Game::run() {
 
