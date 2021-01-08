@@ -30,7 +30,7 @@ namespace turbohikerSFML {
     class Game {
     public:
         /**
-         * initialize game
+         * constructor game
          */
         Game();
 

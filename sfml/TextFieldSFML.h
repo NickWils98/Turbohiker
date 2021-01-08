@@ -9,17 +9,43 @@
 #include <SFML/Graphics.hpp>
 
 namespace turbohikerSFML {
+    /**
+     * Score text entity
+     */
     class TextFieldSFML : public turbohiker::Layout {
     public:
+        /**
+         * constructor
+         * @param window reference to the window
+         * @param col text color
+         * @param position list {x,y} coordinats
+         * @param s string text
+         * @param f pointer to a font
+         * @param t bool if text needs to be live updated
+         */
         TextFieldSFML(sf::RenderWindow &window, sf::Color col, sf::Vector2f position, const std::string &s,
                       const std::shared_ptr<sf::Font> &f, bool t);
 
+        /**
+         * destructor
+         */
         ~TextFieldSFML() override = default;
 
+        /**
+         * draw on window
+         */
         void render() override;
 
-        void moveToView(double) override;
+        /**
+         * move text to view by x
+         * @param x double
+         */
+        void moveToView(double x) override;
 
+        /**
+         * NOOP
+         * @param s Coordinates
+         */
         void updateVisuals(turbohiker::Coordinates s) override {};
 
     private:

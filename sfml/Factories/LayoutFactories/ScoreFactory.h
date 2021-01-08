@@ -10,18 +10,35 @@
 #include <SFML/Graphics.hpp>
 
 namespace turbohikerSFML {
+    /**
+     * derived class from LayoutFactory
+     * Factory of speech score
+     */
     class ScoreFactory : public turbohiker::LayoutFactory {
     public:
+        /**
+         * constructor set sfml parts
+         * @param w window
+         * @param col collor of the text
+         * @param v view
+         * @param s string
+         * @param f font of the text
+         * @param t bool if text is live or not
+         */
         ScoreFactory(sf::RenderWindow &w, sf::Color col, sf::View &v, std::string s, std::shared_ptr<sf::Font> &f,
-                     bool);
+                     bool t);
 
+        /**
+         *  create the score
+         * @param size not needed
+         * @param position Coordinates where the entity needs to be
+         * @return Entity
+         */
         std::shared_ptr<turbohiker::Entity>
         createProp(turbohiker::Coordinates size, turbohiker::Coordinates position) override;
 
 
     private:
-
-
         sf::RenderWindow &window;
         sf::View &view;
         const sf::Color color;

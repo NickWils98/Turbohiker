@@ -10,10 +10,26 @@
 #include <SFML/Graphics.hpp>
 
 namespace turbohikerSFML {
+    /**
+     * derived class from LayoutFactory
+     * Factory of speech bubbles
+     */
     class SpeechBubbleFactory : public turbohiker::LayoutFactory {
     public:
+        /**
+         * constructor set sfml parts
+         * @param w window
+         * @param t texture
+         * @param v view
+         */
         SpeechBubbleFactory(sf::RenderWindow &w, std::shared_ptr<sf::Texture> &t, sf::View &v);
 
+        /**
+         *  create the bubble
+         * @param size Coordinates how big bubble needs to be
+         * @param position Coordinates where the entity needs to be
+         * @return Entity
+         */
         std::shared_ptr<turbohiker::Entity>
         createProp(turbohiker::Coordinates size, turbohiker::Coordinates position) override;
 
