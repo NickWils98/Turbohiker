@@ -45,7 +45,6 @@ namespace turbohikerSFML {
             std::clock_t beginRound = startTime;
             startTime = std::clock();
             double delta = (double) startTime - beginRound;
-//        std::cout<<delta/700<<std::endl;
             startTime = std::clock();
 
 //        set input to 60 Frames per sec
