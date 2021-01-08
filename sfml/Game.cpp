@@ -18,14 +18,14 @@ namespace turbohikerSFML {
         world->setTracklength((int) -d);
     }
 
-    Game::~Game(){
-        while(!textures.empty()){
+    Game::~Game() {
+        while (!textures.empty()) {
             textures.pop_back();
         }
-        while(!backgrounds.empty()){
+        while (!backgrounds.empty()) {
             backgrounds.pop_back();
         }
-        while(!fonts.empty()){
+        while (!fonts.empty()) {
             fonts.pop_back();
         }
     };
@@ -142,21 +142,21 @@ namespace turbohikerSFML {
         SpeechBubbleTexture->loadFromFile("./../res/textbubble.png");
         textures.push_back(SpeechBubbleTexture);
         std::shared_ptr<SpeechBubbleFactory> speechBubble = std::make_shared<SpeechBubbleFactory>(window,
-                                                                                                        SpeechBubbleTexture,
-                                                                                                        view);
+                                                                                                  SpeechBubbleTexture,
+                                                                                                  view);
 
 
         std::shared_ptr<sf::Texture> playerTexture = std::make_shared<sf::Texture>();
         playerTexture->loadFromFile("./../res/player.png");
         textures.push_back(playerTexture);
         std::shared_ptr<PlayerFactory> player = std::make_shared<PlayerFactory>(window, playerTexture, view,
-                                                                                           speechBubble);
+                                                                                speechBubble);
 
         std::shared_ptr<sf::Texture> enemyTexture = std::make_shared<sf::Texture>();
         enemyTexture->loadFromFile("./../res/enemy.png");
         textures.push_back(enemyTexture);
         std::shared_ptr<EnemyFactory> enemy = std::make_shared<EnemyFactory>(window, enemyTexture, view,
-                                                                                         speechBubble);
+                                                                             speechBubble);
 
         std::vector<std::shared_ptr<turbohiker::HikerFactory>> hikers;
         hikers.push_back(player);

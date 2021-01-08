@@ -37,7 +37,7 @@ namespace turbohikerSFML {
          * NOOP
          * @param s double
          */
-        void moveToView(double s) override{};
+        void moveToView(double s) override {};
 
     private:
         sf::RectangleShape body;

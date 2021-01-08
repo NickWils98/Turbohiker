@@ -33,6 +33,7 @@ namespace turbohikerSFML {
          */
         std::shared_ptr<turbohiker::Entity>
         createProp(turbohiker::Coordinates size, turbohiker::Coordinates position) override;
+
     private:
         sf::RenderWindow &window;
         sf::View &view;

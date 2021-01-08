@@ -41,7 +41,7 @@ namespace turbohikerSFML {
          * update the visuals of the text player
          * @param s coordinates
          */
-        void updateVisuals(turbohiker::Coordinates s) override{};
+        void updateVisuals(turbohiker::Coordinates s) override {};
 
         /**
          * setter toupdate
