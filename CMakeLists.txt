@@ -3,7 +3,6 @@ project(Turbohiker)
 
 set(CMAKE_CXX_STANDARD 11)
 
-add_executable(Turbohiker main.cpp)
 # Extend the CMake module path to find the FindSFML.cmake
 # file in {project root}/cmake/Modules
 SET(CMAKE_MODULE_PATH ${CMAKE_MODULE_PATH} "${PROJECT_SOURCE_DIR}/cmake/Modules/")
@@ -24,7 +23,7 @@ SET(SRC main.cpp sfml/Game.cpp sfml/Game.h sfml/HikerSFML.cpp sfml/HikerSFML.h s
 # (The SFML_INCLUDE_DIR variable is defined by FindSFML.cmake, if SFML was found)
 INCLUDE_DIRECTORIES(${SFML_INCLUDE_DIR})
 # Add logic library
-add_library(logic SHARED logic/Layout.h logic/Entity.cpp logic/Entity.h logic/World.cpp logic/World.h  logic/Hiker.cpp logic/Hiker.h logic/Factories/HikerFactory.h logic/Singletons/Transformation.cpp logic/Singletons/Transformation.h logic/Collider.cpp logic/Collider.h logic/Singletons/RandomeNumber.cpp logic/Singletons/RandomeNumber.h logic/HikerPlayer.cpp logic/HikerPlayer.h logic/HikerEnemy.cpp logic/HikerEnemy.h logic/HikerPassing.cpp logic/HikerPassing.h logic/Factories/LayoutFactory.h  logic/Layout.h logic/Observer/SubjectInterface.h logic/Observer/ObserverInterface.h logic/Observer/Subject.cpp logic/Observer/Subject.h logic/Observer/Observer.cpp logic/Observer/Observer.h logic/Coordinates.h)
+add_library(logic logic/Layout.h logic/Entity.cpp logic/Entity.h logic/World.cpp logic/World.h  logic/Hiker.cpp logic/Hiker.h logic/Factories/HikerFactory.h logic/Singletons/Transformation.cpp logic/Singletons/Transformation.h logic/Collider.cpp logic/Collider.h logic/Singletons/RandomeNumber.cpp logic/Singletons/RandomeNumber.h logic/HikerPlayer.cpp logic/HikerPlayer.h logic/HikerEnemy.cpp logic/HikerEnemy.h logic/HikerPassing.cpp logic/HikerPassing.h logic/Factories/LayoutFactory.h  logic/Layout.h logic/Observer/SubjectInterface.h logic/Observer/ObserverInterface.h logic/Observer/Subject.cpp logic/Observer/Subject.h logic/Observer/Observer.cpp logic/Observer/Observer.h logic/Coordinates.h)
 # The program we're compiling with the sources set above
 ADD_EXECUTABLE(Turbohiker_sfml ${SRC})
 # Link logic library
