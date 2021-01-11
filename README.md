@@ -1,4 +1,8 @@
 # Turbohiker
+
+You can run the came with the provided script:
+"turbohiker-game.sh"
+
 Player can switch lanes/ slow donw/ speed up with the arrow keys.
 When the game is finished, a new game can be started with the R key.
 Yelling can be done with space.
