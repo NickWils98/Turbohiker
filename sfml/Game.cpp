@@ -117,7 +117,7 @@ namespace turbohikerSFML {
 
     void Game::initBackground() {
         std::shared_ptr<sf::Texture> backgroundTex = std::make_shared<sf::Texture>();
-        backgroundTex->loadFromFile("./../res/map.png");
+        backgroundTex->loadFromFile("./res/map.png");
         textures.push_back(backgroundTex);
 
         sf::Sprite background(*backgroundTex);
@@ -137,7 +137,7 @@ namespace turbohikerSFML {
     void Game::initStartPosition() {
 //    make a speech bubble factory for the hikers sow they can yell
         std::shared_ptr<sf::Texture> SpeechBubbleTexture = std::make_shared<sf::Texture>();
-        SpeechBubbleTexture->loadFromFile("./../res/textbubble.png");
+        SpeechBubbleTexture->loadFromFile("./res/textbubble.png");
         textures.push_back(SpeechBubbleTexture);
         std::shared_ptr<SpeechBubbleFactory> speechBubble = std::make_shared<SpeechBubbleFactory>(window,
                                                                                                   SpeechBubbleTexture,
@@ -145,13 +145,13 @@ namespace turbohikerSFML {
 
 
         std::shared_ptr<sf::Texture> playerTexture = std::make_shared<sf::Texture>();
-        playerTexture->loadFromFile("./../res/player.png");
+        playerTexture->loadFromFile("./res/player.png");
         textures.push_back(playerTexture);
         std::shared_ptr<PlayerFactory> player = std::make_shared<PlayerFactory>(window, playerTexture, view,
                                                                                 speechBubble);
 
         std::shared_ptr<sf::Texture> enemyTexture = std::make_shared<sf::Texture>();
-        enemyTexture->loadFromFile("./../res/enemy.png");
+        enemyTexture->loadFromFile("./res/enemy.png");
         textures.push_back(enemyTexture);
         std::shared_ptr<EnemyFactory> enemy = std::make_shared<EnemyFactory>(window, enemyTexture, view,
                                                                              speechBubble);
@@ -161,7 +161,7 @@ namespace turbohikerSFML {
         hikers.push_back(enemy);
 
         std::shared_ptr<sf::Font> f = std::make_shared<sf::Font>();
-        if (!f->loadFromFile("./../res/Hardigan.otf")) {
+        if (!f->loadFromFile("./res/Hardigan.otf")) {
             std::cout << "error loading file" << std::endl;
             system("pause");
         }
@@ -205,11 +205,11 @@ namespace turbohikerSFML {
 
     void Game::initObstacles() {
         std::shared_ptr<sf::Texture> knightTexture = std::make_shared<sf::Texture>();
-        knightTexture->loadFromFile("./../res/knight.png");
+        knightTexture->loadFromFile("./res/knight.png");
         textures.push_back(knightTexture);
 
         std::shared_ptr<sf::Texture> ratTexture = std::make_shared<sf::Texture>();
-        ratTexture->loadFromFile("./../res/rat.png");
+        ratTexture->loadFromFile("./res/rat.png");
         textures.push_back(ratTexture);
 
         std::shared_ptr<turbohiker::HikerFactory> knight = std::make_shared<KnightFactory>(window, knightTexture, view);
@@ -367,7 +367,7 @@ namespace turbohikerSFML {
 
     void Game::writeHighscore() {
         std::ofstream myfile;
-        myfile.open("./../worldScore.txt");
+        myfile.open("./res/worldScore.txt");
         int y = 0;
         for (auto score : scores) {
             y++;
@@ -382,7 +382,7 @@ namespace turbohikerSFML {
 
     void Game::getHighscores() {
         std::string myText;
-        std::ifstream myfile("./../worldScore.txt");
+        std::ifstream myfile("./res/worldScore.txt");
         if (myfile.is_open()) {
             while (getline(myfile, myText)) {
 
