@@ -55,7 +55,10 @@ namespace turbohiker {
 //    multiply the amount of obstacles with the lane amount
         obstacleAmount *= player->getAllLaneCount();
         std::shared_ptr<RandomeNumber> r = r->getInstance();
+        int mistakes = 0;
         for (int i = 1; i < obstacleAmount; i++) {
+//            when there are no more places to set the obstacles stop
+            if(mistakes>300){break;}
 //        randome choice between both factories
             int fact = r->getintpercent() % 2;
 //        randome choice of y coordinates
@@ -77,6 +80,7 @@ namespace turbohiker {
                         if (Collider::CheckCollision(o, hiker3)) {
                             i--;
                             push = false;
+                            mistakes++;
                         }
                     }
                 }

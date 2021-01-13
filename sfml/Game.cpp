@@ -9,7 +9,6 @@ namespace turbohikerSFML {
             : window(sf::VideoMode(1088, 600), "Turbohiker", sf::Style::Close | sf::Style::Resize),
               view(window.getDefaultView()) {
         view.move(-300, 0);
-//    window.setFramerateLimit(60);
         world = std::make_shared<turbohiker::World>();
         r = turbohiker::RandomeNumber::getInstance();
         t = turbohiker::Transformation::getInstance();
