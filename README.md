@@ -16,6 +16,7 @@ The goal of this game is finishing first without hitting anyone.
 - speed up: arrow up
 - slow down: arrow down
 - go backwards: arrow down
+- Yell: space
 
 # Score
 You start with a score of 0.
